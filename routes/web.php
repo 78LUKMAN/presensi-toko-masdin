@@ -24,6 +24,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/rekap-gaji-harian',   [AdminController::class, 'rekapGajiHarian'])    ->name('rekap-gaji-harian');
     Route::get('/rekap-gaji-bulanan',  [AdminController::class, 'rekapGajiBulanan'])   ->name('rekap-gaji-bulanan');
     Route::get('/pengaturan',          [AdminController::class, 'pengaturan'])         ->name('pengaturan');
+    Route::get('/halaman-absensi',     [AdminController::class, 'halamanAbsensi'])     ->name('halaman-absensi');
 
     // --- Daftar Karyawan (CRUD + DataTables) ---
     Route::get('/karyawan',            [KaryawanController::class, 'index'])   ->name('karyawan');

@@ -45,4 +45,9 @@ class AdminController extends Controller
     {
         return view('admin.pengaturan');
     }
+
+    public function halamanAbsensi()
+    {
+        return view('admin.halaman-absensi');
+    }
 }
