@@ -23,11 +23,14 @@
             <span class="text-[10px] font-semibold mt-5" style="color: {{ ($active ?? '') === 'scan' ? '#1E2A5E' : '#94a3b8' }}">Scan</span>
         </a>
 
-        {{-- Izin --}}
-        <a href="{{ route('employee.izin') }}"
-           class="flex flex-col items-center justify-center gap-0.5 transition-colors {{ ($active ?? '') === 'izin' ? 'text-[#1E2A5E]' : 'text-slate-400' }}">
-            <i class="fa-solid fa-file-lines text-xl"></i>
-            <span class="text-[10px] font-semibold">Izin</span>
+        {{-- History --}}
+        <a href="{{ route('employee.history') }}"
+           class="flex flex-col items-center justify-center gap-0.5 transition-colors {{ ($active ?? '') === 'history' ? 'text-[#1E2A5E]' : 'text-slate-400' }}">
+            <i class="fa-solid fa-clock-rotate-left text-xl"></i>
+            <span class="text-[10px] font-semibold">Riwayat</span>
+            @if(($active ?? '') === 'history')
+                <div class="absolute bottom-0 h-0.5 w-10 rounded-full bg-[#1E2A5E]" style="margin-bottom: max(0px, env(safe-area-inset-bottom));"></div>
+            @endif
         </a>
 
         {{-- Profile --}}
@@ -35,6 +38,9 @@
            class="flex flex-col items-center justify-center gap-0.5 transition-colors {{ ($active ?? '') === 'profile' ? 'text-[#1E2A5E]' : 'text-slate-400' }}">
             <i class="fa-solid fa-user text-xl"></i>
             <span class="text-[10px] font-semibold">Profil</span>
+            @if(($active ?? '') === 'profile')
+                <div class="absolute bottom-0 h-0.5 w-10 rounded-full bg-[#1E2A5E]" style="margin-bottom: max(0px, env(safe-area-inset-bottom));"></div>
+            @endif
         </a>
     </div>
 </nav>

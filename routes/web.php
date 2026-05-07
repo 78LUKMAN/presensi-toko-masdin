@@ -11,7 +11,12 @@ use App\Http\Controllers\Admin\AdminUserController;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', fn() => redirect()->route('admin.dashboard'));
+Route::get('/', fn() => redirect()->route('admin.login'));
+
+// Admin Login (outside the auth-protected group)
+Route::get('/admin/login',  fn() => view('admin.login'))->name('admin.login');
+Route::post('/admin/login', fn() => redirect()->route('admin.dashboard'))->name('admin.login.submit');
+Route::get('/admin/forgot-password', fn() => back())->name('admin.forgot-password');
 
 // Admin Routes
 // Add ->middleware(['auth']) when authentication is ready
@@ -62,4 +67,5 @@ Route::prefix('employee')->name('employee.')->group(function () {
     Route::get('/profile',   fn() => view('employee.profile'))   ->name('profile');
     Route::get('/rekap',     fn() => view('employee.dashboard')) ->name('rekap'); // placeholder
     Route::get('/forgot-password', fn() => back())               ->name('forgot-password');
+    Route::get('/history',   fn() => view('employee.history'))   ->name('history');
 });
