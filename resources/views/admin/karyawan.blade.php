@@ -55,9 +55,7 @@
                             <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider w-12">#</th>
                             <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">ID Karyawan</th>
                             <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Nama</th>
-                            <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Bagian</th>
-                            <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Tgl Masuk</th>
-                            <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Email</th>
+                            <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Section</th>
                             <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -91,8 +89,8 @@
                             <input type="text" name="name" placeholder="Nama lengkap" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"/>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1.5">Departemen <span class="text-red-500">*</span></label>
-                            <input type="text" name="department" placeholder="Nama departemen" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"/>
+                            <label class="block text-sm font-medium text-slate-700 mb-1.5">Section <span class="text-red-500">*</span></label>
+                            <input type="text" name="section" placeholder="Nama section" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"/>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1.5">Tanggal Masuk <span class="text-red-500">*</span></label>
@@ -149,8 +147,8 @@
                             <input type="text" name="name" id="edit-name" placeholder="Nama lengkap" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"/>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1.5">Departemen <span class="text-red-500">*</span></label>
-                            <input type="text" name="department" id="edit-department" placeholder="Nama departemen" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"/>
+                            <label class="block text-sm font-medium text-slate-700 mb-1.5">Section <span class="text-red-500">*</span></label>
+                            <input type="text" name="section" id="edit-section" placeholder="Nama section" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"/>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1.5">Tanggal Masuk <span class="text-red-500">*</span></label>
@@ -227,35 +225,23 @@
     }
 
     // ── DataTable (client-side dummy data) ────────────────────────────────
-    const dummyKaryawan = [
-        {id:1, noreg:'KRY-001', name:'Budi Santoso',    department:'Produksi',     join_date:'2023-01-15', email:'budi@makdin.co.id'},
-        {id:2, noreg:'KRY-002', name:'Siti Rahayu',     department:'Gudang',       join_date:'2023-02-01', email:'siti@makdin.co.id'},
-        {id:3, noreg:'KRY-003', name:'Ahmad Fauzi',     department:'Administrasi', join_date:'2023-03-10', email:'ahmad@makdin.co.id'},
-        {id:4, noreg:'KRY-004', name:'Dewi Lestari',    department:'Produksi',     join_date:'2023-04-05', email:'-'},
-        {id:5, noreg:'KRY-005', name:'Eko Prasetyo',    department:'Keamanan',     join_date:'2023-05-20', email:'eko@makdin.co.id'},
-        {id:6, noreg:'KRY-006', name:'Fitri Handayani', department:'Administrasi', join_date:'2023-06-01', email:'fitri@makdin.co.id'},
-        {id:7, noreg:'KRY-007', name:'Gunawan Putra',   department:'Gudang',       join_date:'2023-07-15', email:'-'},
-        {id:8, noreg:'KRY-008', name:'Hani Sulistyani', department:'Produksi',     join_date:'2023-08-01', email:'hani@makdin.co.id'},
-        {id:9, noreg:'KRY-009', name:'Irfan Maulana',   department:'Keamanan',     join_date:'2024-01-10', email:'irfan@makdin.co.id'},
-        {id:10,noreg:'KRY-010', name:'Juwita Sari',     department:'Administrasi', join_date:'2024-02-20', email:'juwita@makdin.co.id'},
-    ];
     const table = $('#table-karyawan').DataTable({
-        data: dummyKaryawan,
+        processing: true,
+        serverSide: true,
+        ajax      : '{{ route("admin.karyawan.data") }}',
         language  : { url: 'https://cdn.datatables.net/plug-ins/2.0.3/i18n/id.json' },
         columns   : [
-            { data: null, render: (_,__,___,m) => `<span class="text-slate-400 text-xs">${m.row+1}</span>` },
+            { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
             { data: 'noreg', render: d => `<span class="font-mono text-xs font-medium text-blue-700 bg-blue-50 px-2 py-0.5 rounded-lg">${d}</span>` },
             { data: 'name', render: d => `<span class="font-medium text-slate-800">${d}</span>` },
-            { data: 'department' },
-            { data: 'join_date' },
-            { data: 'email', render: d => d !== '-' ? `<span class="text-slate-600">${d}</span>` : `<span class="text-slate-300">–</span>` },
-            { data: null, orderable: false, searchable: false, className: 'text-center',
-              render: (_,__,row) => `
+            { data: 'section', render: d => d ?? '-' },
+            { data: 'id', orderable: false, searchable: false, className: 'text-center',
+              render: (id, _, row) => `
                 <div class="flex items-center justify-center gap-1">
-                  <button onclick="openEdit(${row.id})" class="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50" title="Edit">
+                  <button onclick="openEdit(${id})" class="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50" title="Edit">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                   </button>
-                  <button onclick="openDelete(${row.id}, '${(row.name+'').replace(/'/g,"\\\'")}')"
+                  <button onclick="openDelete(${id}, '${(row.name+'').replace(/'/g,"\\\'")}')"
                           class="p-1.5 rounded-lg text-red-500 hover:bg-red-50" title="Hapus">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                   </button>
@@ -309,7 +295,7 @@
                 document.getElementById('edit-id').value         = d.id;
                 document.getElementById('edit-noreg').value      = d.noreg;
                 document.getElementById('edit-name').value       = d.name;
-                document.getElementById('edit-department').value = d.department;
+                document.getElementById('edit-section').value    = d.section ?? '';
                 document.getElementById('edit-join-date').value  = d.join_date;
                 document.getElementById('edit-email').value      = d.email ?? '';
                 document.getElementById('edit-password').value   = '';

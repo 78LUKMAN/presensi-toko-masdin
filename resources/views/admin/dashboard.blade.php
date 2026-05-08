@@ -26,7 +26,7 @@
                     <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>+2
                 </span>
             </div>
-            <p class="text-3xl font-bold text-slate-800">24</p>
+            <p class="text-3xl font-bold text-slate-800">{{ $totalEmployees }}</p>
             <p class="text-xs text-slate-500 mt-1 font-medium">Jumlah Karyawan</p>
             <p class="text-xs text-slate-400 mt-0.5">2 baru bulan ini</p>
         </div>
@@ -39,7 +39,7 @@
                 </div>
                 <span class="inline-flex items-center text-xs font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">Stabil</span>
             </div>
-            <p class="text-3xl font-bold text-slate-800">3</p>
+            <p class="text-3xl font-bold text-slate-800">{{ $totalAdmins }}</p>
             <p class="text-xs text-slate-500 mt-1 font-medium">Jumlah Admin</p>
             <p class="text-xs text-slate-400 mt-0.5">Akses penuh sistem</p>
         </div>
@@ -50,12 +50,12 @@
                 <div class="w-11 h-11 rounded-xl bg-emerald-100 flex items-center justify-center">
                     <svg class="w-5 h-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 </div>
-                <span class="text-xs font-semibold text-emerald-600">87.5%</span>
+                <span class="text-xs font-semibold text-emerald-600">{{ $attendancePercentage }}%</span>
             </div>
-            <p class="text-3xl font-bold text-slate-800">21<span class="text-lg text-slate-400 font-normal">/24</span></p>
+            <p class="text-3xl font-bold text-slate-800">{{ $presentToday }}<span class="text-lg text-slate-400 font-normal">/{{ $totalEmployees }}</span></p>
             <p class="text-xs text-slate-500 mt-1 font-medium">Hadir Hari Ini</p>
             <div class="mt-2 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                <div class="h-full bg-emerald-500 rounded-full" style="width:87.5%"></div>
+                <div class="h-full bg-emerald-500 rounded-full" style="width:{{ $attendancePercentage }}%"></div>
             </div>
         </div>
 
@@ -67,7 +67,7 @@
                 </div>
                 <span class="text-xs text-blue-200">Mei 2026</span>
             </div>
-            <p class="text-2xl font-bold">Rp 52.480.000</p>
+            <p class="text-2xl font-bold">Rp {{ number_format($totalSalaryThisMonth, 0, ',', '.') }}</p>
             <p class="text-xs text-blue-200 mt-1 font-medium">Total Gaji Bulan Ini</p>
             <p class="text-xs text-blue-300 mt-0.5">↑ 4.2% vs bulan lalu</p>
         </div>
@@ -80,9 +80,9 @@
                 <svg class="w-5 h-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
             </div>
             <div>
-                <p class="text-2xl font-bold text-slate-800">3</p>
+                <p class="text-2xl font-bold text-slate-800">{{ $problematicCount }}</p>
                 <p class="text-xs font-medium text-slate-600">Presensi Bermasalah</p>
-                <p class="text-xs text-amber-600 mt-0.5">3 pending persetujuan</p>
+                <p class="text-xs text-amber-600 mt-0.5">{{ $problematicCount }} pending persetujuan</p>
             </div>
         </div>
         <div class="bg-white rounded-2xl border border-slate-200 p-5 flex items-center gap-4">
@@ -90,9 +90,9 @@
                 <svg class="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
             </div>
             <div>
-                <p class="text-2xl font-bold text-slate-800">3</p>
+                <p class="text-2xl font-bold text-slate-800">{{ $absentToday }}</p>
                 <p class="text-xs font-medium text-slate-600">Tidak Hadir Hari Ini</p>
-                <p class="text-xs text-red-500 mt-0.5">Tanpa keterangan: 1 orang</p>
+                <p class="text-xs text-red-500 mt-0.5">Data realtime</p>
             </div>
         </div>
         <div class="bg-white rounded-2xl border border-slate-200 p-5 flex items-center gap-4">
@@ -100,9 +100,9 @@
                 <svg class="w-5 h-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
             </div>
             <div>
-                <p class="text-2xl font-bold text-slate-800">21</p>
+                <p class="text-2xl font-bold text-slate-800">{{ $workDaysThisMonth }}</p>
                 <p class="text-xs font-medium text-slate-600">Hari Kerja Bulan Ini</p>
-                <p class="text-xs text-slate-400 mt-0.5">4 hari libur nasional</p>
+                <p class="text-xs text-slate-400 mt-0.5">Estimasi standar bulanan</p>
             </div>
         </div>
     </div>
@@ -205,18 +205,8 @@
         const c = { Hadir:'bg-emerald-100 text-emerald-700', Terlambat:'bg-amber-100 text-amber-700', 'Tidak Hadir':'bg-red-100 text-red-600', Lembur:'bg-purple-100 text-purple-700' };
         return `<span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-semibold ${c[s]||'bg-slate-100 text-slate-600'}">${s}</span>`;
     };
-    const data = [
-        {nama:'Budi Santoso',    bagian:'Produksi',     masuk:'07:02', status:'Hadir'},
-        {nama:'Siti Rahayu',     bagian:'Gudang',       masuk:'07:15', status:'Hadir'},
-        {nama:'Ahmad Fauzi',     bagian:'Administrasi', masuk:'08:35', status:'Terlambat'},
-        {nama:'Dewi Lestari',    bagian:'Produksi',     masuk:'06:58', status:'Hadir'},
-        {nama:'Eko Prasetyo',    bagian:'Keamanan',     masuk:'–',     status:'Tidak Hadir'},
-        {nama:'Fitri Handayani', bagian:'Administrasi', masuk:'08:05', status:'Hadir'},
-        {nama:'Gunawan Putra',   bagian:'Gudang',       masuk:'07:00', status:'Hadir'},
-        {nama:'Hani Sulistyani', bagian:'Produksi',     masuk:'07:10', status:'Hadir'},
-    ];
     $('#tbl-dashboard').DataTable({
-        data,
+        ajax: '{{ route("admin.dashboard.data") }}',
         pageLength: 5,
         language:{url:'https://cdn.datatables.net/plug-ins/2.0.3/i18n/id.json'},
         columns:[

@@ -194,17 +194,13 @@
     }
 
     // ── DataTable (client-side dummy data) ─────────────────────────────────
-    const dummyAdmin = [
-        {id:1, name:'Budi Admin',    email:'budi.admin@makdin.co.id', role:'Admin', created_at:'2025-01-10'},
-        {id:2, name:'Sari Utami',    email:'sari@makdin.co.id',       role:'Admin', created_at:'2025-03-05'},
-        {id:3, name:'Rizal Pratama', email:'rizal@makdin.co.id',      role:'Admin', created_at:'2025-06-20'},
-    ];
     const table = $('#table-admin').DataTable({
-        data: dummyAdmin,
+        processing: true,
+        serverSide: true,
+        ajax      : '{{ route("admin.daftar-admin.data") }}',
         language  : { url: 'https://cdn.datatables.net/plug-ins/2.0.3/i18n/id.json' },
         columns   : [
-            { data: 'DT_RowIndex', orderable: false, searchable: false, width: '40px',
-              render: (_,__,___,m) => `<span class="text-slate-400 text-xs">${m.row+1}</span>` },
+            { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, width: '40px' },
             { data: 'name', render: d => `<span class="font-medium text-slate-800">${d}</span>` },
             { data: 'email' },
             { data: 'role', orderable: false, searchable: false,

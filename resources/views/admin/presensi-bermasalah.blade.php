@@ -84,10 +84,11 @@
                     <textarea rows="3" placeholder="Tulis catatan..." class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
                 </div>
                 <div class="flex gap-2">
-                    <button class="flex-1 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-xl">✓ Setujui (Done)</button>
-                    <button class="flex-1 px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-xl">✗ Tolak (Decline)</button>
+                    <button type="button" id="btn-approve" class="flex-1 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-xl">✓ Setujui (Done)</button>
+                    <button type="button" id="btn-decline" class="flex-1 px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-xl">✗ Tolak (Decline)</button>
                 </div>
             </div>
+            <input type="hidden" id="modal-id">
         </div>
     </div>
 </div>
@@ -98,35 +99,63 @@
 (function(){
     function overlay(a,s){if(typeof HSOverlay!=='undefined'){HSOverlay[a](s);}else{const t=setInterval(()=>{if(typeof HSOverlay!=='undefined'){clearInterval(t);HSOverlay[a](s);}},30);}}
     const badge=s=>{const c={Pending:'bg-amber-100 text-amber-700',Done:'bg-emerald-100 text-emerald-700',Decline:'bg-red-100 text-red-700'};return`<span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-semibold ${c[s]}">${s}</span>`;};
-    const data=[
-        {tgl:'2026-05-01',nama:'Budi Santoso',bagian:'Produksi',ket:'Tidak absen pulang',status:'Pending'},
-        {tgl:'2026-05-01',nama:'Siti Rahayu',bagian:'Gudang',ket:'Terlambat lebih 1 jam',status:'Done'},
-        {tgl:'2026-05-02',nama:'Ahmad Fauzi',bagian:'Administrasi',ket:'Absen masuk tidak terekam',status:'Pending'},
-        {tgl:'2026-05-02',nama:'Dewi Lestari',bagian:'Produksi',ket:'Pulang terlalu cepat',status:'Decline'},
-        {tgl:'2026-05-03',nama:'Eko Prasetyo',bagian:'Keamanan',ket:'Tidak hadir tanpa keterangan',status:'Pending'},
-        {tgl:'2026-05-03',nama:'Fitri Handayani',bagian:'Administrasi',ket:'Absen ganda terdeteksi',status:'Done'},
-    ];
     const table=$('#tbl-pb').DataTable({
-        data,
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: '{{ route("admin.presensi-bermasalah.data") }}',
+            data: function(d) {
+                d.date = document.getElementById('pb-tgl').value;
+                d.section = document.getElementById('pb-bagian').value;
+                d.status = document.getElementById('pb-status').value;
+            }
+        },
         language:{url:'https://cdn.datatables.net/plug-ins/2.0.3/i18n/id.json'},
         columns:[
-            {data:null,render:(_,__,___,m)=>`<span class="text-slate-400 text-xs">${m.row+1}</span>`},
-            {data:'tgl'},
+            {data:'DT_RowIndex', name:'DT_RowIndex', orderable:false, searchable:false},
+            {data:'date'},
             {data:'nama',render:d=>`<span class="font-medium text-slate-800">${d}</span>`},
             {data:'bagian'},
             {data:'ket'},
             {data:'status',render:d=>badge(d)},
             {data:null,orderable:false,searchable:false,className:'text-center',
              render:(_,__,row)=>`<div class="flex justify-center gap-1">
-               <button onclick="bukaApv('${row.ket}')" class="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50" title="Tindak Lanjut"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></button>
-               <button class="p-1.5 rounded-lg text-red-500 hover:bg-red-50" title="Hapus"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+               <button onclick="bukaApv(${row.id}, '${row.ket.replace(/'/g, "\\'")}')" class="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50" title="Tindak Lanjut"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></button>
              </div>`},
         ],
         createdRow:row=>$(row).find('td').addClass('px-4 py-3 border-b border-slate-50 text-sm text-slate-600'),
     });
-    window.bukaApv=ket=>{document.getElementById('modal-ket').textContent=ket;overlay('open','#modal-approval');};
-    document.getElementById('pb-filter').onclick=()=>table.column(5).search(document.getElementById('pb-status').value).column(3).search(document.getElementById('pb-bagian').value).draw();
-    document.getElementById('pb-reset').onclick=()=>{['pb-tgl','pb-bagian','pb-status'].forEach(id=>document.getElementById(id).value='');table.search('').columns().search('').draw();};
+    window.bukaApv=(id, ket)=>{
+        document.getElementById('modal-id').value=id;
+        document.getElementById('modal-ket').textContent=ket;
+        overlay('open','#modal-approval');
+    };
+    
+    const sendApproval = (status) => {
+        const id = document.getElementById('modal-id').value;
+        const notes = document.querySelector('textarea').value;
+        
+        fetch(`/admin/presensi-bermasalah/${id}/approve`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ approval_status: status, notes: notes })
+        })
+        .then(r => r.json())
+        .then(res => {
+            overlay('close','#modal-approval');
+            table.draw();
+        })
+        .catch(e => alert('Terjadi kesalahan.'));
+    };
+
+    document.getElementById('btn-approve').onclick = () => sendApproval('Done');
+    document.getElementById('btn-decline').onclick = () => sendApproval('Decline');
+
+    document.getElementById('pb-filter').onclick=()=>table.draw();
+    document.getElementById('pb-reset').onclick=()=>{['pb-tgl','pb-bagian','pb-status'].forEach(id=>document.getElementById(id).value='');table.draw();};
 })();
 </script>
 @endpush

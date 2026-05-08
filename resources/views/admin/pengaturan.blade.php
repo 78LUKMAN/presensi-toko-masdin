@@ -190,6 +190,53 @@
                     </div>
                 </form>
             </div>
+        {{-- ── SECTION: Pengaturan Sistem ── --}}
+        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-100 flex items-center gap-3">
+                <div class="w-8 h-8 rounded-xl bg-purple-100 flex items-center justify-center">
+                    <svg class="w-4 h-4 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-sm font-semibold text-slate-800">Pengaturan Sistem</h2>
+                    <p class="text-xs text-slate-500">Konfigurasi parameter operasional aplikasi.</p>
+                </div>
+            </div>
+            <div class="p-6">
+                <form action="{{ route('admin.pengaturan.update') }}" method="POST" class="space-y-4">
+                    @csrf
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1.5">Nama Perusahaan</label>
+                            <input type="text" name="company_name" value="{{ $settings['company_name'] ?? 'Makdin' }}"
+                                class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1.5">Threshold Keterlambatan (Menit)</label>
+                            <input type="number" name="late_threshold" value="{{ $settings['late_threshold'] ?? '15' }}"
+                                class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1.5">Jam Masuk</label>
+                            <input type="time" name="work_start" value="{{ $settings['work_start'] ?? '08:00' }}"
+                                class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1.5">Jam Pulang</label>
+                            <input type="time" name="work_end" value="{{ $settings['work_end'] ?? '17:00' }}"
+                                class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" />
+                        </div>
+                    </div>
+                    <div class="flex justify-end pt-2">
+                        <button type="submit"
+                            class="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium rounded-xl transition-colors">
+                            Simpan Pengaturan Sistem
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 @endsection

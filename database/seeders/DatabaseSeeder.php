@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
         $admin = User::create([
             'name' => 'Administrator',
             'email' => 'admin@makdin.com',
-            'password' => Hash::make('password123'),
+            'password' => 'password123',
             'role' => 'admin',
         ]);
 
@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
         $user1 = User::create([
             'name' => 'Budi Santoso',
             'email' => 'budi@makdin.com',
-            'password' => Hash::make('password123'),
+            'password' => 'password123',
             'role' => 'employee',
         ]);
 
@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
         $user2 = User::create([
             'name' => 'Siti Aminah',
             'email' => 'siti@makdin.com',
-            'password' => Hash::make('password123'),
+            'password' => 'password123',
             'role' => 'employee',
         ]);
 

@@ -19,11 +19,7 @@
     {{-- Summary Cards + Filter --}}
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
         <div class="lg:col-span-1 space-y-3">
-            <div class="bg-gradient-to-br from-purple-600 to-indigo-700 rounded-2xl p-5 text-white shadow-lg shadow-purple-200">
-                <p class="text-xs font-semibold uppercase tracking-wider text-purple-200 mb-1">Total Gaji Bulanan</p>
-                <p class="text-2xl font-bold" id="total-gb">Rp 0</p>
-                <p class="text-xs text-purple-200 mt-2">Filter aktif bulan ini</p>
-            </div>
+
             <div class="bg-white rounded-2xl border border-slate-200 p-4 space-y-1">
                 <div class="flex justify-between text-xs">
                     <span class="text-slate-500">Hari Kerja</span>
@@ -73,23 +69,16 @@
                 <thead>
                     <tr class="border-b border-slate-100">
                         <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">#</th>
-                        <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Tanggal</th>
-                        <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Tipe Hari</th>
-                        <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Keterangan</th>
-                        <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Karyawan</th>
-                        <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Rerata Gaji</th>
-                        <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Gaji</th>
+                        <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Nama Karyawan</th>
+                        <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Bagian</th>
+                        <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">Total Hari</th>
+                        <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">Total Jam</th>
+
                         <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
-                <tfoot>
-                    <tr class="border-t-2 border-slate-200 bg-slate-50">
-                        <td colspan="6" class="px-4 py-3 text-sm font-bold text-slate-700 text-right">Total Gaji Bulanan</td>
-                        <td class="px-4 py-3 text-sm font-bold text-purple-700" id="tfoot-gb">–</td>
-                        <td></td>
-                    </tr>
-                </tfoot>
+
             </table>
         </div>
     </div>
@@ -112,40 +101,40 @@
         {tgl:'2026-05-08',tipe:'Lembur',ket:'Lembur Proyek',karyawan:'Budi Santoso',rerata:125000,total:1000000},
     ];
 
-    const updateStats = tbl => {
-        let total=0, kerja=0, libur=0, karyawanSet=new Set();
-        tbl.rows({search:'applied'}).data().each(r=>{total+=r.total;if(r.tipe==='Hari Kerja')kerja++;if(r.tipe==='Hari Libur')libur++;karyawanSet.add(r.karyawan);});
-        const f=fmt(total);
-        document.getElementById('total-gb').textContent=f;
-        document.getElementById('tfoot-gb').textContent=f;
-        document.getElementById('stat-kerja').textContent=kerja+' hari';
-        document.getElementById('stat-libur').textContent=libur+' hari';
-        document.getElementById('stat-karyawan').textContent=karyawanSet.size+' orang';
-    };
+
 
     const table=$('#tbl-gb').DataTable({
-        data,
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: '{{ route("admin.rekap-gaji-bulanan") }}',
+            data: function(d) {
+                let m = document.getElementById('gb-bulan').value;
+                if(m) {
+                    let p = m.split('-');
+                    d.year = p[0];
+                    d.month = p[1];
+                }
+            }
+        },
         language:{url:'https://cdn.datatables.net/plug-ins/2.0.3/i18n/id.json'},
         columns:[
-            {data:null,render:(_,__,___,m)=>`<span class="text-slate-400 text-xs">${m.row+1}</span>`},
-            {data:'tgl'},
-            {data:'tipe',render:d=>tipeBadge(d)},
-            {data:'ket'},
-            {data:'karyawan',render:d=>`<span class="font-medium text-slate-800">${d}</span>`},
-            {data:'rerata',render:d=>`<span class="text-slate-700">${fmt(d)}</span>`},
-            {data:'total',render:d=>`<span class="font-semibold text-slate-800">${fmt(d)}</span>`},
+            {data:'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+            {data:'nama', render: d => `<span class="font-medium text-slate-800">${d}</span>`},
+            {data:'bagian'},
+            {data:'total_days', className: 'text-center'},
+            {data:'total_hours', className: 'text-center'},
+
             {data:null,orderable:false,searchable:false,className:'text-center',
              render:()=>`<div class="flex justify-center gap-1">
                <button class="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
              </div>`},
         ],
-        createdRow:row=>$(row).find('td').addClass('px-4 py-3 border-b border-slate-50 text-sm text-slate-600'),
-        drawCallback:()=>updateStats(table),
+        createdRow:row=>$(row).find('td').addClass('px-4 py-3 border-b border-slate-50 text-sm text-slate-600')
     });
-    updateStats(table);
 
-    document.getElementById('gb-filter').onclick=()=>table.column(2).search(document.getElementById('gb-tipe').value).column(4).search(document.getElementById('gb-karyawan').value).draw();
-    document.getElementById('gb-reset').onclick=()=>{['gb-bulan','gb-tipe','gb-karyawan'].forEach(id=>document.getElementById(id).value='');table.search('').columns().search('').draw();};
+    document.getElementById('gb-filter').onclick=()=>table.draw();
+    document.getElementById('gb-reset').onclick=()=>{['gb-bulan','gb-tipe','gb-karyawan'].forEach(id=>document.getElementById(id).value='');table.draw();};
 })();
 </script>
 @endpush

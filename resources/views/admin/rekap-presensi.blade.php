@@ -59,7 +59,6 @@
                             <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Jam Masuk</th>
                             <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Jam Pulang</th>
                             <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Waktu</th>
-                            <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Total</th>
                             <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -74,29 +73,26 @@
 @push('scripts')
 <script>
 (function () {
-    const dummyData = [
-        { id:'KRY-001', nama:'Budi Santoso',   bagian:'Produksi',     masuk:'07:02', pulang:'16:05', total_waktu:'9j 3m',  total:'Rp 95.000' },
-        { id:'KRY-002', nama:'Siti Rahayu',    bagian:'Gudang',       masuk:'07:15', pulang:'16:10', total_waktu:'8j 55m', total:'Rp 89.000' },
-        { id:'KRY-003', nama:'Ahmad Fauzi',    bagian:'Administrasi', masuk:'08:00', pulang:'17:00', total_waktu:'9j 0m',  total:'Rp 90.000' },
-        { id:'KRY-004', nama:'Dewi Lestari',   bagian:'Produksi',     masuk:'06:58', pulang:'15:58', total_waktu:'9j 0m',  total:'Rp 90.000' },
-        { id:'KRY-005', nama:'Eko Prasetyo',   bagian:'Keamanan',     masuk:'07:30', pulang:'16:30', total_waktu:'9j 0m',  total:'Rp 85.000' },
-        { id:'KRY-006', nama:'Fitri Handayani',bagian:'Administrasi', masuk:'08:05', pulang:'17:10', total_waktu:'9j 5m',  total:'Rp 91.000' },
-        { id:'KRY-007', nama:'Gunawan Putra',  bagian:'Gudang',       masuk:'07:00', pulang:'16:00', total_waktu:'9j 0m',  total:'Rp 87.000' },
-        { id:'KRY-008', nama:'Hani Sulistyani',bagian:'Produksi',     masuk:'07:10', pulang:'16:05', total_waktu:'8j 55m', total:'Rp 89.000' },
-    ];
-
     const table = $('#table-rekap-presensi').DataTable({
-        data: dummyData,
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: '{{ route("admin.rekap-presensi.data") }}',
+            data: function(d) {
+                d.start_date = document.getElementById('filter-dari').value;
+                d.end_date = document.getElementById('filter-sampai').value;
+                d.section = document.getElementById('filter-bagian').value;
+            }
+        },
         language: { url: 'https://cdn.datatables.net/plug-ins/2.0.3/i18n/id.json' },
         columns: [
-            { data: null, render: (_, __, ___, meta) => `<span class="text-slate-400 text-xs">${meta.row + 1}</span>` },
-            { data: 'id', render: d => `<span class="font-mono text-xs font-medium text-blue-700 bg-blue-50 px-2 py-0.5 rounded-lg">${d}</span>` },
+            { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+            { data: 'id_karyawan', render: d => `<span class="font-mono text-xs font-medium text-blue-700 bg-blue-50 px-2 py-0.5 rounded-lg">${d}</span>` },
             { data: 'nama', render: d => `<span class="font-medium text-slate-800">${d}</span>` },
             { data: 'bagian', render: d => `<span class="text-slate-600">${d}</span>` },
             { data: 'masuk', render: d => `<span class="font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-lg text-xs">${d}</span>` },
             { data: 'pulang', render: d => `<span class="font-mono text-orange-700 bg-orange-50 px-2 py-0.5 rounded-lg text-xs">${d}</span>` },
-            { data: 'total_waktu' },
-            { data: 'total', render: d => `<span class="font-semibold text-slate-800">${d}</span>` },
+            { data: 'total_hours' },
             { data: null, orderable: false, searchable: false, className: 'text-center',
               render: (_, __, row) => `
                 <div class="flex items-center justify-center gap-1">
@@ -113,8 +109,7 @@
 
     // Filter bagian
     document.getElementById('btn-filter').onclick = () => {
-        const bagian = document.getElementById('filter-bagian').value;
-        table.column(3).search(bagian).draw();
+        table.draw();
     };
     document.getElementById('btn-reset').onclick = () => {
         document.getElementById('filter-dari').value = '';

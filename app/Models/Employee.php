@@ -13,7 +13,7 @@ class Employee extends Model
         'user_id',
         'noreg',
         'name',
-        'department',
+        'section',
         'join_date',
     ];
 
@@ -30,5 +30,13 @@ class Employee extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the attendance records for the employee.
+     */
+    public function attendances()
+    {
+        return $this->hasMany(DailyAttendance::class);
     }
 }

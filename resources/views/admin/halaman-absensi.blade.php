@@ -198,24 +198,22 @@
 
 @push('scripts')
 {{-- QR Code library (no jQuery needed) --}}
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 (function () {
     'use strict';
 
-    // ── Dummy attendance data (sorted by jam masuk) ──────────────────────
-    const employees = [
-        { id:'KRY-001', nama:'Budi Santoso',    masuk:'06:58', pulang:'16:02' },
-        { id:'KRY-004', nama:'Dewi Lestari',    masuk:'07:00', pulang:'16:00' },
-        { id:'KRY-007', nama:'Gunawan Putra',   masuk:'07:01', pulang:null    },
-        { id:'KRY-002', nama:'Siti Rahayu',     masuk:'07:10', pulang:'16:15' },
-        { id:'KRY-008', nama:'Hani Sulistyani', masuk:'07:14', pulang:null    },
-        { id:'KRY-006', nama:'Fitri Handayani', masuk:'08:02', pulang:'17:05' },
-        { id:'KRY-003', nama:'Ahmad Fauzi',     masuk:'08:11', pulang:null    },
-        { id:'KRY-009', nama:'Irfan Maulana',   masuk:'08:45', pulang:null    },
-        { id:'KRY-005', nama:'Eko Prasetyo',    masuk:null,    pulang:null    },
-        { id:'KRY-010', nama:'Juwita Sari',     masuk:null,    pulang:null    },
-    ];
+    let employees = [];
+    
+    function loadData() {
+        fetch('{{ route("admin.halaman-absensi.data") }}')
+            .then(r => r.json())
+            .then(data => {
+                employees = data;
+                renderTable(document.getElementById('search-karyawan').value);
+            })
+            .catch(e => console.error('Error fetching attendance data:', e));
+    }
 
     // ── Live clock ───────────────────────────────────────────────────────
     function tickClock() {
@@ -241,7 +239,7 @@
         const empty = document.getElementById('empty-state');
 
         const filtered = employees.filter(e =>
-            e.id.toLowerCase().includes(q) || e.nama.toLowerCase().includes(q)
+            (e.id && e.id.toLowerCase().includes(q)) || (e.nama && e.nama.toLowerCase().includes(q))
         );
 
         // Update stats
@@ -285,7 +283,7 @@
     }
 
     // Initial render
-    renderTable('');
+    loadData();
 
     // Search
     document.getElementById('search-karyawan').addEventListener('input', function () {
@@ -296,17 +294,24 @@
     const ABSENSI_URL = document.getElementById('absensi-url').textContent.trim();
     const REFRESH_SEC = 30;
 
+    let qrCodeInstance = null;
+
     function generateQr() {
         const container = document.getElementById('qr-container');
-        container.innerHTML = ''; // clear
-        const canvas = document.createElement('canvas');
-        container.appendChild(canvas);
-        QRCode.toCanvas(canvas, ABSENSI_URL + '?t=' + Date.now(), {
-            width: 230,
-            margin: 1,
-            color: { dark: '#1e293b', light: '#ffffff' },
-            errorCorrectionLevel: 'H',
-        });
+        if (!qrCodeInstance) {
+            container.innerHTML = '';
+            qrCodeInstance = new QRCode(container, {
+                text: ABSENSI_URL + '?t=' + Date.now(),
+                width: 230,
+                height: 230,
+                colorDark : "#1e293b",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        } else {
+            qrCodeInstance.clear();
+            qrCodeInstance.makeCode(ABSENSI_URL + '?t=' + Date.now());
+        }
     }
 
     window.refreshQr = function () {
@@ -315,6 +320,7 @@
         overlay.classList.add('flex');
         setTimeout(() => {
             generateQr();
+            loadData(); // also refresh data when QR refreshes
             overlay.classList.add('hidden');
             overlay.classList.remove('flex');
             resetTimer();

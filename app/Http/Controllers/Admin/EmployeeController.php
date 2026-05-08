@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Yajra\DataTables\DataTables;
 
-class KaryawanController extends Controller
+class EmployeeController extends Controller
 {
     /**
      * Display the Daftar Karyawan page.
@@ -48,7 +48,7 @@ class KaryawanController extends Controller
         $validated = $request->validate([
             'noreg'      => 'required|string|max:50|unique:employees,noreg',
             'name'       => 'required|string|max:255',
-            'department' => 'required|string|max:255',
+            'section'    => 'required|string|max:255',
             'join_date'  => 'required|date',
             'email'      => 'nullable|email|max:255|unique:users,email',
             'password'   => 'nullable|string|min:6',
@@ -62,7 +62,7 @@ class KaryawanController extends Controller
                 $user = User::create([
                     'name'     => $validated['name'],
                     'email'    => $validated['email'],
-                    'password' => Hash::make($validated['password'] ?? 'password123'),
+                    'password' => $validated['password'] ?? 'password123',
                     'role'     => 'employee',
                 ]);
                 $userId = $user->id;
@@ -72,7 +72,7 @@ class KaryawanController extends Controller
                 'user_id'    => $userId,
                 'noreg'      => $validated['noreg'],
                 'name'       => $validated['name'],
-                'department' => $validated['department'],
+                'section'    => $validated['section'],
                 'join_date'  => $validated['join_date'],
             ]);
         });
@@ -91,7 +91,7 @@ class KaryawanController extends Controller
             'id'         => $employee->id,
             'noreg'      => $employee->noreg,
             'name'       => $employee->name,
-            'department' => $employee->department,
+            'section'    => $employee->section,
             'join_date'  => $employee->join_date?->format('Y-m-d'),
             'email'      => $employee->user?->email,
         ]);
@@ -107,7 +107,7 @@ class KaryawanController extends Controller
         $validated = $request->validate([
             'noreg'      => ['required', 'string', 'max:50', Rule::unique('employees', 'noreg')->ignore($employee->id)],
             'name'       => 'required|string|max:255',
-            'department' => 'required|string|max:255',
+            'section'    => 'required|string|max:255',
             'join_date'  => 'required|date',
             'email'      => ['nullable', 'email', 'max:255', Rule::unique('users', 'email')->ignore($employee->user_id)],
             'password'   => 'nullable|string|min:6',
@@ -117,7 +117,7 @@ class KaryawanController extends Controller
             $employee->update([
                 'noreg'      => $validated['noreg'],
                 'name'       => $validated['name'],
-                'department' => $validated['department'],
+                'section'    => $validated['section'],
                 'join_date'  => $validated['join_date'],
             ]);
 
@@ -125,14 +125,14 @@ class KaryawanController extends Controller
                 if ($employee->user) {
                     $updateData = ['name' => $validated['name'], 'email' => $validated['email']];
                     if (!empty($validated['password'])) {
-                        $updateData['password'] = Hash::make($validated['password']);
+                        $updateData['password'] = $validated['password'];
                     }
                     $employee->user->update($updateData);
                 } else {
                     $user = User::create([
                         'name'     => $validated['name'],
                         'email'    => $validated['email'],
-                        'password' => Hash::make($validated['password'] ?? 'password123'),
+                        'password' => $validated['password'] ?? 'password123',
                         'role'     => 'employee',
                     ]);
                     $employee->update(['user_id' => $user->id]);
