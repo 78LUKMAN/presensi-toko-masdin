@@ -5,7 +5,7 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
-    <title>Admin Login – Makdin</title>
+    <title>Admin Login – MasDin</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
@@ -76,7 +76,7 @@
 
                 {{-- Bottom: Version --}}
                 <div class="relative">
-                    <p class="text-white/30 text-xs">© {{ date('Y') }} Makdin · v1.0.0</p>
+                    <p class="text-white/30 text-xs">© {{ date('Y') }} MasDin · v1.0.0</p>
                 </div>
             </div>
 
@@ -214,7 +214,7 @@
                 </a>
 
                 <p class="text-center text-xs text-slate-300 mt-6">
-                    © {{ date('Y') }} Makdin · Sistem Absensi Karyawan
+                    © {{ date('Y') }} MasDin · Sistem Absensi Karyawan
                 </p>
             </div>
         </div>

@@ -10,10 +10,6 @@
             <h1 class="text-lg font-bold text-slate-800">Rekap Gaji Harian</h1>
             <p class="text-sm text-slate-500">Rekap perhitungan gaji harian berdasarkan jam kerja karyawan.</p>
         </div>
-        <button class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-xl transition-colors shadow-sm">
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-            Export Excel
-        </button>
     </div>
 
     {{-- Summary + Filter --}}
@@ -61,11 +57,11 @@
 </div>
 
 {{-- Modal Edit Gaji --}}
-<div id="modal-gaji" class="fixed inset-0 z-50 hidden overflow-y-auto">
+<div id="modal-gaji" class="fixed inset-0 z-[100] hidden overflow-y-auto">
     <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-        <div class="fixed inset-0 transition-opacity bg-slate-900/50 backdrop-blur-sm" aria-hidden="true" onclick="closeModal()"></div>
+        <div class="fixed inset-0 transition-opacity bg-slate-900/50 backdrop-blur-sm z-0" aria-hidden="true" onclick="closeModal()"></div>
         <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-        <div class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-2xl shadow-xl sm:my-8 sm:align-middle sm:max-w-md sm:w-full">
+        <div class="relative z-10 inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-2xl shadow-xl sm:my-8 sm:align-middle sm:max-w-md sm:w-full">
             <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
                 <h3 class="text-base font-bold text-slate-800">Edit Honor Hari Ini</h3>
                 <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>

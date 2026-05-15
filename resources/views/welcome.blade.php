@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Masuk - Makdin</title>
+    <title>Portal Masuk - MasDin</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -72,7 +72,7 @@
                 <i class="fa-solid fa-layer-group text-3xl text-blue-400"></i>
             </div>
             <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-200">
-                Makdin Portal System
+                MasDin Portal System
             </h1>
             <p class="text-slate-300 text-lg md:text-xl max-w-2xl mx-auto font-medium">
                 Pilih portal akses Anda untuk masuk ke dalam sistem presensi dan manajemen karyawan.

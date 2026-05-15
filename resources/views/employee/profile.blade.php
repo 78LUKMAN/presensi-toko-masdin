@@ -163,7 +163,7 @@
                 </button>
             </form>
 
-            <p class="text-center text-xs text-slate-300 py-2">v1.0.0 · © {{ date('Y') }} Makdin</p>
+            <p class="text-center text-xs text-slate-300 py-2">v1.0.0 · © {{ date('Y') }} MasDin</p>
         </div>
     </div>
 

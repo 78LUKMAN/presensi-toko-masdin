@@ -16,35 +16,25 @@
     </div>
 
     {{-- Filter --}}
-    <div class="bg-white rounded-2xl border border-slate-200 p-4">
+    <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
         <div class="flex flex-wrap items-end gap-3">
-            <div class="flex-1 min-w-36">
+            <div class="flex-1 min-w-[200px]">
                 <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Tanggal</label>
-                <input type="date" id="pb-tgl" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                <input type="date" id="pb-tgl" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm"/>
             </div>
-            <div class="flex-1 min-w-36">
-                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Bagian</label>
-                <select id="pb-bagian" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Semua Bagian</option>
-                    <option>Produksi</option><option>Gudang</option><option>Administrasi</option><option>Keamanan</option>
-                </select>
-            </div>
-            <div class="flex-1 min-w-36">
-                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Status</label>
-                <select id="pb-status" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Semua Status</option>
-                    <option>Pending</option><option>Done</option><option>Decline</option>
-                </select>
+            <div class="flex-1 min-w-[200px]">
+                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Cari Nama</label>
+                <input type="text" id="pb-nama" placeholder="Ketik nama karyawan..." class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm"/>
             </div>
             <div class="flex gap-2">
-                <button id="pb-filter" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl">Terapkan</button>
-                <button id="pb-reset" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 text-sm font-medium rounded-xl">Reset</button>
+                <button id="pb-filter" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors shadow-sm">Cari</button>
+                <button id="pb-reset" class="px-5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 text-sm font-medium rounded-xl transition-colors">Reset</button>
             </div>
         </div>
     </div>
 
     {{-- Table --}}
-    <div class="bg-white rounded-2xl border border-slate-200">
+    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
         <div class="p-5 overflow-x-auto">
             <table id="tbl-pb" class="w-full text-sm text-left">
                 <thead>
@@ -52,9 +42,8 @@
                         <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">#</th>
                         <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Tanggal</th>
                         <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Nama</th>
-                        <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Bagian</th>
+                        <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Jam Masuk</th>
                         <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Keterangan</th>
-                        <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Approval</th>
                         <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">Aksi</th>
                     </tr>
                 </thead>
@@ -69,23 +58,38 @@
     <div class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 transition-all sm:max-w-md sm:w-full m-3 sm:mx-auto min-h-[calc(100%-3.5rem)] flex items-center">
         <div class="w-full flex flex-col bg-white border border-slate-200 shadow-2xl rounded-2xl overflow-hidden">
             <div class="flex justify-between items-center py-4 px-6 border-b border-slate-100 bg-slate-50">
-                <h3 class="font-semibold text-slate-800">Tindak Lanjut Presensi</h3>
+                <h3 class="font-semibold text-slate-800">Selesaikan Presensi</h3>
                 <button type="button" data-hs-overlay="#modal-approval" class="text-slate-400 hover:text-slate-600">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
             <div class="p-6 space-y-4">
                 <div class="p-4 bg-amber-50 border border-amber-200 rounded-xl">
-                    <p class="text-xs font-semibold text-amber-600 uppercase tracking-wider mb-1">Keterangan Masalah</p>
+                    <p class="text-xs font-semibold text-amber-600 uppercase tracking-wider mb-1">Masalah</p>
                     <p class="text-sm text-amber-800" id="modal-ket">–</p>
+                    <div class="mt-2 text-xs text-amber-700">
+                        Masuk: <span id="modal-jam-masuk" class="font-bold">00:00</span>
+                    </div>
                 </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Jam Pulang <span class="text-red-500">*</span></label>
+                        <input type="time" id="pb-jam-pulang" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Honor Harian <span class="text-red-500">*</span></label>
+                        <input type="number" id="pb-gaji" value="50000" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                    </div>
+                </div>
+
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Catatan Keputusan</label>
-                    <textarea rows="3" placeholder="Tulis catatan..." class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Catatan (Opsional)</label>
+                    <textarea id="pb-notes" rows="2" placeholder="Tulis catatan persetujuan..." class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
                 </div>
-                <div class="flex gap-2">
-                    <button type="button" id="btn-approve" class="flex-1 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-xl">✓ Setujui (Done)</button>
-                    <button type="button" id="btn-decline" class="flex-1 px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-xl">✗ Tolak (Decline)</button>
+
+                <div class="pt-2">
+                    <button type="button" id="btn-save-apv" class="w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-all shadow-md shadow-blue-200">Simpan & Selesaikan</button>
                 </div>
             </div>
             <input type="hidden" id="modal-id">
@@ -106,8 +110,7 @@
             url: '{{ route("admin.presensi-bermasalah.data") }}',
             data: function(d) {
                 d.date = document.getElementById('pb-tgl').value;
-                d.section = document.getElementById('pb-bagian').value;
-                d.status = document.getElementById('pb-status').value;
+                d.name = document.getElementById('pb-nama').value;
             }
         },
         language:{url:'https://cdn.datatables.net/plug-ins/2.0.3/i18n/id.json'},
@@ -115,33 +118,45 @@
             {data:'DT_RowIndex', name:'DT_RowIndex', orderable:false, searchable:false},
             {data:'date'},
             {data:'nama',render:d=>`<span class="font-medium text-slate-800">${d}</span>`},
-            {data:'bagian'},
+            {data:'masuk',render:d=>`<span class="font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-lg text-xs">${d}</span>`},
             {data:'ket'},
-            {data:'status',render:d=>badge(d)},
             {data:null,orderable:false,searchable:false,className:'text-center',
              render:(_,__,row)=>`<div class="flex justify-center gap-1">
-               <button onclick="bukaApv(${row.id}, '${row.ket.replace(/'/g, "\\'")}')" class="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50" title="Tindak Lanjut"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></button>
+               <button onclick='bukaApv(${JSON.stringify(row)})' class="px-3 py-1.5 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 text-xs font-semibold transition-colors" title="Selesaikan">Selesaikan</button>
              </div>`},
         ],
         createdRow:row=>$(row).find('td').addClass('px-4 py-3 border-b border-slate-50 text-sm text-slate-600'),
     });
-    window.bukaApv=(id, ket)=>{
-        document.getElementById('modal-id').value=id;
-        document.getElementById('modal-ket').textContent=ket;
+
+    window.bukaApv=(row)=>{
+        document.getElementById('modal-id').value = row.id;
+        document.getElementById('modal-ket').textContent = row.ket;
+        document.getElementById('modal-jam-masuk').textContent = row.masuk;
+        document.getElementById('pb-jam-pulang').value = '';
+        document.getElementById('pb-notes').value = '';
         overlay('open','#modal-approval');
     };
     
-    const sendApproval = (status) => {
+    document.getElementById('btn-save-apv').onclick = () => {
         const id = document.getElementById('modal-id').value;
-        const notes = document.querySelector('textarea').value;
+        const check_out = document.getElementById('pb-jam-pulang').value;
+        const salary = document.getElementById('pb-gaji').value;
+        const notes = document.getElementById('pb-notes').value;
+
+        if(!check_out) return alert('Jam pulang wajib diisi');
         
         fetch(`/admin/presensi-bermasalah/${id}/approve`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json'
             },
-            body: JSON.stringify({ approval_status: status, notes: notes })
+            body: JSON.stringify({ 
+                check_out_time: check_out, 
+                salary_amount: salary,
+                notes: notes 
+            })
         })
         .then(r => r.json())
         .then(res => {
@@ -151,11 +166,8 @@
         .catch(e => alert('Terjadi kesalahan.'));
     };
 
-    document.getElementById('btn-approve').onclick = () => sendApproval('Done');
-    document.getElementById('btn-decline').onclick = () => sendApproval('Decline');
-
     document.getElementById('pb-filter').onclick=()=>table.draw();
-    document.getElementById('pb-reset').onclick=()=>{['pb-tgl','pb-bagian','pb-status'].forEach(id=>document.getElementById(id).value='');table.draw();};
+    document.getElementById('pb-reset').onclick=()=>{['pb-tgl','pb-nama'].forEach(id=>document.getElementById(id).value='');table.draw();};
 })();
 </script>
 @endpush

@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="Panel Admin – Sistem Presensi Karyawan Makdin">
-    <title>@yield('title', 'Admin') – Makdin Presensi</title>
+    <meta name="description" content="Panel Admin – Sistem Presensi Karyawan MasDin">
+    <title>@yield('title', 'Admin') – MasDin Presensi</title>
 
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,6 +17,94 @@
     <!-- jQuery + DataTables core JS -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.3/js/dataTables.min.js"></script>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.min.css">
+
+    <style>
+        /* ── DataTables Global Overrides ── */
+        div.dt-container { font-family: 'Inter', sans-serif; font-size: 0.875rem; }
+
+        /* Top controls row */
+        div.dt-container .dt-layout-row:first-child {
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 0.75rem;
+            padding: 0.75rem 1.25rem 0.75rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        /* Length selector */
+        div.dt-container .dt-length label {
+            display: flex; align-items: center; gap: 0.5rem;
+            font-size: 0.8125rem; color: #64748b; font-weight: 500;
+        }
+        div.dt-container .dt-length select {
+            padding: 0.35rem 2rem 0.35rem 0.65rem;
+            border: 1px solid #cbd5e1; border-radius: 0.625rem;
+            background-color: #fff; font-size: 0.8125rem; color: #334155;
+            appearance: none; -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: right 0.5rem center; background-size: 1rem;
+            cursor: pointer; outline: none; transition: border-color 0.15s;
+        }
+        div.dt-container .dt-length select:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+
+        /* Search box */
+        div.dt-container .dt-search label {
+            display: flex; align-items: center; gap: 0.5rem;
+            font-size: 0.8125rem; color: #64748b; font-weight: 500;
+        }
+        div.dt-container .dt-search input {
+            padding: 0.375rem 0.75rem; border: 1px solid #cbd5e1;
+            border-radius: 0.625rem; font-size: 0.8125rem; color: #334155;
+            outline: none; transition: border-color 0.15s;
+        }
+        div.dt-container .dt-search input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+
+        /* Bottom controls row */
+        div.dt-container .dt-layout-row:last-child {
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 0.75rem;
+            padding: 0.75rem 1.25rem;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        /* Info text */
+        div.dt-container .dt-info {
+            font-size: 0.8125rem; color: #64748b; font-weight: 500;
+        }
+
+        /* Pagination */
+        div.dt-container .dt-paging .dt-paging-button {
+            display: inline-flex; align-items: center; justify-content: center;
+            min-width: 2rem; height: 2rem; padding: 0 0.5rem;
+            margin: 0 0.125rem;
+            border: 1px solid #e2e8f0; border-radius: 0.5rem;
+            font-size: 0.8125rem; color: #475569; font-weight: 500;
+            background: #fff; cursor: pointer; transition: all 0.15s;
+        }
+        div.dt-container .dt-paging .dt-paging-button:hover:not(.disabled) {
+            background: #f1f5f9; border-color: #cbd5e1; color: #1e293b;
+        }
+        div.dt-container .dt-paging .dt-paging-button.current {
+            background: #3b82f6; border-color: #3b82f6; color: #fff; font-weight: 600;
+        }
+        div.dt-container .dt-paging .dt-paging-button.disabled {
+            opacity: 0.4; cursor: not-allowed;
+        }
+
+        /* Processing overlay */
+        div.dt-container .dt-processing {
+            padding: 0.5rem 1rem; background: #fff;
+            border: 1px solid #e2e8f0; border-radius: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            font-size: 0.8125rem; color: #64748b;
+        }
+
+        /* Table header sort icons */
+        table.dataTable thead th { cursor: pointer; user-select: none; }
+        table.dataTable thead th.dt-ordering-asc::after  { content: ' ↑'; color: #3b82f6; font-size: 0.75rem; }
+        table.dataTable thead th.dt-ordering-desc::after { content: ' ↓'; color: #3b82f6; font-size: 0.75rem; }
+    </style>
 </head>
 <body class="h-full font-sans antialiased">
 
@@ -35,7 +123,7 @@
                     </svg>
                 </div>
                 <div>
-                    <span class="text-lg font-bold text-white tracking-tight">Makdin</span>
+                    <span class="text-lg font-bold text-white tracking-tight">MasDin</span>
                     <p class="text-xs text-slate-400 -mt-0.5">Sistem Presensi</p>
                 </div>
             </a>
@@ -210,13 +298,6 @@
 
             <!-- Right side actions -->
             <div class="flex items-center gap-2">
-                <!-- Notification Bell (placeholder) -->
-                <button class="relative p-2 rounded-lg text-slate-500 hover:bg-slate-100 transition-colors">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-                    </svg>
-                </button>
 
                 <!-- Avatar dropdown -->
                 <div class="hs-dropdown relative inline-flex">
@@ -277,11 +358,20 @@
         </main>
 
         <footer class="px-6 py-4 border-t border-slate-200 text-center text-xs text-slate-400">
-            &copy; {{ date('Y') }} Makdin &middot; Sistem Presensi Karyawan
+            &copy; {{ date('Y') }} MasDin &middot; Sistem Presensi Karyawan
         </footer>
     </div>
     <!-- ========== END MAIN CONTENT ========== -->
 
+    <script>
+        // Global DataTables defaults — applies to ALL tables in admin panel
+        $(document).ready(function () {
+            $.extend(true, $.fn.dataTable.defaults, {
+                searching: false,       // Hapus kotak pencarian bawaan DataTables
+                pagingType: 'numbers',  // Hanya tampilkan angka halaman (tanpa Pertama/Sebelumnya/Selanjutnya/Terakhir)
+            });
+        });
+    </script>
     @stack('scripts')
 </body>
 </html>

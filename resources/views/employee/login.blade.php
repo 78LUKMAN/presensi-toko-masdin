@@ -94,7 +94,7 @@
         </form>
 
         <div class="mt-8 pb-4 text-center">
-            <p class="text-xs text-slate-300">© {{ date('Y') }} Makdin · All rights reserved</p>
+            <p class="text-xs text-slate-300">© {{ date('Y') }} MasDin · All rights reserved</p>
         </div>
     </div>
 </div>
