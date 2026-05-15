@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
         // 1. Seed Settings
         $settings = [
             ['key' => 'company_name', 'value' => 'Presensi Toko Masdin', 'description' => 'Nama perusahaan/toko'],
-            ['key' => 'daily_salary_default', 'value' => '100000', 'description' => 'Gaji harian default (dalam rupiah)'],
+            ['key' => 'daily_salary_default', 'value' => '50000', 'description' => 'Gaji harian default (dalam rupiah)'],
             ['key' => 'min_work_hours', 'value' => '9', 'description' => 'Minimal jam kerja per hari untuk dianggap penuh'],
             ['key' => 'address', 'value' => 'Jl. Raya Makmur No. 123, Surabaya', 'description' => 'Alamat toko'],
             ['key' => 'phone', 'value' => '081234567890', 'description' => 'Nomor telepon toko'],
@@ -111,7 +111,7 @@ class DatabaseSeeder extends Seeder
                     'employee_id' => $employee->id,
                     'date' => $date->toDateString(),
                     'total_hours' => $totalHours,
-                    'salary_amount' => $totalHours >= 9 ? 100000 : ($totalHours / 9 * 100000),
+                    'salary_amount' => 50000,
                 ]);
 
                 // Create Logs

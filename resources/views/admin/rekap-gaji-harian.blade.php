@@ -50,24 +50,52 @@
                         <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Nama</th>
                         <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Bagian</th>
                         <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Waktu</th>
-
+                        <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Honor Hari Ini</th>
                         <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
-
             </table>
         </div>
     </div>
 </div>
+
+{{-- Modal Edit Gaji --}}
+<div id="modal-gaji" class="fixed inset-0 z-50 hidden overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 transition-opacity bg-slate-900/50 backdrop-blur-sm" aria-hidden="true" onclick="closeModal()"></div>
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        <div class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-2xl shadow-xl sm:my-8 sm:align-middle sm:max-w-md sm:w-full">
+            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+                <h3 class="text-base font-bold text-slate-800">Edit Honor Hari Ini</h3>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+            </div>
+            <form id="form-gaji" class="p-6 space-y-4">
+                <input type="hidden" id="edit-id">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Honor (Rp)</label>
+                    <input type="number" id="edit-honor" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Catatan</label>
+                    <textarea id="edit-notes" rows="3" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                </div>
+                <div class="pt-2">
+                    <button type="submit" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl transition-colors shadow-sm">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @push('scripts')
 <script>
 (function(){
-    const fmt = n => 'Rp ' + n.toLocaleString('id-ID');
+    const fmt = n => 'Rp ' + (n || 0).toLocaleString('id-ID');
 
-
+    document.getElementById('gh-tgl').value = new Date().toISOString().split('T')[0];
 
     const table = $('#tbl-gh').DataTable({
         processing: true,
@@ -86,18 +114,66 @@
             {data:'nama'},
             {data:'bagian'},
             {data:'waktu'},
-
+            {data:'gaji', render: data => `<span class="font-bold text-slate-700">${fmt(data)}</span>`},
             {data:null,orderable:false,searchable:false,className:'text-center',
-             render:()=>`<div class="flex justify-center gap-1">
-               <button class="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50" title="Detail"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
-             </div>`},
+             render:(row)=>`
+                <div class="flex justify-center gap-1">
+                    ${row.salary_id ? 
+                        `<button onclick='editGaji(${JSON.stringify(row)})' class="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50" title="Edit Honor">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                        </button>` : 
+                        `<span class="text-xs text-slate-400 italic">Belum Absen Pulang</span>`
+                    }
+                </div>`
+            },
         ],
         createdRow:row=>$(row).find('td').addClass('px-4 py-3 border-b border-slate-50 text-sm text-slate-600')
     });
 
+    window.editGaji = (row) => {
+        document.getElementById('edit-id').value = row.salary_id;
+        document.getElementById('edit-honor').value = row.gaji;
+        document.getElementById('modal-gaji').classList.remove('hidden');
+    };
+
+    window.closeModal = () => {
+        document.getElementById('modal-gaji').classList.add('hidden');
+    };
+
+    document.getElementById('form-gaji').onsubmit = function(e) {
+        e.preventDefault();
+        const id = document.getElementById('edit-id').value;
+        const honor = document.getElementById('edit-honor').value;
+        const notes = document.getElementById('edit-notes').value;
+
+        fetch(`{{ url('admin/rekap-gaji-harian') }}/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+                salary_amount: honor,
+                notes: notes
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.success) {
+                closeModal();
+                table.draw(false);
+                alert(data.message);
+            }
+        })
+        .catch(err => console.error(err));
+    };
 
     document.getElementById('gh-filter').onclick=()=>table.draw();
-    document.getElementById('gh-reset').onclick=()=>{['gh-tgl','gh-bagian'].forEach(id=>document.getElementById(id).value='');table.draw();};
+    document.getElementById('gh-reset').onclick=()=>{
+        document.getElementById('gh-tgl').value = new Date().toISOString().split('T')[0];
+        document.getElementById('gh-bagian').value='';
+        table.draw();
+    };
 })();
 </script>
 @endpush

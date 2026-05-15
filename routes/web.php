@@ -66,6 +66,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
 
     // --- Salary Recaps ---
     Route::get('/rekap-gaji-harian', [DailySalaryController::class, 'index'])->name('rekap-gaji-harian');
+    Route::post('/rekap-gaji-harian', [DailySalaryController::class, 'store'])->name('rekap-gaji-harian.store');
+    Route::put('/rekap-gaji-harian/{id}', [DailySalaryController::class, 'update'])->name('rekap-gaji-harian.update');
     Route::get('/rekap-gaji-bulanan', [MonthlySalaryController::class, 'index'])->name('rekap-gaji-bulanan');
 
     // --- Employee List (CRUD + DataTables) ---

@@ -89,6 +89,20 @@ class AttendanceActionController extends Controller
                 $attendance->total_hours = round($diffInMinutes / 60, 2);
                 
                 $attendance->save();
+
+                // Automatically fill daily salary with 50,000
+                \App\Models\DailySalary::updateOrCreate(
+                    [
+                        'employee_id' => $employee->id,
+                        'date' => $today,
+                    ],
+                    [
+                        'total_hours' => $attendance->total_hours,
+                        'salary_amount' => 50000,
+                        'notes' => 'Otomatis dari sistem (Absen Pulang)',
+                    ]
+                );
+
                 $message = 'Clock Out berhasil';
             }
 
