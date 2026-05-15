@@ -58,6 +58,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('/presensi-bermasalah/data', [AttendanceController::class, 'problematicData'])->name('presensi-bermasalah.data');
     Route::post('/presensi-bermasalah/{id}/approve', [AttendanceController::class, 'approve'])->name('presensi-bermasalah.approve');
 
+    // --- Perizinan Cuti ---
+    Route::get('/perizinan', [\App\Http\Controllers\Admin\PermitController::class, 'index'])->name('perizinan');
+    Route::get('/perizinan/data', [\App\Http\Controllers\Admin\PermitController::class, 'data'])->name('perizinan.data');
+    Route::post('/perizinan/{id}/approve', [\App\Http\Controllers\Admin\PermitController::class, 'approve'])->name('perizinan.approve');
+    Route::post('/perizinan/{id}/reject', [\App\Http\Controllers\Admin\PermitController::class, 'reject'])->name('perizinan.reject');
+
     // --- Settings ---
     Route::get('/pengaturan', [SettingController::class, 'index'])->name('pengaturan');
     Route::post('/pengaturan', [SettingController::class, 'update'])->name('pengaturan.update');

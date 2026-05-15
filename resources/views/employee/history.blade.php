@@ -29,57 +29,63 @@
         ];
     })->values();
 @endphp
-<div class="min-h-screen bg-[#F0F4F8] pb-24"
-     x-data="{
-        tab: 'absensi',
-        filterType: 'all',
-        dateFrom: '',
-        dateTo: '',
-        showFilter: false,
+{{-- Pass PHP data to Alpine via a script block before the component --}}
+@push('scripts')
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('historyApp', () => ({
+            tab: 'absensi',
+            filterType: 'all',
+            dateFrom: '',
+            dateTo: '',
+            showFilter: false,
+            absensiData: @json($absensiMapped),
+            pengajuanData: @json($pengajuanMapped),
 
-        absensiData: @json($absensiMapped),
+            get filteredAbsensi() {
+                return this.absensiData.filter(r => {
+                    const typeOk = this.filterType === 'all' || r.status.toLowerCase().includes(this.filterType);
+                    const fromOk = !this.dateFrom || r.date >= this.dateFrom;
+                    const toOk   = !this.dateTo   || r.date <= this.dateTo;
+                    return typeOk && fromOk && toOk;
+                });
+            },
 
-        pengajuanData: @json($pengajuanMapped),
+            get filteredPengajuan() {
+                return this.pengajuanData.filter(r => {
+                    const typeOk = this.filterType === 'all' || r.type.toLowerCase() === this.filterType;
+                    const fromOk = !this.dateFrom || r.startDate >= this.dateFrom;
+                    const toOk   = !this.dateTo   || r.startDate <= this.dateTo;
+                    return typeOk && fromOk && toOk;
+                });
+            },
 
-        get filteredAbsensi() {
-            return this.absensiData.filter(r => {
-                const typeOk = this.filterType === 'all' || r.status.toLowerCase().includes(this.filterType);
-                const fromOk = !this.dateFrom || r.date >= this.dateFrom;
-                const toOk   = !this.dateTo   || r.date <= this.dateTo;
-                return typeOk && fromOk && toOk;
-            });
-        },
+            statusBadge(status) {
+                const map = {
+                    'Hadir':        { bg:'bg-emerald-100', text:'text-emerald-700', icon:'fa-circle-check' },
+                    'Terlambat':    { bg:'bg-amber-100',   text:'text-amber-700',   icon:'fa-triangle-exclamation' },
+                    'Pulang Cepat': { bg:'bg-orange-100',  text:'text-orange-700',  icon:'fa-circle-exclamation' },
+                    'Alpa':         { bg:'bg-red-100',     text:'text-red-700',     icon:'fa-circle-xmark' },
+                    'Libur':        { bg:'bg-slate-100',   text:'text-slate-500',   icon:'fa-umbrella-beach' },
+                    'Disetujui':    { bg:'bg-emerald-100', text:'text-emerald-700', icon:'fa-circle-check' },
+                    'Menunggu':     { bg:'bg-amber-100',   text:'text-amber-700',   icon:'fa-clock' },
+                    'Ditolak':      { bg:'bg-red-100',     text:'text-red-700',     icon:'fa-circle-xmark' },
+                };
+                return map[status] || { bg:'bg-slate-100', text:'text-slate-500', icon:'fa-circle' };
+            },
 
-        get filteredPengajuan() {
-            return this.pengajuanData.filter(r => {
-                const typeOk = this.filterType === 'all' || r.type.toLowerCase() === this.filterType;
-                const fromOk = !this.dateFrom || r.startDate >= this.dateFrom;
-                const toOk   = !this.dateTo   || r.startDate <= this.dateTo;
-                return typeOk && fromOk && toOk;
-            });
-        },
+            resetFilter() {
+                this.filterType = 'all';
+                this.dateFrom   = '';
+                this.dateTo     = '';
+                this.showFilter = false;
+            }
+        }));
+    });
+</script>
+@endpush
 
-        statusBadge(status) {
-            const map = {
-                'Hadir':       { bg:'bg-emerald-100', text:'text-emerald-700', icon:'fa-circle-check'     },
-                'Terlambat':   { bg:'bg-amber-100',   text:'text-amber-700',   icon:'fa-triangle-exclamation' },
-                'Pulang Cepat':{ bg:'bg-orange-100',  text:'text-orange-700',  icon:'fa-circle-exclamation'},
-                'Alpa':        { bg:'bg-red-100',     text:'text-red-700',     icon:'fa-circle-xmark'     },
-                'Libur':       { bg:'bg-slate-100',   text:'text-slate-500',   icon:'fa-umbrella-beach'   },
-                'Disetujui':   { bg:'bg-emerald-100', text:'text-emerald-700', icon:'fa-circle-check'     },
-                'Menunggu':    { bg:'bg-amber-100',   text:'text-amber-700',   icon:'fa-clock'            },
-                'Ditolak':     { bg:'bg-red-100',     text:'text-red-700',     icon:'fa-circle-xmark'     },
-            };
-            return map[status] || { bg:'bg-slate-100', text:'text-slate-500', icon:'fa-circle' };
-        },
-
-        resetFilter() {
-            this.filterType = 'all';
-            this.dateFrom = '';
-            this.dateTo = '';
-            this.showFilter = false;
-        }
-     }">
+<div class="min-h-screen bg-[#F0F4F8] pb-24" x-data="historyApp">
 
     {{-- ── Header ── --}}
     <div class="relative px-5 pt-12 pb-5 text-white"

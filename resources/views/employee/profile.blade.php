@@ -4,10 +4,10 @@
 
 @section('content')
 <div class="min-h-screen bg-[#F0F4F8]"
-     x-data="{
-        page: 'profile',
+     x-data='{
+        page: "profile",
         showPass: [false, false, false],
-        oldPass: '', newPass: '', confirmPass: '',
+        oldPass: "", newPass: "", confirmPass: "",
         strength: 0,
         checkStrength(v) {
             let s = 0;
@@ -18,11 +18,11 @@
             this.strength = s;
         },
         strengthLabel() {
-            const l = ['', 'Lemah', 'Cukup', 'Baik', 'Kuat'];
-            const c = ['', 'text-red-500', 'text-amber-500', 'text-blue-500', 'text-emerald-600'];
+            const l = ["", "Lemah", "Cukup", "Baik", "Kuat"];
+            const c = ["", "text-red-500", "text-amber-500", "text-blue-500", "text-emerald-600"];
             return { label: l[this.strength], color: c[this.strength] };
         }
-     }">
+     }'>
 
     {{-- ════════════════════════
          PROFILE PAGE
@@ -118,36 +118,13 @@
 
                 {{-- Change Password --}}
                 <button @click="page = 'password'"
-                        class="w-full flex items-center gap-3 px-4 py-4 border-b border-slate-50 hover:bg-slate-50 active:bg-slate-100 transition-colors">
+                        class="w-full flex items-center gap-3 px-4 py-4 hover:bg-slate-50 active:bg-slate-100 transition-colors">
                     <div class="w-9 h-9 rounded-xl bg-amber-100 flex items-center justify-center flex-shrink-0">
                         <i class="fa-solid fa-lock text-amber-600 text-sm"></i>
                     </div>
                     <span class="flex-1 text-left text-sm font-semibold text-slate-700">Ganti Password</span>
                     <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
                 </button>
-
-                {{-- Notifikasi --}}
-                <div class="flex items-center gap-3 px-4 py-4 border-b border-slate-50">
-                    <div class="w-9 h-9 rounded-xl bg-blue-100 flex items-center justify-center flex-shrink-0">
-                        <i class="fa-solid fa-bell text-blue-600 text-sm"></i>
-                    </div>
-                    <span class="flex-1 text-sm font-semibold text-slate-700">Notifikasi</span>
-                    {{-- Toggle --}}
-                    <label class="relative inline-flex items-center cursor-pointer" x-data="{on:true}">
-                        <input type="checkbox" class="sr-only peer" x-model="on">
-                        <div class="w-10 h-5 rounded-full bg-slate-200 peer-checked:bg-[#1E2A5E] transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-5"></div>
-                    </label>
-                </div>
-
-                {{-- Bahasa --}}
-                <div class="flex items-center gap-3 px-4 py-4">
-                    <div class="w-9 h-9 rounded-xl bg-purple-100 flex items-center justify-center flex-shrink-0">
-                        <i class="fa-solid fa-globe text-purple-600 text-sm"></i>
-                    </div>
-                    <span class="flex-1 text-sm font-semibold text-slate-700">Bahasa</span>
-                    <span class="text-xs text-slate-400 font-medium">Indonesia</span>
-                    <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
-                </div>
             </div>
 
             {{-- Logout --}}

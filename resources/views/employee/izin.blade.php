@@ -4,36 +4,36 @@
 
 @section('content')
 <div class="min-h-screen bg-[#F0F4F8]"
-     x-data="{
-        tab: 'form',
-        type: '',
-        startDate: '',
-        endDate: '',
-        reason: '',
-        fileName: '',
+     x-data='{
+        tab: "form",
+        type: "",
+        startDate: "",
+        endDate: "",
+        reason: "",
+        fileName: "",
         submitting: false,
         showConfirm: false,
         handleFile(e) {
-            this.fileName = e.target.files[0]?.name ?? '';
+            this.fileName = e.target.files[0]?.name ?? "";
         },
         async submit() {
             if (!this.type || !this.startDate || !this.reason) return;
             this.submitting = true;
             
             const formData = new FormData();
-            formData.append('type', this.type);
-            formData.append('start_date', this.startDate);
-            formData.append('end_date', this.endDate || this.startDate);
-            formData.append('reason', this.reason);
-            const fileInput = document.getElementById('attachment');
+            formData.append("type", this.type);
+            formData.append("start_date", this.startDate);
+            formData.append("end_date", this.endDate || this.startDate);
+            formData.append("reason", this.reason);
+            const fileInput = document.getElementById("attachment");
             if (fileInput.files.length > 0) {
-                formData.append('attachment', fileInput.files[0]);
+                formData.append("attachment", fileInput.files[0]);
             }
-            formData.append('_token', '{{ csrf_token() }}');
+            formData.append("_token", "{{ csrf_token() }}");
 
             try {
-                const res = await fetch('{{ route("employee.izin.store") }}', {
-                    method: 'POST',
+                const res = await fetch("{{ route("employee.izin.store") }}", {
+                    method: "POST",
                     body: formData
                 });
                 const data = await res.json();
@@ -41,14 +41,14 @@
                 if (data.success) {
                     this.showConfirm = true;
                 } else {
-                    alert(data.message || 'Terjadi kesalahan.');
+                    alert(data.message || "Terjadi kesalahan.");
                 }
             } catch (err) {
                 this.submitting = false;
-                alert('Terjadi kesalahan sistem.');
+                alert("Terjadi kesalahan sistem.");
             }
         }
-     }">
+     }'>
 
     {{-- ── Header ── --}}
     <div class="px-5 pt-12 pb-5" style="background: linear-gradient(135deg, #1E2A5E 0%, #2D3F8F 60%, #3B82F6 100%);">

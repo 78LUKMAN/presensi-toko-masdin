@@ -59,10 +59,11 @@ class AttendanceController extends Controller
      */
     public function problematicData(Request $request)
     {
-        // Define problematic as: check_out_time is null AND approval_status is Pending
+        // Define problematic as: check_out_time is null AND approval_status is Pending AND status is not Izin/Sakit/Cuti
         $query = DailyAttendance::with('employee')
             ->whereNull('check_out_time')
-            ->where('approval_status', 'Pending');
+            ->where('approval_status', 'Pending')
+            ->whereNotIn('status', ['Izin', 'Sakit', 'Cuti']);
 
         if ($request->filled('date')) {
             $query->whereDate('date', $request->date);
