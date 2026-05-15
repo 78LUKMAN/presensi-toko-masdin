@@ -23,24 +23,13 @@
     {{-- Filter --}}
     <div class="bg-white rounded-2xl border border-slate-200 p-4">
         <div class="flex flex-wrap items-end gap-3">
-            <div class="flex-1 min-w-36">
-                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Bagian</label>
-                <select id="ky-bagian" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Semua Bagian</option>
-                    <option>Produksi</option><option>Gudang</option><option>Administrasi</option><option>Keamanan</option>
-                </select>
-            </div>
-            <div class="flex-1 min-w-36">
-                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Tgl Masuk (dari)</label>
-                <input type="date" id="ky-dari" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-            </div>
-            <div class="flex-1 min-w-36">
-                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Tgl Masuk (sampai)</label>
-                <input type="date" id="ky-sampai" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+            <div class="flex-1">
+                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Cari Nama Karyawan</label>
+                <input type="text" id="ky-nama" placeholder="Ketik nama karyawan..." class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm"/>
             </div>
             <div class="flex gap-2">
-                <button id="ky-filter" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl">Terapkan</button>
-                <button id="ky-reset" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 text-sm font-medium rounded-xl">Reset</button>
+                <button id="ky-filter" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors shadow-sm">Cari</button>
+                <button id="ky-reset" class="px-5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 text-sm font-medium rounded-xl transition-colors">Reset</button>
             </div>
         </div>
     </div>
@@ -251,9 +240,9 @@
     });
 
     document.getElementById('ky-filter').onclick = () =>
-        table.column(3).search(document.getElementById('ky-bagian').value).draw();
+        table.column(2).search(document.getElementById('ky-nama').value).draw();
     document.getElementById('ky-reset').onclick = () => {
-        ['ky-bagian','ky-dari','ky-sampai'].forEach(id => document.getElementById(id).value = '');
+        document.getElementById('ky-nama').value = '';
         table.search('').columns().search('').draw();
     };
 

@@ -74,7 +74,7 @@
     </div>
 
     {{-- ── Row 2: Secondary Cards ── --}}
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div class="bg-white rounded-2xl border border-slate-200 p-5 flex items-center gap-4">
             <div class="w-11 h-11 rounded-xl bg-amber-100 flex items-center justify-center flex-shrink-0">
                 <svg class="w-5 h-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
@@ -93,16 +93,6 @@
                 <p class="text-2xl font-bold text-slate-800">{{ $absentToday }}</p>
                 <p class="text-xs font-medium text-slate-600">Tidak Hadir Hari Ini</p>
                 <p class="text-xs text-red-500 mt-0.5">Data realtime</p>
-            </div>
-        </div>
-        <div class="bg-white rounded-2xl border border-slate-200 p-5 flex items-center gap-4">
-            <div class="w-11 h-11 rounded-xl bg-purple-100 flex items-center justify-center flex-shrink-0">
-                <svg class="w-5 h-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-            </div>
-            <div>
-                <p class="text-2xl font-bold text-slate-800">{{ $workDaysThisMonth }}</p>
-                <p class="text-xs font-medium text-slate-600">Hari Kerja Bulan Ini</p>
-                <p class="text-xs text-slate-400 mt-0.5">Estimasi standar bulanan</p>
             </div>
         </div>
     </div>
@@ -136,40 +126,6 @@
 
         {{-- Side panel --}}
         <div class="space-y-4">
-            {{-- Presensi Bermasalah terbaru --}}
-            <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
-                <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
-                    <h3 class="text-sm font-semibold text-slate-800">Perlu Perhatian</h3>
-                    <a href="{{ route('admin.presensi-bermasalah') }}" class="text-xs text-blue-600 hover:underline font-medium">Lihat →</a>
-                </div>
-                <div class="divide-y divide-slate-50">
-                    <div class="px-4 py-3 flex items-start gap-3">
-                        <div class="w-7 h-7 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold text-amber-700">B</div>
-                        <div>
-                            <p class="text-xs font-semibold text-slate-800">Budi Santoso</p>
-                            <p class="text-xs text-slate-500">Tidak absen pulang</p>
-                            <span class="inline-flex mt-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 text-xs font-medium">Pending</span>
-                        </div>
-                    </div>
-                    <div class="px-4 py-3 flex items-start gap-3">
-                        <div class="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold text-blue-700">A</div>
-                        <div>
-                            <p class="text-xs font-semibold text-slate-800">Ahmad Fauzi</p>
-                            <p class="text-xs text-slate-500">Absen masuk tidak terekam</p>
-                            <span class="inline-flex mt-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 text-xs font-medium">Pending</span>
-                        </div>
-                    </div>
-                    <div class="px-4 py-3 flex items-start gap-3">
-                        <div class="w-7 h-7 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold text-green-700">E</div>
-                        <div>
-                            <p class="text-xs font-semibold text-slate-800">Eko Prasetyo</p>
-                            <p class="text-xs text-slate-500">Tidak hadir tanpa keterangan</p>
-                            <span class="inline-flex mt-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 text-xs font-medium">Pending</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             {{-- Shortcut links --}}
             <div class="bg-white rounded-2xl border border-slate-200 p-4 space-y-2">
                 <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Akses Cepat</p>

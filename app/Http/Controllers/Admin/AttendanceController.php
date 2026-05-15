@@ -24,15 +24,13 @@ class AttendanceController extends Controller
     {
         $query = DailyAttendance::with('employee');
 
-        if ($request->filled('start_date')) {
-            $query->whereDate('date', '>=', $request->start_date);
+        if ($request->filled('date')) {
+            $query->whereDate('date', $request->date);
         }
-        if ($request->filled('end_date')) {
-            $query->whereDate('date', '<=', $request->end_date);
-        }
-        if ($request->filled('section')) {
+        
+        if ($request->filled('name')) {
             $query->whereHas('employee', function($q) use ($request) {
-                $q->where('section', $request->section);
+                $q->where('name', 'like', '%' . $request->name . '%');
             });
         }
 

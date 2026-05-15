@@ -32,7 +32,7 @@ class MonthlySalaryController extends Controller
                 ->addColumn('nama', fn($row) => $row->employee->name)
                 ->addColumn('bagian', fn($row) => $row->employee->section)
                 ->editColumn('total_hours', fn($row) => $row->total_hours . 'j')
-                ->editColumn('total_salary', fn($row) => number_format($row->total_salary, 0, ',', '.'))
+                ->editColumn('total_salary', fn($row) => 'Rp ' . number_format($row->total_salary, 0, ',', '.'))
                 ->make(true);
         }
 

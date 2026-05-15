@@ -36,28 +36,14 @@
             </div>
         </div>
 
-        <div class="lg:col-span-3 bg-white rounded-2xl border border-slate-200 p-4 flex flex-wrap items-end gap-3">
-            <div class="flex-1 min-w-36">
-                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Bulan</label>
-                <input type="month" id="gb-bulan" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-            </div>
-            <div class="flex-1 min-w-36">
-                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Tipe Hari</label>
-                <select id="gb-tipe" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Semua Tipe</option>
-                    <option>Hari Kerja</option><option>Hari Libur</option><option>Lembur</option>
-                </select>
-            </div>
-            <div class="flex-1 min-w-36">
-                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Karyawan</label>
-                <select id="gb-karyawan" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Semua Karyawan</option>
-                    <option>Budi Santoso</option><option>Siti Rahayu</option><option>Ahmad Fauzi</option>
-                </select>
+        <div class="lg:col-span-3 bg-white rounded-2xl border border-slate-200 p-4 flex items-end gap-3">
+            <div class="flex-1">
+                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Pilih Bulan & Tahun</label>
+                <input type="month" id="gb-bulan" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm"/>
             </div>
             <div class="flex gap-2">
-                <button id="gb-filter" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl">Terapkan</button>
-                <button id="gb-reset" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 text-sm font-medium rounded-xl">Reset</button>
+                <button id="gb-filter" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors">Terapkan Filter</button>
+                <button id="gb-reset" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 text-sm font-medium rounded-xl transition-colors">Reset</button>
             </div>
         </div>
     </div>
@@ -73,12 +59,10 @@
                         <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Bagian</th>
                         <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">Total Hari</th>
                         <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">Total Jam</th>
-
-                        <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">Aksi</th>
+                        <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">Total Gaji Bulanan</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
-
             </table>
         </div>
     </div>
@@ -89,19 +73,9 @@
 <script>
 (function(){
     const fmt=n=>'Rp '+n.toLocaleString('id-ID');
-    const tipeBadge=t=>{const c={'Hari Kerja':'bg-blue-100 text-blue-700','Hari Libur':'bg-slate-100 text-slate-600','Lembur':'bg-orange-100 text-orange-700'};return`<span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-semibold ${c[t]||'bg-slate-100 text-slate-600'}">${t}</span>`;};
-    const data=[
-        {tgl:'2026-05-01',tipe:'Hari Kerja',ket:'Hari Normal',karyawan:'Budi Santoso',rerata:90000,total:720000},
-        {tgl:'2026-05-02',tipe:'Hari Kerja',ket:'Hari Normal',karyawan:'Siti Rahayu',rerata:88000,total:704000},
-        {tgl:'2026-05-03',tipe:'Hari Libur',ket:'Libur Nasional',karyawan:'Ahmad Fauzi',rerata:0,total:0},
-        {tgl:'2026-05-04',tipe:'Hari Kerja',ket:'Hari Normal',karyawan:'Dewi Lestari',rerata:90000,total:720000},
-        {tgl:'2026-05-05',tipe:'Lembur',ket:'Lembur Minggu',karyawan:'Eko Prasetyo',rerata:120000,total:960000},
-        {tgl:'2026-05-06',tipe:'Hari Kerja',ket:'Hari Normal',karyawan:'Fitri Handayani',rerata:91000,total:728000},
-        {tgl:'2026-05-07',tipe:'Hari Kerja',ket:'Hari Normal',karyawan:'Gunawan Putra',rerata:87000,total:696000},
-        {tgl:'2026-05-08',tipe:'Lembur',ket:'Lembur Proyek',karyawan:'Budi Santoso',rerata:125000,total:1000000},
-    ];
-
-
+    
+    // Set default value to current month
+    document.getElementById('gb-bulan').value = new Date().toISOString().slice(0, 7);
 
     const table=$('#tbl-gb').DataTable({
         processing: true,
@@ -124,17 +98,16 @@
             {data:'bagian'},
             {data:'total_days', className: 'text-center'},
             {data:'total_hours', className: 'text-center'},
-
-            {data:null,orderable:false,searchable:false,className:'text-center',
-             render:()=>`<div class="flex justify-center gap-1">
-               <button class="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
-             </div>`},
+            {data:'total_salary', className: 'text-right font-bold text-blue-600'},
         ],
         createdRow:row=>$(row).find('td').addClass('px-4 py-3 border-b border-slate-50 text-sm text-slate-600')
     });
 
     document.getElementById('gb-filter').onclick=()=>table.draw();
-    document.getElementById('gb-reset').onclick=()=>{['gb-bulan','gb-tipe','gb-karyawan'].forEach(id=>document.getElementById(id).value='');table.draw();};
+    document.getElementById('gb-reset').onclick=()=>{
+        document.getElementById('gb-bulan').value = new Date().toISOString().slice(0, 7);
+        table.draw();
+    };
 })();
 </script>
 @endpush

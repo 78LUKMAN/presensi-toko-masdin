@@ -18,29 +18,19 @@
     </div>
 
     {{-- Filter Bar --}}
-    <div class="bg-white rounded-2xl border border-slate-200 p-4">
+    <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
         <div class="flex flex-wrap items-end gap-3">
-            <div class="flex-1 min-w-36">
-                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Dari Tanggal</label>
-                <input type="date" id="filter-dari" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"/>
+            <div class="flex-1 min-w-[200px]">
+                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Pilih Tanggal</label>
+                <input type="date" id="filter-tanggal" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm"/>
             </div>
-            <div class="flex-1 min-w-36">
-                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Sampai Tanggal</label>
-                <input type="date" id="filter-sampai" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"/>
-            </div>
-            <div class="flex-1 min-w-36">
-                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Bagian</label>
-                <select id="filter-bagian" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
-                    <option value="">Semua Bagian</option>
-                    <option>Produksi</option>
-                    <option>Gudang</option>
-                    <option>Administrasi</option>
-                    <option>Keamanan</option>
-                </select>
+            <div class="flex-1 min-w-[200px]">
+                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Cari Nama Karyawan</label>
+                <input type="text" id="filter-nama" placeholder="Ketik nama karyawan..." class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm"/>
             </div>
             <div class="flex gap-2">
-                <button id="btn-filter" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors">Terapkan</button>
-                <button id="btn-reset" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 text-sm font-medium rounded-xl transition-colors">Reset</button>
+                <button id="btn-filter" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors shadow-sm">Terapkan Filter</button>
+                <button id="btn-reset" class="px-5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 text-sm font-medium rounded-xl transition-colors">Reset</button>
             </div>
         </div>
     </div>
@@ -72,16 +62,17 @@
 
 @push('scripts')
 <script>
-(function () {
+    // Default to today
+    document.getElementById('filter-tanggal').value = new Date().toISOString().split('T')[0];
+
     const table = $('#table-rekap-presensi').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
             url: '{{ route("admin.rekap-presensi.data") }}',
             data: function(d) {
-                d.start_date = document.getElementById('filter-dari').value;
-                d.end_date = document.getElementById('filter-sampai').value;
-                d.section = document.getElementById('filter-bagian').value;
+                d.date = document.getElementById('filter-tanggal').value;
+                d.name = document.getElementById('filter-nama').value;
             }
         },
         language: { url: 'https://cdn.datatables.net/plug-ins/2.0.3/i18n/id.json' },
@@ -99,22 +90,18 @@
                   <button class="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50" title="Detail">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                   </button>
-                  <button class="p-1.5 rounded-lg text-red-500 hover:bg-red-50" title="Hapus">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                  </button>
                 </div>` },
         ],
         createdRow: row => $(row).find('td').addClass('px-4 py-3 border-b border-slate-50 text-sm text-slate-600'),
     });
 
-    // Filter bagian
+    // Filter logic
     document.getElementById('btn-filter').onclick = () => {
         table.draw();
     };
     document.getElementById('btn-reset').onclick = () => {
-        document.getElementById('filter-dari').value = '';
-        document.getElementById('filter-sampai').value = '';
-        document.getElementById('filter-bagian').value = '';
+        document.getElementById('filter-tanggal').value = new Date().toISOString().split('T')[0];
+        document.getElementById('filter-nama').value = '';
         table.search('').columns().search('').draw();
     };
 })();
