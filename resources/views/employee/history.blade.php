@@ -105,25 +105,6 @@
             </button>
         </div>
 
-        {{-- Month summary pills --}}
-        <div class="relative flex gap-2 overflow-x-auto pb-1 scrollbar-none">
-            <div class="flex-shrink-0 bg-white/15 border border-white/20 rounded-xl px-3 py-2 text-center min-w-[80px]">
-                <p class="text-white text-lg font-extrabold">{{ $histories->where('status', 'Hadir')->count() }}</p>
-                <p class="text-blue-200 text-[10px] font-semibold">Hadir</p>
-            </div>
-            <div class="flex-shrink-0 bg-white/15 border border-white/20 rounded-xl px-3 py-2 text-center min-w-[80px]">
-                <p class="text-orange-300 text-lg font-extrabold">{{ $histories->where('status', 'Pulang Cepat')->count() }}</p>
-                <p class="text-blue-200 text-[10px] font-semibold">Pulang Cepat</p>
-            </div>
-            <div class="flex-shrink-0 bg-white/15 border border-white/20 rounded-xl px-3 py-2 text-center min-w-[80px]">
-                <p class="text-red-300 text-lg font-extrabold">{{ $histories->where('status', 'Tidak Hadir')->count() }}</p>
-                <p class="text-blue-200 text-[10px] font-semibold">Alpa</p>
-            </div>
-            <div class="flex-shrink-0 bg-white/15 border border-white/20 rounded-xl px-3 py-2 text-center min-w-[80px]">
-                <p class="text-emerald-300 text-lg font-extrabold">{{ $histories->whereIn('status', ['Izin', 'Cuti', 'Sakit'])->count() }}</p>
-                <p class="text-blue-200 text-[10px] font-semibold">Izin/Cuti</p>
-            </div>
-        </div>
     </div>
 
     {{-- ── Filter Panel (collapsible) ── --}}
@@ -239,11 +220,6 @@
                     <div>
                         <p class="text-sm font-extrabold text-slate-800" x-text="row.day + ', ' + row.date"></p>
                     </div>
-                    <span class="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full"
-                          :class="statusBadge(row.status).bg + ' ' + statusBadge(row.status).text">
-                        <i :class="'fa-solid ' + statusBadge(row.status).icon + ' text-[10px]'"></i>
-                        <span x-text="row.status"></span>
-                    </span>
                 </div>
 
                 <div class="flex divide-x divide-slate-100 border-t border-slate-50">

@@ -31,42 +31,11 @@
         </div>
 
         {{-- ── QR SCAN FRAME ── --}}
-        <div class="relative z-10 flex items-center justify-center flex-1">
-            <div class="relative w-64 h-48">
-
+        <div class="relative z-10 flex items-center justify-center flex-1 w-full px-4">
+            <div class="relative w-full max-w-sm aspect-[4/3]">
                 {{-- Camera container --}}
                 <div id="reader"
-                    class="absolute inset-0 rounded-2xl overflow-hidden [&_video]:object-cover [&_video]:w-full [&_video]:h-full border-0">
-                </div>
-
-                {{-- Dark vignette sides --}}
-                {{-- Scan area border --}}
-                <div class="absolute inset-0 rounded-2xl border-2 border-white/40 pointer-events-none z-10"></div>
-
-                {{-- Animated scan line --}}
-                <div class="absolute left-2 right-2 h-0.5 rounded-full scan-line z-20"
-                    style="background: linear-gradient(90deg, transparent, #38BDF8, #818CF8, #38BDF8, transparent);"></div>
-
-                {{-- Corner brackets (cyan) --}}
-                {{-- Top-left --}}
-                <div class="corner-pulse absolute top-0 left-0 w-8 h-8 z-20">
-                    <div class="absolute top-0 left-0 w-8 h-1 rounded-tl-md bg-cyan-400"></div>
-                    <div class="absolute top-0 left-0 w-1 h-8 rounded-tl-md bg-cyan-400"></div>
-                </div>
-                {{-- Top-right --}}
-                <div class="corner-pulse absolute top-0 right-0 w-8 h-8 z-20">
-                    <div class="absolute top-0 right-0 w-8 h-1 rounded-tr-md bg-cyan-400"></div>
-                    <div class="absolute top-0 right-0 w-1 h-8 rounded-tr-md bg-cyan-400"></div>
-                </div>
-                {{-- Bottom-left --}}
-                <div class="corner-pulse absolute bottom-0 left-0 w-8 h-8 z-20">
-                    <div class="absolute bottom-0 left-0 w-8 h-1 rounded-bl-md bg-cyan-400"></div>
-                    <div class="absolute bottom-0 left-0 w-1 h-8 rounded-bl-md bg-cyan-400"></div>
-                </div>
-                {{-- Bottom-right --}}
-                <div class="corner-pulse absolute bottom-0 right-0 w-8 h-8 z-20">
-                    <div class="absolute bottom-0 right-0 w-8 h-1 rounded-br-md bg-cyan-400"></div>
-                    <div class="absolute bottom-0 right-0 w-1 h-8 rounded-br-md bg-cyan-400"></div>
+                    class="absolute inset-0 rounded-2xl overflow-hidden [&_video]:object-cover [&_video]:w-full [&_video]:h-full shadow-lg border border-white/20">
                 </div>
             </div>
         </div>
