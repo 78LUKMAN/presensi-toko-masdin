@@ -43,9 +43,16 @@
                               class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#1E2A5E]/30 focus:border-[#1E2A5E]/50 transition-all resize-none"></textarea>
                 </div>
 
+                <div class="p-3 bg-blue-50 rounded-xl border border-blue-100 mb-3">
+                    <p class="text-xs text-blue-700">
+                        <i class="fa-solid fa-circle-info mr-1"></i>
+                        Laporan Anda akan ditinjau oleh admin. Gaji harian baru akan muncul setelah admin memverifikasi laporan ini.
+                    </p>
+                </div>
+
                 <div class="pt-2">
                     <button type="submit" class="w-full py-3.5 rounded-xl font-bold text-white shadow-md shadow-blue-500/20 active:scale-[0.98] transition-all" style="background: linear-gradient(135deg, #1E2A5E, #3B82F6);">
-                        Kirim & Selesaikan
+                        Kirim Laporan
                     </button>
                 </div>
             </form>

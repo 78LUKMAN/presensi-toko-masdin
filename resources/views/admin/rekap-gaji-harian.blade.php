@@ -47,6 +47,7 @@
                         <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Bagian</th>
                         <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Waktu</th>
                         <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Honor Hari Ini</th>
+                        <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Status Gaji</th>
                         <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">Aksi</th>
                     </tr>
                 </thead>
@@ -63,7 +64,7 @@
         <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
         <div class="relative z-10 inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-2xl shadow-xl sm:my-8 sm:align-middle sm:max-w-md sm:w-full">
             <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
-                <h3 class="text-base font-bold text-slate-800">Edit Honor Hari Ini</h3>
+                <h3 id="modal-gaji-title" class="text-base font-bold text-slate-800">Edit Honor Hari Ini</h3>
                 <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
             </div>
             <form id="form-gaji" class="p-6 space-y-4">
@@ -90,6 +91,14 @@
 <script>
 (function(){
     const fmt = n => 'Rp ' + (n || 0).toLocaleString('id-ID');
+    const statusBadge = (status) => {
+        const map = {
+            'auto': '<span class="inline-flex px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700">Otomatis</span>',
+            'pending_manual': '<span class="inline-flex px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-700 animate-pulse">Perlu Input Admin</span>',
+            'manual': '<span class="inline-flex px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">Manual</span>',
+        };
+        return map[status] || '<span class="inline-flex px-2 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-500">-</span>';
+    };
 
     document.getElementById('gh-tgl').value = new Date().toISOString().split('T')[0];
 
@@ -110,25 +119,64 @@
             {data:'nama'},
             {data:'bagian'},
             {data:'waktu'},
-            {data:'gaji', render: data => `<span class="font-bold text-slate-700">${fmt(data)}</span>`},
+            {data:'gaji', render: (data, type, row) => {
+                if (row.salary_status === 'pending_manual') {
+                    return `<span class="font-bold text-amber-600">${fmt(data)} <span class="text-xs">(belum final)</span></span>`;
+                }
+                return `<span class="font-bold text-slate-700">${fmt(data)}</span>`;
+            }},
+            {data:'salary_status', orderable: false, searchable: false, render: data => statusBadge(data)},
             {data:null,orderable:false,searchable:false,className:'text-center',
-             render:(row)=>`
-                <div class="flex justify-center gap-1">
-                    ${row.salary_id ? 
-                        `<button onclick='editGaji(${JSON.stringify(row)})' class="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50" title="Edit Honor">
+             render:(row)=>{
+                // If salary exists, show edit button
+                if (row.salary_id) {
+                    const btnClass = row.salary_status === 'pending_manual'
+                        ? 'p-1.5 rounded-lg text-amber-600 hover:bg-amber-50 ring-2 ring-amber-200'
+                        : 'p-1.5 rounded-lg text-blue-600 hover:bg-blue-50';
+                    const title = row.salary_status === 'pending_manual' ? 'Input Honor (Wajib)' : 'Edit Honor';
+                    return `<div class="flex justify-center gap-1">
+                        <button onclick='editGaji(${JSON.stringify(row)})' class="${btnClass}" title="${title}">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                        </button>` : 
-                        `<span class="text-xs text-slate-400 italic">Belum Absen Pulang</span>`
-                    }
-                </div>`
+                        </button>
+                    </div>`;
+                }
+                // No salary yet — show 'create' button if attendance exists but no salary
+                if (row.employee_id) {
+                    return `<div class="flex justify-center gap-1">
+                        <button onclick='createGaji(${JSON.stringify(row)})' class="px-2 py-1 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 text-xs font-semibold" title="Tambah Honor">
+                            + Tambah
+                        </button>
+                    </div>`;
+                }
+                return `<span class="text-xs text-slate-400 italic">Belum Absen Pulang</span>`;
+             }
             },
         ],
         createdRow:row=>$(row).find('td').addClass('px-4 py-3 border-b border-slate-50 text-sm text-slate-600')
     });
 
+    // Edit existing salary
     window.editGaji = (row) => {
         document.getElementById('edit-id').value = row.salary_id;
         document.getElementById('edit-honor').value = row.gaji;
+        document.getElementById('edit-notes').value = '';
+        document.getElementById('form-gaji').dataset.mode = 'edit';
+        document.getElementById('modal-gaji-title').textContent = row.salary_status === 'pending_manual'
+            ? 'Input Honor (Jam Kerja < 9 Jam)'
+            : 'Edit Honor Hari Ini';
+        document.getElementById('modal-gaji').classList.remove('hidden');
+    };
+
+    // Create new salary for entry without one
+    window.createGaji = (row) => {
+        document.getElementById('edit-id').value = '';
+        document.getElementById('edit-honor').value = '';
+        document.getElementById('edit-notes').value = '';
+        document.getElementById('form-gaji').dataset.mode = 'create';
+        document.getElementById('form-gaji').dataset.employeeId = row.employee_id;
+        document.getElementById('form-gaji').dataset.date = row.attendance_date;
+        document.getElementById('form-gaji').dataset.totalHours = row.waktu ? row.waktu.replace('j','') : 0;
+        document.getElementById('modal-gaji-title').textContent = 'Tambah Honor Karyawan';
         document.getElementById('modal-gaji').classList.remove('hidden');
     };
 
@@ -138,30 +186,56 @@
 
     document.getElementById('form-gaji').onsubmit = function(e) {
         e.preventDefault();
-        const id = document.getElementById('edit-id').value;
+        const mode = this.dataset.mode;
         const honor = document.getElementById('edit-honor').value;
         const notes = document.getElementById('edit-notes').value;
 
-        fetch(`{{ url('admin/rekap-gaji-harian') }}/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({
-                salary_amount: honor,
-                notes: notes
+        if (mode === 'edit') {
+            // Update existing salary
+            const id = document.getElementById('edit-id').value;
+            fetch(`{{ url('admin/rekap-gaji-harian') }}/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ salary_amount: honor, notes: notes })
             })
-        })
-        .then(res => res.json())
-        .then(data => {
-            if(data.success) {
-                closeModal();
-                table.draw(false);
-                alert(data.message);
-            }
-        })
-        .catch(err => console.error(err));
+            .then(res => res.json())
+            .then(data => {
+                if(data.success) {
+                    closeModal();
+                    table.draw(false);
+                    alert(data.message);
+                }
+            })
+            .catch(err => console.error(err));
+        } else {
+            // Create new salary
+            fetch(`{{ route('admin.rekap-gaji-harian.store') }}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    employee_id: this.dataset.employeeId,
+                    date: this.dataset.date,
+                    total_hours: this.dataset.totalHours,
+                    salary_amount: honor,
+                    notes: notes
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.success) {
+                    closeModal();
+                    table.draw(false);
+                    alert(data.message);
+                }
+            })
+            .catch(err => console.error(err));
+        }
     };
 
     document.getElementById('gh-filter').onclick=()=>table.draw();

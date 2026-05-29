@@ -118,7 +118,7 @@ class AttendanceController extends Controller
                 'notes' => $request->notes ?? 'Disetujui Admin secara manual.',
             ]);
 
-            // 2. Create/Update Daily Salary
+            // 2. Create/Update Daily Salary (only happens on admin approval)
             \App\Models\DailySalary::updateOrCreate(
                 [
                     'employee_id' => $attendance->employee_id,
@@ -127,6 +127,8 @@ class AttendanceController extends Controller
                 [
                     'total_hours' => $totalHours,
                     'salary_amount' => $request->salary_amount,
+                    'salary_status' => 'manual',
+                    'notes' => 'Disetujui admin secara manual',
                 ]
             );
 

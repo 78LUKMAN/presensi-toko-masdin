@@ -41,6 +41,16 @@ class DailySalaryController extends Controller
                     $salary = $row->employee->dailySalaries->first();
                     return $salary ? $salary->id : null;
                 })
+                ->addColumn('salary_status', function ($row) {
+                    $salary = $row->employee->dailySalaries->first();
+                    return $salary ? $salary->salary_status : null;
+                })
+                ->addColumn('employee_id', function ($row) {
+                    return $row->employee_id;
+                })
+                ->addColumn('attendance_date', function ($row) {
+                    return $row->date->format('Y-m-d');
+                })
                 ->make(true);
         }
 
@@ -56,7 +66,8 @@ class DailySalaryController extends Controller
         $salary = DailySalary::findOrFail($id);
         $salary->update([
             'salary_amount' => $request->salary_amount,
-            'notes' => $request->notes ?? $salary->notes,
+            'salary_status' => 'manual',
+            'notes' => $request->notes ?? 'Diinput manual oleh admin',
         ]);
 
         return response()->json(['success' => true, 'message' => 'Gaji berhasil diperbarui']);
@@ -80,8 +91,9 @@ class DailySalaryController extends Controller
             ],
             [
                 'salary_amount' => $request->salary_amount,
+                'salary_status' => 'manual',
                 'total_hours' => $request->total_hours ?? 0,
-                'notes' => $request->notes,
+                'notes' => $request->notes ?? 'Diinput manual oleh admin',
             ]
         );
 

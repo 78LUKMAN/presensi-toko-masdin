@@ -13,6 +13,7 @@ class DailySalary extends Model
         'date',
         'total_hours',
         'salary_amount',
+        'salary_status', // 'auto', 'pending_manual', or 'manual'
         'notes',
     ];
 

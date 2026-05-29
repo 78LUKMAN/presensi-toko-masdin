@@ -71,6 +71,15 @@ class AttendanceActionController extends Controller
                 $attendance->save();
                 $message = 'Clock In berhasil';
             } else {
+                // Issue 2 Fix: Prevent duplicate checkout on the same day
+                if ($attendance->check_out_time) {
+                    DB::rollBack();
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Anda sudah melakukan presensi pulang hari ini'
+                    ], 422);
+                }
+
                 // Clocking out
                 $attendance->check_out_time = $now->format('H:i:s');
 
@@ -88,18 +97,35 @@ class AttendanceActionController extends Controller
 
                 $attendance->save();
 
-                // Automatically fill daily salary with 50,000
-                \App\Models\DailySalary::updateOrCreate(
-                    [
-                        'employee_id' => $employee->id,
-                        'date' => $today,
-                    ],
-                    [
-                        'total_hours' => $attendance->total_hours,
-                        'salary_amount' => 50000,
-                        'notes' => 'Otomatis dari sistem (Absen Pulang)',
-                    ]
-                );
+                // Issue 3 Fix: Only auto-set salary to 50,000 if hours >= 9
+                // Otherwise mark as pending_manual for admin to fill
+                if ($attendance->total_hours >= 9) {
+                    \App\Models\DailySalary::updateOrCreate(
+                        [
+                            'employee_id' => $employee->id,
+                            'date' => $today,
+                        ],
+                        [
+                            'total_hours' => $attendance->total_hours,
+                            'salary_amount' => 50000,
+                            'salary_status' => 'auto',
+                            'notes' => 'Otomatis dari sistem (9 jam terpenuhi)',
+                        ]
+                    );
+                } else {
+                    \App\Models\DailySalary::updateOrCreate(
+                        [
+                            'employee_id' => $employee->id,
+                            'date' => $today,
+                        ],
+                        [
+                            'total_hours' => $attendance->total_hours,
+                            'salary_amount' => 0,
+                            'salary_status' => 'pending_manual',
+                            'notes' => 'Jam kerja kurang dari 9 jam, menunggu input admin',
+                        ]
+                    );
+                }
 
                 $message = 'Clock Out berhasil';
             }
@@ -179,19 +205,10 @@ class AttendanceActionController extends Controller
             'notes' => $request->notes,
         ]);
 
-        // Automatically fill daily salary with 50,000
-        \App\Models\DailySalary::updateOrCreate(
-            [
-                'employee_id' => $employee->id,
-                'date' => $attendance->date,
-            ],
-            [
-                'total_hours' => $totalHours,
-                'salary_amount' => 50000,
-                'notes' => 'Otomatis dari sistem (Selesai Manual)',
-            ]
-        );
+        // Issue 1 Fix: Do NOT create salary here.
+        // Salary will only be created when admin approves via AttendanceController@approve.
+        // This ensures admin verification is required before salary appears.
 
-        return redirect()->route('employee.dashboard')->with('success', 'Presensi berhasil diselesaikan. Menunggu persetujuan admin.');
+        return redirect()->route('employee.dashboard')->with('success', 'Laporan berhasil dikirim. Menunggu verifikasi admin sebelum gaji dihitung.');
     }
 }
