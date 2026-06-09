@@ -4,16 +4,19 @@
 
 @section('content')
 @php
-    $absensiMapped = $histories->filter(fn($h) => !in_array($h->status, ['Izin', 'Sakit', 'Cuti']))->map(function($h) {
+    $absensiMapped = $histories->filter(fn($h) => !in_array($h->status, ['Izin', 'Sakit', 'Cuti']))->map(function($h) use ($salaries) {
+        $dateStr = \Carbon\Carbon::parse($h->date)->format('Y-m-d');
+        $salaryAmount = isset($salaries[$dateStr]) ? $salaries[$dateStr]->salary_amount : null;
         return [
             'id' => $h->id,
-            'date' => \Carbon\Carbon::parse($h->date)->format('Y-m-d'),
+            'date' => $dateStr,
             'day' => \Carbon\Carbon::parse($h->date)->translatedFormat('l'),
             'clockIn' => $h->check_in_time ? \Carbon\Carbon::parse($h->check_in_time)->format('H:i') : null,
             'clockOut' => $h->check_out_time ? \Carbon\Carbon::parse($h->check_out_time)->format('H:i') : null,
-            'duration' => $h->total_hours ? formatWorkingHours($h->total_hours) : '-',
+            'duration' => $h->total_hours !== null && $h->total_hours >= 0 ? formatWorkingHours($h->total_hours) : '-',
             'status' => $h->status ?? 'Alpa',
-            'lateMin' => 0
+            'lateMin' => 0,
+            'salary' => $salaryAmount !== null ? 'Rp ' . number_format($salaryAmount, 0, ',', '.') : '-'
         ];
     })->values();
 
@@ -243,6 +246,10 @@
                     </div>
                 </div>
 
+                <div class="px-4 py-2.5 bg-slate-50 border-t border-slate-100 flex justify-between items-center">
+                    <p class="text-[11px] text-slate-500 font-semibold uppercase tracking-wider"><i class="fa-solid fa-money-bill-wave text-emerald-500 mr-1"></i>Gaji Harian</p>
+                    <p class="text-sm font-extrabold text-emerald-600" x-text="row.salary"></p>
+                </div>
 
             </div>
         </template>

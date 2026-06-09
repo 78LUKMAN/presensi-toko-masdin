@@ -26,7 +26,7 @@ if (!function_exists('formatWorkingHours')) {
             return "{$hours} jam {$minutes} menit";
         }
 
-        return "{$hours}j {$minutes}m";
+        return sprintf('%02d:%02d', $hours, $minutes);
     }
 }
 

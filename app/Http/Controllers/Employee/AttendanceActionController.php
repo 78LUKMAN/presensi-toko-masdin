@@ -85,9 +85,10 @@ class AttendanceActionController extends Controller
                 $attendance->check_out_time = $now->format('H:i:s');
 
                 // Calculate total hours
-                $checkIn = Carbon::parse($attendance->check_in_time);
-                $diffInMinutes = $now->diffInMinutes($checkIn);
-                $attendance->total_hours = round($diffInMinutes / 60, 2);
+                $checkIn = Carbon::parse($attendance->date->format('Y-m-d') . ' ' . $attendance->check_in_time);
+                $checkOut = Carbon::parse($attendance->date->format('Y-m-d') . ' ' . $attendance->check_out_time);
+                $diffInMinutes = $checkIn->diffInMinutes($checkOut, false);
+                $attendance->total_hours = $diffInMinutes < 0 ? null : round($diffInMinutes / 60, 2);
 
                 // Set status based on 9 hours requirement
                 if ($attendance->total_hours < 9) {
@@ -158,8 +159,14 @@ class AttendanceActionController extends Controller
         $histories = DailyAttendance::where('employee_id', $employee->id)
             ->orderBy('date', 'desc')
             ->get();
+            
+        $salaries = \App\Models\DailySalary::where('employee_id', $employee->id)
+            ->get()
+            ->keyBy(function($item) {
+                return $item->date->format('Y-m-d');
+            });
 
-        return view('employee.history', compact('histories'));
+        return view('employee.history', compact('histories', 'salaries'));
     }
     public function problematicIndex()
     {
@@ -193,11 +200,11 @@ class AttendanceActionController extends Controller
             ->where('employee_id', $employee->id)
             ->firstOrFail();
 
-        $checkIn = Carbon::parse($attendance->check_in_time);
-        $checkOut = Carbon::parse($request->check_out_time);
+        $checkIn = Carbon::parse($attendance->date->format('Y-m-d') . ' ' . $attendance->check_in_time);
+        $checkOut = Carbon::parse($attendance->date->format('Y-m-d') . ' ' . $request->check_out_time);
         
-        $diffInMinutes = $checkOut->diffInMinutes($checkIn);
-        $totalHours = round($diffInMinutes / 60, 2);
+        $diffInMinutes = $checkIn->diffInMinutes($checkOut, false);
+        $totalHours = $diffInMinutes < 0 ? null : round($diffInMinutes / 60, 2);
 
         $attendance->update([
             'check_out_time' => $request->check_out_time,
