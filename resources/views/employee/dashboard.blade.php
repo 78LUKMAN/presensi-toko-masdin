@@ -6,8 +6,9 @@
 <div class="flex flex-col min-h-screen bg-white text-slate-800" x-data='{
     time: "",
     date: "",
+    offset: {{ $serverTimestampMs }} - Date.now(),
     update() {
-        const now = new Date();
+        const now = new Date(Date.now() + this.offset);
         this.time = now.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
         this.date = now.toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
     }

@@ -85,8 +85,22 @@ class AttendanceActionController extends Controller
                 $attendance->check_out_time = $now->format('H:i:s');
 
                 // Calculate total hours
-                $checkIn = Carbon::parse($attendance->check_in_time);
-                $diffInMinutes = $now->diffInMinutes($checkIn);
+                // IMPORTANT: Parse check_in_time WITH the attendance date so Carbon has
+                // full datetime context. Parsing a bare TIME string ("07:30:00") loses
+                // the date, which can produce a negative diff due to timezone offsets
+                // or midnight-crossing shifts.
+                $checkIn = Carbon::parse(
+                    $attendance->date->format('Y-m-d') . ' ' . $attendance->check_in_time
+                );
+
+                // Use a signed diff (not absolute) so we detect negative/invalid cases
+                $diffInMinutes = $checkIn->diffInMinutes($now, false);
+
+                // Clamp to 0 if somehow negative (e.g. bad data), to prevent '-' in UI
+                if ($diffInMinutes < 0) {
+                    $diffInMinutes = 0;
+                }
+
                 $attendance->total_hours = round($diffInMinutes / 60, 2);
 
                 // Set status based on 9 hours requirement
@@ -193,10 +207,19 @@ class AttendanceActionController extends Controller
             ->where('employee_id', $employee->id)
             ->firstOrFail();
 
-        $checkIn = Carbon::parse($attendance->check_in_time);
-        $checkOut = Carbon::parse($request->check_out_time);
+        // Parse with full date context so Carbon has correct datetime reference
+        $checkIn = Carbon::parse(
+            $attendance->date->format('Y-m-d') . ' ' . $attendance->check_in_time
+        );
+        $checkOut = Carbon::parse(
+            $attendance->date->format('Y-m-d') . ' ' . $request->check_out_time
+        );
         
-        $diffInMinutes = $checkOut->diffInMinutes($checkIn);
+        // Use signed diff to detect invalid cases (check_out before check_in)
+        $diffInMinutes = $checkIn->diffInMinutes($checkOut, false);
+        if ($diffInMinutes < 0) {
+            $diffInMinutes = 0;
+        }
         $totalHours = round($diffInMinutes / 60, 2);
 
         $attendance->update([

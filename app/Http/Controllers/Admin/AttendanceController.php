@@ -108,7 +108,11 @@ class AttendanceController extends Controller
             $checkIn = \Carbon\Carbon::parse($attendance->date->format('Y-m-d') . ' ' . $attendance->check_in_time);
             $checkOut = \Carbon\Carbon::parse($attendance->date->format('Y-m-d') . ' ' . $request->check_out_time);
             
-            $diffInMinutes = $checkOut->diffInMinutes($checkIn);
+            // Use signed diff so we detect if check_out < check_in (bad admin input)
+            $diffInMinutes = $checkIn->diffInMinutes($checkOut, false);
+            if ($diffInMinutes < 0) {
+                $diffInMinutes = 0;
+            }
             $totalHours = round($diffInMinutes / 60, 2);
 
             $attendance->update([
