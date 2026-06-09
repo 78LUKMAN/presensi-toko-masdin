@@ -85,23 +85,10 @@ class AttendanceActionController extends Controller
                 $attendance->check_out_time = $now->format('H:i:s');
 
                 // Calculate total hours
-                // IMPORTANT: Parse check_in_time WITH the attendance date so Carbon has
-                // full datetime context. Parsing a bare TIME string ("07:30:00") loses
-                // the date, which can produce a negative diff due to timezone offsets
-                // or midnight-crossing shifts.
-                $checkIn = Carbon::parse(
-                    $attendance->date->format('Y-m-d') . ' ' . $attendance->check_in_time
-                );
-
-                // Use a signed diff (not absolute) so we detect negative/invalid cases
-                $diffInMinutes = $checkIn->diffInMinutes($now, false);
-
-                // Clamp to 0 if somehow negative (e.g. bad data), to prevent '-' in UI
-                if ($diffInMinutes < 0) {
-                    $diffInMinutes = 0;
-                }
-
-                $attendance->total_hours = round($diffInMinutes / 60, 2);
+                $checkIn = Carbon::parse($attendance->date->format('Y-m-d') . ' ' . $attendance->check_in_time);
+                $checkOut = Carbon::parse($attendance->date->format('Y-m-d') . ' ' . $attendance->check_out_time);
+                $diffInMinutes = $checkIn->diffInMinutes($checkOut, false);
+                $attendance->total_hours = $diffInMinutes < 0 ? null : round($diffInMinutes / 60, 2);
 
                 // Set status based on 9 hours requirement
                 if ($attendance->total_hours < 9) {
@@ -172,8 +159,14 @@ class AttendanceActionController extends Controller
         $histories = DailyAttendance::where('employee_id', $employee->id)
             ->orderBy('date', 'desc')
             ->get();
+            
+        $salaries = \App\Models\DailySalary::where('employee_id', $employee->id)
+            ->get()
+            ->keyBy(function($item) {
+                return $item->date->format('Y-m-d');
+            });
 
-        return view('employee.history', compact('histories'));
+        return view('employee.history', compact('histories', 'salaries'));
     }
     public function problematicIndex()
     {
@@ -207,20 +200,11 @@ class AttendanceActionController extends Controller
             ->where('employee_id', $employee->id)
             ->firstOrFail();
 
-        // Parse with full date context so Carbon has correct datetime reference
-        $checkIn = Carbon::parse(
-            $attendance->date->format('Y-m-d') . ' ' . $attendance->check_in_time
-        );
-        $checkOut = Carbon::parse(
-            $attendance->date->format('Y-m-d') . ' ' . $request->check_out_time
-        );
+        $checkIn = Carbon::parse($attendance->date->format('Y-m-d') . ' ' . $attendance->check_in_time);
+        $checkOut = Carbon::parse($attendance->date->format('Y-m-d') . ' ' . $request->check_out_time);
         
-        // Use signed diff to detect invalid cases (check_out before check_in)
         $diffInMinutes = $checkIn->diffInMinutes($checkOut, false);
-        if ($diffInMinutes < 0) {
-            $diffInMinutes = 0;
-        }
-        $totalHours = round($diffInMinutes / 60, 2);
+        $totalHours = $diffInMinutes < 0 ? null : round($diffInMinutes / 60, 2);
 
         $attendance->update([
             'check_out_time' => $request->check_out_time,
