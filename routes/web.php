@@ -42,6 +42,12 @@ Route::middleware(['guest'])->group(function () {
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/attachment/{path}', [\App\Http\Controllers\AttachmentController::class, 'download'])
+        ->where('path', '.*')
+        ->name('attachment.download');
+});
+
 // Admin Routes
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
 

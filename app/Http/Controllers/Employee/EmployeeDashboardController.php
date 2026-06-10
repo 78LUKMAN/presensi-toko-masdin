@@ -54,12 +54,14 @@ class EmployeeDashboardController extends Controller
             ->whereMonth('date', $currentMonth)
             ->whereYear('date', $currentYear)
             ->where('status', 'Izin')
+            ->where('approval_status', 'Done')
             ->count();
 
         $cutiCount = DailyAttendance::where('employee_id', $employee->id)
             ->whereMonth('date', $currentMonth)
             ->whereYear('date', $currentYear)
             ->where('status', 'Cuti')
+            ->where('approval_status', 'Done')
             ->count();
 
         $stats = [
