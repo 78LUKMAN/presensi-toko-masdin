@@ -97,6 +97,9 @@
                     <button type="button" id="btn-reject" class="w-full px-4 py-2.5 bg-white border border-red-200 text-red-600 hover:bg-red-50 text-sm font-bold rounded-xl transition-all">Tolak</button>
                     <button type="button" id="btn-approve" class="w-full px-4 py-2.5 bg-blue-600 border border-blue-600 text-white hover:bg-blue-700 text-sm font-bold rounded-xl transition-all shadow-md shadow-blue-200">Setujui</button>
                 </div>
+                <div class="pt-2">
+                    <button type="button" data-hs-overlay="#modal-permit" class="w-full px-4 py-2.5 bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200 text-sm font-bold rounded-xl transition-all">Tutup</button>
+                </div>
             </div>
             <input type="hidden" id="modal-id">
         </div>
@@ -171,7 +174,7 @@
         
         if (row.attachment) {
             attachContainer.classList.remove('hidden');
-            attachLink.href = '/storage/' + row.attachment;
+            attachLink.href = '/attachment/' + row.attachment;
         } else {
             attachContainer.classList.add('hidden');
         }

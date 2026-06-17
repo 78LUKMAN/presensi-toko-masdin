@@ -274,7 +274,12 @@
     ════════════════════════════════════════ --}}
     <div x-show="tab === 'pengajuan'" x-transition.opacity class="px-4 mt-4 space-y-3">
 
-        <p class="text-xs text-slate-400 font-medium" x-text="filteredPengajuan.length + ' pengajuan ditemukan'"></p>
+        <div class="flex items-center justify-between mb-2">
+            <p class="text-xs text-slate-400 font-medium" x-text="filteredPengajuan.length + ' pengajuan ditemukan'"></p>
+            <a href="{{ route('employee.izin') }}" class="px-4 py-1.5 rounded-full text-xs font-bold text-white shadow-sm" style="background:#1E2A5E">
+                <i class="fa-solid fa-plus mr-1"></i>Ajukan Baru
+            </a>
+        </div>
 
         <template x-for="row in filteredPengajuan" :key="row.id">
             <div class="bg-white rounded-2xl shadow-sm p-4">

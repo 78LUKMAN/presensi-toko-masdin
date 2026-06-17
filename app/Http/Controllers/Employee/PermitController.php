@@ -54,13 +54,25 @@ class PermitController extends Controller
 
         $period = CarbonPeriod::create($request->start_date, $request->end_date);
 
+        // Check for existing records on these dates
         foreach ($period as $date) {
-            DailyAttendance::updateOrCreate(
+            $exists = DailyAttendance::where('employee_id', $employee->id)
+                ->where('date', $date->format('Y-m-d'))
+                ->exists();
+                
+            if ($exists) {
+                return response()->json([
+                    'success' => false, 
+                    'message' => 'Sudah ada presensi atau pengajuan untuk tanggal ' . $date->format('d M Y') . '. Tidak dapat mengajukan izin tumpang tindih.'
+                ], 400);
+            }
+        }
+
+        foreach ($period as $date) {
+            DailyAttendance::create(
                 [
                     'employee_id' => $employee->id,
-                    'date' => $date->format('Y-m-d')
-                ],
-                [
+                    'date' => $date->format('Y-m-d'),
                     'status' => $request->type,
                     'notes' => $request->reason,
                     'attachment' => $attachmentPath,

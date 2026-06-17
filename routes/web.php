@@ -42,11 +42,18 @@ Route::middleware(['guest'])->group(function () {
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/attachment/{path}', [\App\Http\Controllers\AttachmentController::class, 'download'])
+        ->where('path', '.*')
+        ->name('attachment.download');
+});
+
 // Admin Routes
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::get('/dashboard/data', [DashboardController::class, 'todayAttendanceData'])->name('dashboard.data');
+    Route::get('/dashboard/chart', [DashboardController::class, 'attendanceChartData'])->name('dashboard.chart');
     Route::get('/halaman-absensi', [DashboardController::class, 'halamanAbsensi'])->name('halaman-absensi');
     Route::get('/halaman-absensi/data', [DashboardController::class, 'halamanAbsensiData'])->name('halaman-absensi.data');
     Route::get('/generate-token', [DashboardController::class, 'generateToken'])->name('generate-token');
