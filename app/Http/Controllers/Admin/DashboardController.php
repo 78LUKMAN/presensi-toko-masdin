@@ -144,4 +144,64 @@ class DashboardController extends Controller
             'expires_at' => $expiresAt->toIso8601String(),
         ]);
     }
+
+    public function attendanceChartData(Request $request)
+    {
+        $days = $request->get('days', 7);
+        $endDate = Carbon::today();
+        $startDate = Carbon::today()->subDays($days - 1);
+        
+        $dates = [];
+        $labels = [];
+        
+        for ($i = 0; $i < $days; $i++) {
+            $date = $startDate->copy()->addDays($i);
+            $dates[] = $date->format('Y-m-d');
+            $labels[] = $date->translatedFormat('d M');
+        }
+        
+        $records = DailyAttendance::whereBetween('date', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])
+            ->get();
+            
+        $presentData = [];
+        $absentData = [];
+        $lateData = [];
+        $leaveData = [];
+        
+        foreach ($dates as $date) {
+            $dayRecords = $records->filter(function($item) use ($date) {
+                return $item->date->format('Y-m-d') == $date;
+            });
+            $presentData[] = $dayRecords->where('status', 'Hadir')->count();
+            $absentData[] = $dayRecords->where('status', 'Tidak Hadir')->count();
+            $lateData[] = $dayRecords->where('status', 'Terlambat')->count();
+            $leaveData[] = $dayRecords->whereIn('status', ['Izin', 'Cuti', 'Sakit'])->count();
+        }
+        
+        return response()->json([
+            'labels' => $labels,
+            'datasets' => [
+                [
+                    'label' => 'Hadir',
+                    'data' => $presentData,
+                    'backgroundColor' => '#10b981',
+                ],
+                [
+                    'label' => 'Terlambat',
+                    'data' => $lateData,
+                    'backgroundColor' => '#f59e0b',
+                ],
+                [
+                    'label' => 'Izin/Cuti',
+                    'data' => $leaveData,
+                    'backgroundColor' => '#3b82f6',
+                ],
+                [
+                    'label' => 'Tidak Hadir',
+                    'data' => $absentData,
+                    'backgroundColor' => '#ef4444',
+                ],
+            ]
+        ]);
+    }
 }

@@ -84,6 +84,24 @@
         </div>
     </div>
 
+    {{-- ── Chart Keaktifan Kehadiran ── --}}
+    <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <h3 class="text-sm font-semibold text-slate-800">Diagram Keaktifan Kehadiran Karyawan</h3>
+                <p class="text-xs text-slate-500" id="chart-subtitle">Tren presensi dalam 7 hari terakhir</p>
+            </div>
+            <select id="chart-filter" class="text-sm border border-slate-200 rounded-xl focus:ring-blue-500 focus:border-blue-500 px-3 py-1.5 bg-slate-50 text-slate-700 outline-none">
+                <option value="7">7 Hari Terakhir</option>
+                <option value="14">14 Hari Terakhir</option>
+                <option value="30">30 Hari Terakhir</option>
+            </select>
+        </div>
+        <div class="relative h-[300px] w-full">
+            <canvas id="attendanceChart"></canvas>
+        </div>
+    </div>
+
     {{-- ── Row 3: Table + Quick Info ── --}}
     <div class="grid grid-cols-1 xl:grid-cols-3 gap-5">
 
@@ -159,6 +177,46 @@
             {data:'status', render:d=>stBadge(d)},
         ],
         createdRow:row=>$(row).find('td').addClass('px-4 py-3 border-b border-slate-50 text-sm text-slate-600'),
+    });
+
+    // Chart Initialization
+    let attendanceChart;
+    const loadChart = (days = 7) => {
+        fetch(`{{ route('admin.dashboard.chart') }}?days=${days}`)
+            .then(res => res.json())
+            .then(data => {
+                const ctx = document.getElementById('attendanceChart').getContext('2d');
+                if (attendanceChart) attendanceChart.destroy();
+                
+                attendanceChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: data,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8 } },
+                            tooltip: { mode: 'index', intersect: false }
+                        },
+                        scales: {
+                            x: { stacked: true, grid: { display: false } },
+                            y: { stacked: true, beginAtZero: true, ticks: { stepSize: 1, precision: 0 } }
+                        },
+                        interaction: {
+                            mode: 'nearest',
+                            axis: 'x',
+                            intersect: false
+                        }
+                    }
+                });
+            });
+    };
+
+    loadChart(7);
+
+    document.getElementById('chart-filter').addEventListener('change', (e) => {
+        loadChart(e.target.value);
+        document.getElementById('chart-subtitle').textContent = `Tren presensi dalam ${e.target.value} hari terakhir`;
     });
 })();
 </script>
