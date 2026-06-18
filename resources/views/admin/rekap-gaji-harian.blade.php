@@ -157,8 +157,11 @@
 
     // Edit existing salary
     window.editGaji = (row) => {
+        const hours = row.total_hours || 0;
+        const defaultHonor = Math.round(hours * (50000 / 9));
+
         document.getElementById('edit-id').value = row.salary_id;
-        document.getElementById('edit-honor').value = row.gaji;
+        document.getElementById('edit-honor').value = (row.gaji > 0 || !hours) ? row.gaji : defaultHonor;
         document.getElementById('edit-notes').value = '';
         document.getElementById('form-gaji').dataset.mode = 'edit';
         document.getElementById('modal-gaji-title').textContent = row.salary_status === 'pending_manual'
@@ -169,13 +172,16 @@
 
     // Create new salary for entry without one
     window.createGaji = (row) => {
+        const hours = row.total_hours || 0;
+        const defaultHonor = Math.round(hours * (50000 / 9));
+
         document.getElementById('edit-id').value = '';
-        document.getElementById('edit-honor').value = '';
+        document.getElementById('edit-honor').value = defaultHonor > 0 ? defaultHonor : '';
         document.getElementById('edit-notes').value = '';
         document.getElementById('form-gaji').dataset.mode = 'create';
         document.getElementById('form-gaji').dataset.employeeId = row.employee_id;
         document.getElementById('form-gaji').dataset.date = row.attendance_date;
-        document.getElementById('form-gaji').dataset.totalHours = row.waktu ? row.waktu.replace('j','') : 0;
+        document.getElementById('form-gaji').dataset.totalHours = hours;
         document.getElementById('modal-gaji-title').textContent = 'Tambah Honor Karyawan';
         document.getElementById('modal-gaji').classList.remove('hidden');
     };
