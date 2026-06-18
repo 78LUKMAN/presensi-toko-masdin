@@ -51,6 +51,9 @@ class DailySalaryController extends Controller
                 ->addColumn('attendance_date', function ($row) {
                     return $row->date->format('Y-m-d');
                 })
+                ->addColumn('total_hours', function ($row) {
+                    return $row->total_hours;
+                })
                 ->make(true);
         }
 

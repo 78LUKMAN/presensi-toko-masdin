@@ -79,7 +79,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1.5">Honor Harian <span class="text-red-500">*</span></label>
-                        <input type="number" id="pb-gaji" value="50000" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                        <input type="number" id="pb-gaji" value="0" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
                     </div>
                 </div>
 
@@ -134,6 +134,26 @@
         document.getElementById('modal-jam-masuk').textContent = row.masuk;
         document.getElementById('pb-jam-pulang').value = row.pulang || '';
         document.getElementById('pb-notes').value = (row.ket && row.ket !== 'Lupa absen pulang') ? row.ket : '';
+        
+        const updateSalary = () => {
+            const masuk = document.getElementById('modal-jam-masuk').textContent;
+            const pulang = document.getElementById('pb-jam-pulang').value;
+            if (masuk && pulang && masuk !== '00:00') {
+                const start = new Date(`1970-01-01T${masuk}:00Z`);
+                const end = new Date(`1970-01-01T${pulang}:00Z`);
+                const diffMin = (end - start) / 60000;
+                if (diffMin > 0) {
+                    const hours = diffMin / 60;
+                    document.getElementById('pb-gaji').value = Math.round(hours * (50000 / 9));
+                } else {
+                    document.getElementById('pb-gaji').value = 0;
+                }
+            }
+        };
+        
+        document.getElementById('pb-jam-pulang').addEventListener('input', updateSalary);
+        updateSalary(); // initial calculation if pulang exists
+
         overlay('open','#modal-approval');
     };
     

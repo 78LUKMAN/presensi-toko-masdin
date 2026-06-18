@@ -100,35 +100,24 @@ class AttendanceActionController extends Controller
                 $attendance->approval_status = 'Done'; // Normal clock-out doesn't need approval
                 $attendance->save();
 
-                // Issue 3 Fix: Only auto-set salary to 50,000 if hours >= 9
-                // Otherwise mark as pending_manual for admin to fill
-                if ($attendance->total_hours >= 9) {
-                    \App\Models\DailySalary::updateOrCreate(
-                        [
-                            'employee_id' => $employee->id,
-                            'date' => $today,
-                        ],
-                        [
-                            'total_hours' => $attendance->total_hours,
-                            'salary_amount' => 50000,
-                            'salary_status' => 'auto',
-                            'notes' => 'Otomatis dari sistem (9 jam terpenuhi)',
-                        ]
-                    );
-                } else {
-                    \App\Models\DailySalary::updateOrCreate(
-                        [
-                            'employee_id' => $employee->id,
-                            'date' => $today,
-                        ],
-                        [
-                            'total_hours' => $attendance->total_hours,
-                            'salary_amount' => 0,
-                            'salary_status' => 'pending_manual',
-                            'notes' => 'Jam kerja kurang dari 9 jam, menunggu input admin',
-                        ]
-                    );
+                // Issue 3 Fix: Calculate salary proportional to hours worked
+                $salaryAmount = 0;
+                if ($attendance->total_hours > 0) {
+                    $salaryAmount = round($attendance->total_hours * (50000 / 9));
                 }
+
+                \App\Models\DailySalary::updateOrCreate(
+                    [
+                        'employee_id' => $employee->id,
+                        'date' => $today,
+                    ],
+                    [
+                        'total_hours' => $attendance->total_hours,
+                        'salary_amount' => $salaryAmount,
+                        'salary_status' => 'auto',
+                        'notes' => 'Otomatis dari sistem',
+                    ]
+                );
 
                 $message = 'Clock Out berhasil';
             }
