@@ -161,45 +161,29 @@ class DashboardController extends Controller
         }
         
         $records = DailyAttendance::whereBetween('date', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])
+            ->whereNotNull('check_in_time') // Only count checked-in employees
             ->get();
             
         $presentData = [];
-        $absentData = [];
-        $lateData = [];
-        $leaveData = [];
         
         foreach ($dates as $date) {
             $dayRecords = $records->filter(function($item) use ($date) {
                 return $item->date->format('Y-m-d') == $date;
             });
-            $presentData[] = $dayRecords->where('status', 'Hadir')->count();
-            $absentData[] = $dayRecords->where('status', 'Tidak Hadir')->count();
-            $lateData[] = $dayRecords->where('status', 'Terlambat')->count();
-            $leaveData[] = $dayRecords->whereIn('status', ['Izin', 'Cuti', 'Sakit'])->count();
+            $presentData[] = $dayRecords->count();
         }
         
         return response()->json([
             'labels' => $labels,
             'datasets' => [
                 [
-                    'label' => 'Hadir',
+                    'label' => 'Jumlah Karyawan Hadir',
                     'data' => $presentData,
-                    'backgroundColor' => '#10b981',
-                ],
-                [
-                    'label' => 'Terlambat',
-                    'data' => $lateData,
-                    'backgroundColor' => '#f59e0b',
-                ],
-                [
-                    'label' => 'Izin/Cuti',
-                    'data' => $leaveData,
-                    'backgroundColor' => '#3b82f6',
-                ],
-                [
-                    'label' => 'Tidak Hadir',
-                    'data' => $absentData,
-                    'backgroundColor' => '#ef4444',
+                    'backgroundColor' => '#3b82f6', // Use a single clear color (e.g. blue)
+                    'borderColor' => '#2563eb',
+                    'borderWidth' => 1,
+                    'fill' => true,
+                    'tension' => 0.4
                 ],
             ]
         ]);
