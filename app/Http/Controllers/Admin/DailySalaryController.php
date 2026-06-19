@@ -13,13 +13,19 @@ class DailySalaryController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $date = $request->get('date', now()->format('Y-m-d'));
+            $date = $request->filled('date') ? $request->get('date') : null;
             $section = $request->get('section');
 
+            // Preload employee and ALL of their daily salaries (or just the filtered date)
             $query = DailyAttendance::with(['employee', 'employee.dailySalaries' => function($q) use ($date) {
-                    $q->where('date', $date);
-                }])
-                ->where('date', $date);
+                    if ($date) {
+                        $q->where('date', $date);
+                    }
+                }]);
+
+            if ($date) {
+                $query->whereDate('date', $date);
+            }
 
             if ($section) {
                 $query->whereHas('employee', function ($q) use ($section) {
@@ -33,16 +39,16 @@ class DailySalaryController extends Controller
                 ->addColumn('nama', fn($row) => $row->employee->name)
                 ->addColumn('bagian', fn($row) => $row->employee->section)
                 ->addColumn('waktu', fn($row) => formatWorkingHours($row->total_hours))
-                ->addColumn('gaji', function ($row) use ($date) {
-                    $salary = $row->employee->dailySalaries->first();
+                ->addColumn('gaji', function ($row) {
+                    $salary = $row->employee->dailySalaries->where('date', $row->date)->first();
                     return $salary ? $salary->salary_amount : 0;
                 })
                 ->addColumn('salary_id', function ($row) {
-                    $salary = $row->employee->dailySalaries->first();
+                    $salary = $row->employee->dailySalaries->where('date', $row->date)->first();
                     return $salary ? $salary->id : null;
                 })
                 ->addColumn('salary_status', function ($row) {
-                    $salary = $row->employee->dailySalaries->first();
+                    $salary = $row->employee->dailySalaries->where('date', $row->date)->first();
                     return $salary ? $salary->salary_status : null;
                 })
                 ->addColumn('employee_id', function ($row) {

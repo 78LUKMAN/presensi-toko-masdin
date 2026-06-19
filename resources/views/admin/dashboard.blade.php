@@ -94,7 +94,8 @@
             <select id="chart-filter" class="text-sm border border-slate-200 rounded-xl focus:ring-blue-500 focus:border-blue-500 px-3 py-1.5 bg-slate-50 text-slate-700 outline-none">
                 <option value="7">7 Hari Terakhir</option>
                 <option value="14">14 Hari Terakhir</option>
-                <option value="30">30 Hari Terakhir</option>
+                <option value="21">21 Hari Terakhir</option>
+                <option value="30">1 Bulan Terakhir</option>
             </select>
         </div>
         <div class="relative h-[300px] w-full">
@@ -199,8 +200,8 @@
                             tooltip: { mode: 'index', intersect: false }
                         },
                         scales: {
-                            x: { stacked: true, grid: { display: false } },
-                            y: { stacked: true, beginAtZero: true, ticks: { stepSize: 1, precision: 0 } }
+                            x: { grid: { display: false } },
+                            y: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 } }
                         },
                         interaction: {
                             mode: 'nearest',
@@ -216,7 +217,8 @@
 
     document.getElementById('chart-filter').addEventListener('change', (e) => {
         loadChart(e.target.value);
-        document.getElementById('chart-subtitle').textContent = `Tren presensi dalam ${e.target.value} hari terakhir`;
+        let text = e.target.value == '30' ? '1 bulan terakhir' : `${e.target.value} hari terakhir`;
+        document.getElementById('chart-subtitle').textContent = `Tren kehadiran dalam ${text}`;
     });
 })();
 </script>
