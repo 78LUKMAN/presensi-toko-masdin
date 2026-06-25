@@ -37,6 +37,7 @@
     <div class="mobile-wrap">
         @yield('content')
     </div>
+    @include('partials.time-simulator')
     @stack('scripts')
 </body>
 </html>

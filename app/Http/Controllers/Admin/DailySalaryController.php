@@ -21,7 +21,8 @@ class DailySalaryController extends Controller
                     if ($date) {
                         $q->where('date', $date);
                     }
-                }]);
+                }])
+                ->whereNotIn('status', ['Izin', 'Sakit', 'Cuti']);
 
             if ($date) {
                 $query->whereDate('date', $date);

@@ -22,7 +22,7 @@ class AttendanceController extends Controller
      */
     public function data(Request $request)
     {
-        $query = DailyAttendance::with('employee');
+        $query = DailyAttendance::with('employee')->whereNotIn('status', ['Izin', 'Sakit', 'Cuti']);
 
         if ($request->filled('date')) {
             $query->whereDate('date', $request->date);

@@ -122,3 +122,18 @@ Route::prefix('employee')->name('employee.')->middleware(['auth', 'role:employee
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::post('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
 });
+
+// System / Dev Simulation Route
+Route::post('/simulate-time', function (\Illuminate\Http\Request $request) {
+    $time = $request->input('simulated_time');
+    if ($time === 'clear' || !$time) {
+        session()->forget('simulated_time');
+    } else {
+        try {
+            session(['simulated_time' => \Carbon\Carbon::parse($time)->toDateTimeString()]);
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Format waktu tidak valid.');
+        }
+    }
+    return redirect()->back();
+})->name('simulate-time');
