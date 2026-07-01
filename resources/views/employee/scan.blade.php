@@ -118,8 +118,7 @@
 
                 <p class="text-xs font-bold tracking-widest text-red-400 uppercase mb-1">MAAF</p>
                 <h2 class="text-xl font-extrabold text-slate-800 mb-2">Presensi Gagal</h2>
-                <p class="text-sm text-slate-400 mb-6">QR Code tidak valid atau sudah kedaluwarsa.<br>Coba lagi dengan QR
-                    yang baru.</p>
+                <p class="text-sm text-slate-400 mb-6" x-html="failMessage"></p>
 
                 <div class="space-y-3">
                     <button @click="showFail = false; startScanner();"
@@ -149,6 +148,7 @@
                 scanMessage: '',
                 scanTime: '',
                 scanType: '',
+                failMessage: 'QR Code tidak valid atau sudah kedaluwarsa.<br>Coba lagi dengan QR yang baru.',
 
                 async processScan(result) {
                     try {
@@ -169,10 +169,12 @@
                             this.scanType = data.type;
                             this.showSuccess = true;
                         } else {
+                            this.failMessage = data.message || 'QR Code tidak valid atau sudah kedaluwarsa.<br>Coba lagi dengan QR yang baru.';
                             this.showFail = true;
                         }
                     } catch (err) {
                         console.error(err);
+                        this.failMessage = 'Terjadi kesalahan sistem atau koneksi terputus.';
                         this.showFail = true;
                     }
                 },
