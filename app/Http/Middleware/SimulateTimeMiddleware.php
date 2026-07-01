@@ -21,11 +21,11 @@ class SimulateTimeMiddleware
         if ($request->has('simulated_time')) {
             $val = $request->query('simulated_time');
             if ($val === 'clear' || empty($val)) {
-                session()->forget('simulated_time');
+                \Illuminate\Support\Facades\Cache::forget('simulated_time');
             } else {
                 try {
                     $parsed = Carbon::parse($val);
-                    session(['simulated_time' => $parsed->toDateTimeString()]);
+                    \Illuminate\Support\Facades\Cache::forever('simulated_time', $parsed->toDateTimeString());
                 } catch (\Exception $e) {
                     // Ignore invalid format
                 }
@@ -33,8 +33,8 @@ class SimulateTimeMiddleware
         }
 
         // 2. Set Carbon test now
-        if (session()->has('simulated_time')) {
-            Carbon::setTestNow(Carbon::parse(session('simulated_time')));
+        if (\Illuminate\Support\Facades\Cache::has('simulated_time')) {
+            Carbon::setTestNow(Carbon::parse(\Illuminate\Support\Facades\Cache::get('simulated_time')));
         } elseif ($fakeTime = env('APP_FAKE_TIME')) {
             Carbon::setTestNow(Carbon::parse($fakeTime));
         }

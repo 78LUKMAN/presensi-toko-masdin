@@ -127,10 +127,10 @@ Route::prefix('employee')->name('employee.')->middleware(['auth', 'role:employee
 Route::post('/simulate-time', function (\Illuminate\Http\Request $request) {
     $time = $request->input('simulated_time');
     if ($time === 'clear' || !$time) {
-        session()->forget('simulated_time');
+        \Illuminate\Support\Facades\Cache::forget('simulated_time');
     } else {
         try {
-            session(['simulated_time' => \Carbon\Carbon::parse($time)->toDateTimeString()]);
+            \Illuminate\Support\Facades\Cache::forever('simulated_time', \Carbon\Carbon::parse($time)->toDateTimeString());
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Format waktu tidak valid.');
         }
