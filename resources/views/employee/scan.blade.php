@@ -122,7 +122,7 @@
                     yang baru.</p>
 
                 <div class="space-y-3">
-                    <button @click="showFail = false"
+                    <button @click="showFail = false; startScanner();"
                         class="w-full py-4 rounded-full font-bold text-white text-sm active:scale-95 transition-all"
                         style="background: linear-gradient(135deg, #EF4444, #DC2626);">
                         <i class="fa-solid fa-rotate-right mr-2"></i>Coba Lagi
@@ -140,6 +140,8 @@
 
 @push('scripts')
     <script>
+        let html5QrCodeInstance = null;
+
         document.addEventListener('alpine:init', () => {
             Alpine.data('scannerComponent', () => ({
                 showSuccess: false,
@@ -182,11 +184,17 @@
                         return;
                     }
 
-                    const html5QrCode = new Html5Qrcode("reader");
+                    if (html5QrCodeInstance && html5QrCodeInstance.isScanning) {
+                        return;
+                    }
+
+                    if (!html5QrCodeInstance) {
+                        html5QrCodeInstance = new Html5Qrcode("reader");
+                    }
                     const config = { fps: 60, qrbox: { width: 250, height: 250 } };
 
-                    html5QrCode.start({ facingMode: "environment" }, config, (decodedText, decodedResult) => {
-                        html5QrCode.stop().then(() => {
+                    html5QrCodeInstance.start({ facingMode: "environment" }, config, (decodedText, decodedResult) => {
+                        html5QrCodeInstance.stop().then(() => {
                             this.processScan(decodedText);
                         }).catch(err => {
                             console.error("Error stopping scanner:", err);
