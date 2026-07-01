@@ -39,6 +39,21 @@ class AttendanceController extends Controller
             ->addColumn('id_karyawan', fn($row) => $row->employee->noreg ?? '-')
             ->addColumn('nama', fn($row) => $row->employee->name ?? '-')
             ->addColumn('bagian', fn($row) => $row->employee->section ?? '-')
+            ->filterColumn('id_karyawan', function($query, $keyword) {
+                $query->whereHas('employee', function($q) use ($keyword) {
+                    $q->where('noreg', 'like', "%{$keyword}%");
+                });
+            })
+            ->filterColumn('nama', function($query, $keyword) {
+                $query->whereHas('employee', function($q) use ($keyword) {
+                    $q->where('name', 'like', "%{$keyword}%");
+                });
+            })
+            ->filterColumn('bagian', function($query, $keyword) {
+                $query->whereHas('employee', function($q) use ($keyword) {
+                    $q->where('section', 'like', "%{$keyword}%");
+                });
+            })
             ->editColumn('date', fn($row) => $row->date->format('Y-m-d'))
             ->addColumn('masuk', fn($row) => $row->check_in_time ? \Carbon\Carbon::parse($row->check_in_time)->format('H:i') : '-')
             ->addColumn('pulang', fn($row) => $row->check_out_time ? \Carbon\Carbon::parse($row->check_out_time)->format('H:i') : '-')

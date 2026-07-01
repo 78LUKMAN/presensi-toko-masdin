@@ -115,9 +115,9 @@
         language:{url:'https://cdn.datatables.net/plug-ins/2.0.3/i18n/id.json'},
         columns:[
             {data:'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
-            {data:'id_karyawan'},
-            {data:'nama'},
-            {data:'bagian'},
+            {data:'id_karyawan', name: 'id_karyawan'},
+            {data:'nama', name: 'nama'},
+            {data:'bagian', name: 'bagian'},
             {data:'waktu'},
             {data:'gaji', render: (data, type, row) => {
                 if (row.salary_status === 'pending_manual') {

@@ -72,9 +72,9 @@
         language: { url: 'https://cdn.datatables.net/plug-ins/2.0.3/i18n/id.json' },
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-            { data: 'id_karyawan', render: d => `<span class="font-mono text-xs font-medium text-blue-700 bg-blue-50 px-2 py-0.5 rounded-lg">${d}</span>` },
-            { data: 'nama', render: d => `<span class="font-medium text-slate-800">${d}</span>` },
-            { data: 'bagian', render: d => `<span class="text-slate-600">${d}</span>` },
+            { data: 'id_karyawan', name: 'id_karyawan', render: d => `<span class="font-mono text-xs font-medium text-blue-700 bg-blue-50 px-2 py-0.5 rounded-lg">${d}</span>` },
+            { data: 'nama', name: 'nama', render: d => `<span class="font-medium text-slate-800">${d}</span>` },
+            { data: 'bagian', name: 'bagian', render: d => `<span class="text-slate-600">${d}</span>` },
             { data: 'masuk', render: d => `<span class="font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-lg text-xs">${d}</span>` },
             { data: 'pulang', render: d => `<span class="font-mono text-orange-700 bg-orange-50 px-2 py-0.5 rounded-lg text-xs">${d}</span>` },
             { data: 'total_hours' },

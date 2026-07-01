@@ -39,6 +39,21 @@ class DailySalaryController extends Controller
                 ->addColumn('id_karyawan', fn($row) => $row->employee->noreg)
                 ->addColumn('nama', fn($row) => $row->employee->name)
                 ->addColumn('bagian', fn($row) => $row->employee->section)
+                ->filterColumn('id_karyawan', function($query, $keyword) {
+                    $query->whereHas('employee', function($q) use ($keyword) {
+                        $q->where('noreg', 'like', "%{$keyword}%");
+                    });
+                })
+                ->filterColumn('nama', function($query, $keyword) {
+                    $query->whereHas('employee', function($q) use ($keyword) {
+                        $q->where('name', 'like', "%{$keyword}%");
+                    });
+                })
+                ->filterColumn('bagian', function($query, $keyword) {
+                    $query->whereHas('employee', function($q) use ($keyword) {
+                        $q->where('section', 'like', "%{$keyword}%");
+                    });
+                })
                 ->addColumn('waktu', fn($row) => formatWorkingHours($row->total_hours))
                 ->addColumn('gaji', function ($row) {
                     $salary = $row->employee->dailySalaries->where('date', $row->date)->first();
