@@ -39,7 +39,7 @@
                 const data = await res.json();
                 this.submitting = false;
                 if (data.success) {
-                    this.showConfirm = true;
+                    window.location.reload();
                 } else {
                     alert(data.message || "Terjadi kesalahan.");
                 }
@@ -49,6 +49,23 @@
             }
         }
      }'>
+
+    {{-- Session Flash Messages (Modal Overlay) --}}
+    @if(session('success'))
+    <div class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 px-6" x-data="{ show: true }" x-show="show" x-transition>
+        <div class="bg-white rounded-3xl p-8 w-full max-w-[280px] text-center shadow-2xl">
+            <div class="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-4">
+                <i class="fa-solid fa-circle-check text-emerald-500 text-4xl"></i>
+            </div>
+            <h3 class="text-lg font-extrabold text-slate-800 mb-1">Berhasil!</h3>
+            <p class="text-sm text-slate-500 mb-6">{{ session('success') }}</p>
+            <button @click="show = false"
+                    class="w-full py-3.5 bg-[#1E2A5E] hover:bg-[#2D3F8F] text-white rounded-full font-bold text-sm active:scale-95 transition-all shadow-md shadow-[#1E2A5E]/20">
+                OK
+            </button>
+        </div>
+    </div>
+    @endif
 
     {{-- ── Header ── --}}
     <div class="px-5 pt-12 pb-5" style="background: linear-gradient(135deg, #1E2A5E 0%, #2D3F8F 60%, #3B82F6 100%);">
@@ -196,27 +213,6 @@
             </div>
         </div>
         @endforeach
-    </div>
-
-    {{-- ════════ SUCCESS CONFIRM MODAL ════════ --}}
-    <div x-show="showConfirm" x-transition.opacity
-         class="fixed inset-0 z-50 flex items-end justify-center bg-black/40">
-        <div x-show="showConfirm"
-             x-transition:enter="transition ease-out duration-300"
-             x-transition:enter-start="translate-y-full"
-             x-transition:enter-end="translate-y-0"
-             class="bg-white rounded-t-3xl p-6 w-full max-w-[480px] pb-safe shadow-2xl text-center">
-            <div class="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-4">
-                <i class="fa-solid fa-circle-check text-emerald-500 text-4xl"></i>
-            </div>
-            <h3 class="text-lg font-extrabold text-slate-800 mb-1">Pengajuan Terkirim!</h3>
-            <p class="text-sm text-slate-400 mb-6">Pengajuan <span class="font-semibold text-slate-700" x-text="type"></span> Anda sedang menunggu persetujuan atasan.</p>
-            <button @click="showConfirm=false; tab='history'; type=''; startDate=''; endDate=''; reason=''; fileName='';"
-                    class="w-full py-4 rounded-full font-bold text-white active:scale-95 transition-all"
-                    style="background: linear-gradient(135deg,#1E2A5E,#3B82F6);">
-                Lihat Riwayat
-            </button>
-        </div>
     </div>
 
     @include('employee._bottom-nav', ['active' => 'izin'])

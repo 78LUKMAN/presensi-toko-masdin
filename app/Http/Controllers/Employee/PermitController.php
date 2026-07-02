@@ -81,6 +81,7 @@ class PermitController extends Controller
             );
         }
 
+        session()->flash('success', 'Pengajuan berhasil dikirim.');
         return response()->json(['success' => true, 'message' => 'Pengajuan berhasil dikirim.']);
     }
 }

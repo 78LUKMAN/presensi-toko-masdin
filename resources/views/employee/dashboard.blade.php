@@ -14,19 +14,20 @@
     }
 }' x-init="update(); setInterval(() => update(), 1000)">
 
-    {{-- Session Flash Messages --}}
+    {{-- Session Flash Messages (Modal Overlay) --}}
     @if(session('success'))
-    <div class="m-4 p-4 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-start gap-3 shadow-sm" x-data="{ show: true }" x-show="show" x-transition>
-        <div class="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0 text-emerald-600">
-            <i class="fa-solid fa-circle-check text-xs"></i>
+    <div class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 px-6" x-data="{ show: true }" x-show="show" x-transition>
+        <div class="bg-white rounded-3xl p-8 w-full max-w-xs text-center shadow-2xl">
+            <div class="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-4">
+                <i class="fa-solid fa-circle-check text-emerald-500 text-4xl"></i>
+            </div>
+            <h3 class="text-lg font-extrabold text-slate-800 mb-1">Berhasil!</h3>
+            <p class="text-sm text-slate-500 mb-6">{{ session('success') }}</p>
+            <button @click="show = false"
+                    class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full font-bold text-sm active:scale-95 transition-all shadow-md shadow-emerald-500/20">
+                OK
+            </button>
         </div>
-        <div class="flex-1">
-            <p class="text-sm font-semibold text-slate-800">Berhasil</p>
-            <p class="text-xs text-slate-600 mt-0.5">{{ session('success') }}</p>
-        </div>
-        <button @click="show = false" class="text-slate-400 hover:text-slate-600 transition-colors">
-            <i class="fa-solid fa-xmark text-sm"></i>
-        </button>
     </div>
     @endif
 
