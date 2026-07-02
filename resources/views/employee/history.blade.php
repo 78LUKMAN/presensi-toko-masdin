@@ -89,6 +89,22 @@
 
 <div class="min-h-screen bg-[#F0F4F8] pb-24" x-data="historyApp">
 
+    {{-- Session Flash Messages --}}
+    @if(session('success'))
+    <div class="m-4 p-4 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-start gap-3 shadow-sm" x-data="{ show: true }" x-show="show" x-transition>
+        <div class="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0 text-emerald-600">
+            <i class="fa-solid fa-circle-check text-xs"></i>
+        </div>
+        <div class="flex-1">
+            <p class="text-sm font-semibold text-slate-800">Berhasil</p>
+            <p class="text-xs text-slate-600 mt-0.5">{{ session('success') }}</p>
+        </div>
+        <button @click="show = false" class="text-slate-400 hover:text-slate-600 transition-colors">
+            <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+    </div>
+    @endif
+
     {{-- ── Header ── --}}
     <div class="relative px-5 pt-12 pb-5 text-white"
          style="background: linear-gradient(135deg, #1E2A5E 0%, #2D3F8F 60%, #3B82F6 100%);">
