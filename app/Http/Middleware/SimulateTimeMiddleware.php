@@ -18,7 +18,7 @@ class SimulateTimeMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         // 1. Check if simulated_time is passed as query parameter
-        if ($request->has('simulated_time')) {
+        if ($request->query->has('simulated_time')) {
             $val = $request->query('simulated_time');
             if ($val === 'clear' || empty($val)) {
                 \Illuminate\Support\Facades\Cache::forget('simulated_time');
@@ -34,8 +34,10 @@ class SimulateTimeMiddleware
 
         // 2. Set Carbon test now
         if (\Illuminate\Support\Facades\Cache::has('simulated_time')) {
+            config(['session.lifetime' => 52560000]); // 100 years to prevent session/CSRF expiration
             Carbon::setTestNow(Carbon::parse(\Illuminate\Support\Facades\Cache::get('simulated_time')));
         } elseif ($fakeTime = env('APP_FAKE_TIME')) {
+            config(['session.lifetime' => 52560000]);
             Carbon::setTestNow(Carbon::parse($fakeTime));
         }
 
