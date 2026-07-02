@@ -4,12 +4,17 @@
 
 @section('content')
 <div class="flex flex-col min-h-screen bg-white text-slate-800" x-data='{
-    time: "",
+    hourMin: "",
+    sec: "",
     date: "",
     offset: {{ $serverTimestampMs }} - Date.now(),
     update() {
         const now = new Date(Date.now() + this.offset);
-        this.time = now.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+        const h = String(now.getHours()).padStart(2, "0");
+        const m = String(now.getMinutes()).padStart(2, "0");
+        const s = String(now.getSeconds()).padStart(2, "0");
+        this.hourMin = `${h}:${m}`;
+        this.sec = s;
         this.date = now.toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
     }
 }' x-init="update(); setInterval(() => update(), 1000)">
@@ -86,7 +91,10 @@
 
         <div class="flex flex-col items-center justify-center py-4">
             {{-- Real-time time --}}
-            <div class="text-4xl font-extrabold text-[#035EA1]" x-text="time">00:00:00</div>
+            <div class="text-4xl font-extrabold text-[#035EA1] flex items-baseline justify-center">
+                <span x-text="hourMin">00:00</span>
+                <!-- <span class="text-2xl font-bold ml-1 text-[#035EA1]/70">:<span x-text="sec">00</span></span> -->
+            </div>
             {{-- Day, Date --}}
             <div class="text-sm text-slate-500 mt-1" x-text="date">Memuat...</div>
         </div>
