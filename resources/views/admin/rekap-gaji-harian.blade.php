@@ -71,7 +71,7 @@
                 <input type="hidden" id="edit-id">
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Honor (Rp)</label>
-                    <input type="number" id="edit-honor" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <input type="text" id="edit-honor" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Catatan</label>
@@ -90,7 +90,14 @@
 @push('scripts')
 <script>
 (function(){
-    const fmt = n => 'Rp ' + (n || 0).toLocaleString('id-ID');
+    const fmt = n => 'Rp ' + Math.round(Number(n || 0)).toLocaleString('id-ID');
+    
+    const formatNumberInput = (value) => {
+        let clean = String(value).replace(/\D/g, '');
+        if (!clean) return '';
+        return Number(clean).toLocaleString('id-ID');
+    };
+
     const statusBadge = (status) => {
         const map = {
             'auto': '<span class="inline-flex px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700">Otomatis</span>',
@@ -99,6 +106,19 @@
         };
         return map[status] || '<span class="inline-flex px-2 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-500">-</span>';
     };
+
+    const inputHonor = document.getElementById('edit-honor');
+    inputHonor.addEventListener('input', function(e) {
+        let cursorPosition = this.selectionStart;
+        const oldLength = this.value.length;
+        
+        const formatted = formatNumberInput(this.value);
+        this.value = formatted;
+        
+        const newLength = this.value.length;
+        cursorPosition = cursorPosition + (newLength - oldLength);
+        this.setSelectionRange(cursorPosition, cursorPosition);
+    });
 
     // Don't default to today — show all dates so the table isn't empty
 
@@ -161,7 +181,8 @@
         const defaultHonor = Math.round(hours * (50000 / 9));
 
         document.getElementById('edit-id').value = row.salary_id;
-        document.getElementById('edit-honor').value = (row.gaji > 0 || !hours) ? row.gaji : defaultHonor;
+        const rawVal = Math.round((row.gaji > 0 || !hours) ? row.gaji : defaultHonor);
+        document.getElementById('edit-honor').value = formatNumberInput(rawVal);
         document.getElementById('edit-notes').value = '';
         document.getElementById('form-gaji').dataset.mode = 'edit';
         document.getElementById('modal-gaji-title').textContent = row.salary_status === 'pending_manual'
@@ -176,7 +197,8 @@
         const defaultHonor = Math.round(hours * (50000 / 9));
 
         document.getElementById('edit-id').value = '';
-        document.getElementById('edit-honor').value = defaultHonor > 0 ? defaultHonor : '';
+        const rawVal = defaultHonor > 0 ? Math.round(defaultHonor) : '';
+        document.getElementById('edit-honor').value = rawVal ? formatNumberInput(rawVal) : '';
         document.getElementById('edit-notes').value = '';
         document.getElementById('form-gaji').dataset.mode = 'create';
         document.getElementById('form-gaji').dataset.employeeId = row.employee_id;
@@ -193,7 +215,7 @@
     document.getElementById('form-gaji').onsubmit = function(e) {
         e.preventDefault();
         const mode = this.dataset.mode;
-        const honor = document.getElementById('edit-honor').value;
+        const honor = document.getElementById('edit-honor').value.replace(/\D/g, '');
         const notes = document.getElementById('edit-notes').value;
 
         if (mode === 'edit') {
