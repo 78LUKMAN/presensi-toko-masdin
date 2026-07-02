@@ -14,6 +14,22 @@
     }
 }' x-init="update(); setInterval(() => update(), 1000)">
 
+    {{-- Session Flash Messages --}}
+    @if(session('success'))
+    <div class="m-4 p-4 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-start gap-3 shadow-sm" x-data="{ show: true }" x-show="show" x-transition>
+        <div class="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0 text-emerald-600">
+            <i class="fa-solid fa-circle-check text-xs"></i>
+        </div>
+        <div class="flex-1">
+            <p class="text-sm font-semibold text-slate-800">Berhasil</p>
+            <p class="text-xs text-slate-600 mt-0.5">{{ session('success') }}</p>
+        </div>
+        <button @click="show = false" class="text-slate-400 hover:text-slate-600 transition-colors">
+            <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+    </div>
+    @endif
+
     {{-- 0. Warning Message --}}
     @if($forgotClockOut)
     <div class="m-4 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3">
