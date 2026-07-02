@@ -57,7 +57,7 @@
         {{-- ── Stats row ── --}}
         <div class="px-4 -mt-8 mb-4 relative z-10">
             @php
-                $hadirCount = \App\Models\DailyAttendance::where('employee_id', $employee->id)->where('status', 'Hadir')->count();
+                $hadirCount = \App\Models\DailyAttendance::where('employee_id', $employee->id)->whereIn('status', ['Hadir', 'Hadir (Manual)', 'Pulang Cepat'])->count();
                 $izinCount = \App\Models\DailyAttendance::where('employee_id', $employee->id)->whereIn('status', ['Izin', 'Sakit', 'Cuti'])->where('approval_status', 'Done')->count();
                 $alpaCount = \App\Models\DailyAttendance::where('employee_id', $employee->id)->where('status', 'Tidak Hadir')->count();
             @endphp

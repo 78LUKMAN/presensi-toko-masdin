@@ -22,7 +22,7 @@ class DashboardController extends Controller
         $today = Carbon::today();
         
         // Attendance stats
-        $presentToday = DailyAttendance::whereDate('date', $today)->where('status', 'Hadir')->count();
+        $presentToday = DailyAttendance::whereDate('date', $today)->whereIn('status', ['Hadir', 'Hadir (Manual)', 'Pulang Cepat'])->count();
         
         // Use shared scope so dashboard count matches the Presensi Bermasalah page exactly
         $problematicCount = DailyAttendance::problematic()->count();
