@@ -1,6 +1,6 @@
 @extends('layouts.admin')
-@section('title', 'Halaman Absensi')
-@section('page-title', 'Halaman Absensi')
+@section('title', 'Halaman Presensi')
+@section('page-title', 'Halaman Presensi')
 
 @section('content')
 <div class="space-y-5">
@@ -8,7 +8,7 @@
     {{-- Header --}}
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-lg font-bold text-slate-800">Halaman Absensi</h1>
+            <h1 class="text-lg font-bold text-slate-800">Halaman Presensi</h1>
             <p class="text-sm text-slate-500" id="live-date">{{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}</p>
         </div>
         <div class="flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-xl">
@@ -73,7 +73,7 @@
                             <th class="px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
                         </tr>
                     </thead>
-                    <tbody id="absensi-tbody">
+                    <tbody id="presensi-tbody">
                         {{-- Filled by JS --}}
                     </tbody>
                 </table>
@@ -106,8 +106,8 @@
                         </svg>
                     </div>
                     <div>
-                        <p class="text-sm font-semibold text-slate-800">QR Code Absensi</p>
-                        <p class="text-xs text-slate-500">Scan untuk melakukan absensi</p>
+                        <p class="text-sm font-semibold text-slate-800">QR Code Presensi</p>
+                        <p class="text-xs text-slate-500">Scan untuk melakukan presensi</p>
                     </div>
                 </div>
 
@@ -160,19 +160,19 @@
 
             {{-- Attendance URL Info --}}
             <div class="bg-white rounded-2xl border border-slate-200 p-5">
-                <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">URL Absensi Karyawan</p>
+                <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">URL Presensi Karyawan</p>
                 <div class="flex items-center gap-2 p-3 bg-slate-50 rounded-xl border border-slate-200">
                     <svg class="w-4 h-4 text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
                     </svg>
-                    <span class="text-xs font-mono text-slate-600 flex-1 truncate" id="absensi-url">{{ url('/absensi') }}</span>
+                    <span class="text-xs font-mono text-slate-600 flex-1 truncate" id="presensi-url">{{ url('/presensi') }}</span>
                     <button onclick="copyUrl()" class="text-blue-600 hover:text-blue-800 flex-shrink-0" title="Salin URL">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                         </svg>
                     </button>
                 </div>
-                <p class="mt-2 text-xs text-slate-400">QR Code mengarah ke URL ini. Karyawan scan untuk absen masuk / pulang.</p>
+                <p class="mt-2 text-xs text-slate-400">QR Code mengarah ke URL ini. Karyawan scan untuk presensi masuk / pulang.</p>
             </div>
 
             {{-- Stats mini --}}
@@ -206,7 +206,7 @@
     let employees = [];
     
     function loadData() {
-        fetch('{{ route("admin.halaman-absensi.data") }}')
+        fetch('{{ route("admin.halaman-presensi.data") }}')
             .then(r => r.json())
             .then(data => {
                 employees = data;
@@ -228,14 +228,14 @@
 
     // ── Render table ─────────────────────────────────────────────────────
     function statusBadge(masuk, pulang) {
-        if (!masuk) return `<span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-500">Belum Absen</span>`;
+        if (!masuk) return `<span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-500">Belum Presensi</span>`;
         if (!pulang) return `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-700"><span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>Di Tempat</span>`;
         return `<span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700">Pulang</span>`;
     }
 
     function renderTable(filter) {
         const q = (filter || '').toLowerCase();
-        const tbody = document.getElementById('absensi-tbody');
+        const tbody = document.getElementById('presensi-tbody');
         const empty = document.getElementById('empty-state');
 
         const filtered = employees.filter(e =>
@@ -291,7 +291,7 @@
     });
 
     // ── QR Code generator ────────────────────────────────────────────────
-    const ABSENSI_URL = document.getElementById('absensi-url').textContent.trim();
+    const PRESENSI_URL = document.getElementById('presensi-url').textContent.trim();
     const REFRESH_SEC = 30;
 
     let qrCodeInstance = null;
@@ -366,7 +366,7 @@
 
     // ── Copy URL ─────────────────────────────────────────────────────────
     window.copyUrl = function () {
-        navigator.clipboard.writeText(ABSENSI_URL).then(() => {
+        navigator.clipboard.writeText(PRESENSI_URL).then(() => {
             const btn = document.querySelector('[onclick="copyUrl()"]');
             btn.innerHTML = `<svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>`;
             setTimeout(() => {

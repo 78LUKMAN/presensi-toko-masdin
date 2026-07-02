@@ -98,12 +98,12 @@ class DashboardController extends Controller
         return view('admin.pengaturan');
     }
 
-    public function halamanAbsensi()
+    public function halamanPresensi()
     {
-        return view('admin.halaman-absensi');
+        return view('admin.halaman-presensi');
     }
 
-    public function halamanAbsensiData()
+    public function halamanPresensiData()
     {
         $today = Carbon::today();
         

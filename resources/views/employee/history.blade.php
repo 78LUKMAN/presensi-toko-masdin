@@ -4,7 +4,7 @@
 
 @section('content')
 @php
-    $absensiMapped = $histories->filter(fn($h) => !in_array($h->status, ['Izin', 'Sakit', 'Cuti']))->map(function($h) use ($salaries) {
+    $presensiMapped = $histories->filter(fn($h) => !in_array($h->status, ['Izin', 'Sakit', 'Cuti']))->map(function($h) use ($salaries) {
         $dateStr = \Carbon\Carbon::parse($h->date)->format('Y-m-d');
         $salaryAmount = isset($salaries[$dateStr]) ? $salaries[$dateStr]->salary_amount : null;
         return [
@@ -37,16 +37,16 @@
 <script>
     document.addEventListener('alpine:init', () => {
         Alpine.data('historyApp', () => ({
-            tab: 'absensi',
+            tab: 'presensi',
             filterType: 'all',
             dateFrom: '',
             dateTo: '',
             showFilter: false,
-            absensiData: @json($absensiMapped),
+            presensiData: @json($presensiMapped),
             pengajuanData: @json($pengajuanMapped),
 
-            get filteredAbsensi() {
-                return this.absensiData.filter(r => {
+            get filteredPresensi() {
+                return this.presensiData.filter(r => {
                     const typeOk = this.filterType === 'all' || r.status.toLowerCase().includes(this.filterType);
                     const fromOk = !this.dateFrom || r.date >= this.dateFrom;
                     const toOk   = !this.dateTo   || r.date <= this.dateTo;
@@ -125,9 +125,9 @@
             <button @click="resetFilter()" class="text-xs text-blue-600 font-semibold">Reset</button>
         </div>
 
-        {{-- Type filter (absensi tab) --}}
-        <div x-show="tab === 'absensi'">
-            <p class="text-xs text-slate-400 font-medium mb-2">Status Absensi</p>
+        {{-- Type filter (presensi tab) --}}
+        <div x-show="tab === 'presensi'">
+            <p class="text-xs text-slate-400 font-medium mb-2">Status Presensi</p>
             <div class="flex flex-wrap gap-2">
                 <template x-for="opt in [['all','Semua'],['hadir','Hadir'],['pulang cepat','Pulang Cepat'],['alpa','Alpa']]" :key="opt[0]">
                     <button @click="filterType = opt[0]"
@@ -175,11 +175,11 @@
     {{-- ── Tab switcher ── --}}
     <div class="px-4 mt-4">
         <div class="bg-white rounded-2xl shadow-sm p-1 flex gap-1">
-            <button @click="tab = 'absensi'; filterType = 'all'"
-                    :class="tab === 'absensi' ? 'text-white shadow-sm' : 'text-slate-500'"
+            <button @click="tab = 'presensi'; filterType = 'all'"
+                    :class="tab === 'presensi' ? 'text-white shadow-sm' : 'text-slate-500'"
                     class="flex-1 py-2.5 rounded-xl text-sm font-bold transition-all"
-                    :style="tab === 'absensi' ? 'background: linear-gradient(135deg,#1E2A5E,#3B82F6)' : ''">
-                <i class="fa-solid fa-calendar-check mr-1.5"></i>Absensi
+                    :style="tab === 'presensi' ? 'background: linear-gradient(135deg,#1E2A5E,#3B82F6)' : ''">
+                <i class="fa-solid fa-calendar-check mr-1.5"></i>Presensi
             </button>
             <button @click="tab = 'pengajuan'; filterType = 'all'"
                     :class="tab === 'pengajuan' ? 'text-white shadow-sm' : 'text-slate-500'"
@@ -191,9 +191,9 @@
     </div>
 
     {{-- ════════════════════════════════════════
-         TAB: ABSENSI
+         TAB: PRESENSI
     ════════════════════════════════════════ --}}
-    <div x-show="tab === 'absensi'" x-transition.opacity class="px-4 mt-4 space-y-3">
+    <div x-show="tab === 'presensi'" x-transition.opacity class="px-4 mt-4 space-y-3">
 
         {{-- Active filter chips --}}
         <div x-show="filterType !== 'all' || dateFrom || dateTo" class="flex flex-wrap gap-2">
@@ -214,10 +214,10 @@
         </div>
 
         {{-- Result count --}}
-        <p class="text-xs text-slate-400 font-medium" x-text="filteredAbsensi.length + ' data ditemukan'"></p>
+        <p class="text-xs text-slate-400 font-medium" x-text="filteredPresensi.length + ' data ditemukan'"></p>
 
         {{-- Cards --}}
-        <template x-for="row in filteredAbsensi" :key="row.id">
+        <template x-for="row in filteredPresensi" :key="row.id">
             <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
                 <div class="flex items-center justify-between px-4 pt-3.5 pb-2">
                     <div>
@@ -255,12 +255,12 @@
         </template>
 
         {{-- Empty state --}}
-        <template x-if="filteredAbsensi.length === 0">
+        <template x-if="filteredPresensi.length === 0">
             <div class="py-16 text-center">
                 <div class="w-20 h-20 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-4">
                     <i class="fa-solid fa-calendar-xmark text-slate-300 text-4xl"></i>
                 </div>
-                <p class="text-sm font-bold text-slate-500">Tidak ada data absensi</p>
+                <p class="text-sm font-bold text-slate-500">Tidak ada data presensi</p>
                 <p class="text-xs text-slate-400 mt-1">Coba ubah filter yang diterapkan</p>
                 <button @click="resetFilter()" class="mt-4 px-5 py-2 rounded-full text-xs font-bold text-white" style="background:#1E2A5E">
                     Reset Filter
