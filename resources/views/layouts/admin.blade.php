@@ -113,11 +113,11 @@
 
     <!-- ========== SIDEBAR ========== -->
     <div id="hs-sidebar-basic-usage"
-         class="hs-overlay [--auto-close:lg] hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform w-64 hidden fixed inset-y-0 start-0 z-[60] bg-gradient-to-b from-slate-900 to-slate-800 border-e border-slate-700 pt-7 pb-10 overflow-y-auto lg:block lg:translate-x-0 lg:end-auto lg:bottom-0"
+         class="hs-overlay [--auto-close:lg] hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform w-64 hidden fixed inset-y-0 start-0 z-[60] bg-gradient-to-b from-slate-900 to-slate-800 border-e border-slate-700 pt-7 flex flex-col lg:flex lg:translate-x-0 lg:end-auto lg:bottom-0"
          role="dialog" tabindex="-1" aria-label="Sidebar">
 
         <!-- Logo / Brand -->
-        <div class="px-6 mb-8">
+        <div class="px-6 mb-8 flex-shrink-0">
             <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 group">
                 <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg">
                     <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -133,7 +133,7 @@
         </div>
 
         <!-- Navigation -->
-        <nav class="px-3 space-y-1">
+        <nav class="px-3 space-y-1 flex-1 overflow-y-auto pb-4">
             <p class="px-3 mb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Menu Utama</p>
 
             {{-- Dashboard --}}
@@ -272,7 +272,7 @@
         </nav>
 
         <!-- User Info at Bottom -->
-        <div class="absolute bottom-0 left-0 right-0 px-4 py-4 border-t border-slate-700 bg-slate-900/50">
+        <div class="px-4 py-4 border-t border-slate-700 bg-slate-900/50 flex-shrink-0">
             <div class="flex items-center gap-3">
                 <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white text-xs font-bold">
                     {{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}
