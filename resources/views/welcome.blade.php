@@ -57,12 +57,14 @@
         }
     </style>
 </head>
-<body class="bg-slate-900 text-white min-h-screen relative overflow-hidden flex items-center justify-center selection:bg-blue-500 selection:text-white">
+<body class="bg-slate-900 text-white min-h-screen relative overflow-x-hidden flex items-center justify-center selection:bg-blue-500 selection:text-white">
 
     <!-- Background Blobs -->
-    <div class="blob bg-blue-600 w-96 h-96 rounded-full top-[-10%] left-[-10%]"></div>
-    <div class="blob bg-indigo-500 w-[500px] h-[500px] rounded-full bottom-[-20%] right-[-10%]" style="animation-delay: -5s;"></div>
-    <div class="blob bg-emerald-500 w-64 h-64 rounded-full top-[20%] right-[20%] opacity-40"></div>
+    <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="blob bg-blue-600 w-96 h-96 rounded-full top-[-10%] left-[-10%]"></div>
+        <div class="blob bg-indigo-500 w-[500px] h-[500px] rounded-full bottom-[-20%] right-[-10%]" style="animation-delay: -5s;"></div>
+        <div class="blob bg-emerald-500 w-64 h-64 rounded-full top-[20%] right-[20%] opacity-40"></div>
+    </div>
 
     <div class="relative z-10 w-full max-w-5xl px-6 py-12 flex flex-col items-center">
         
