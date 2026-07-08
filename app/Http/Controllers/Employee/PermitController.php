@@ -81,6 +81,13 @@ class PermitController extends Controller
             );
         }
 
+        // Dispatch broadcast event for real-time notification
+        event(new \App\Events\PermitSubmitted(
+            $employee->name,
+            $request->type,
+            $request->start_date . ($request->end_date && $request->end_date !== $request->start_date ? ' s/d ' . $request->end_date : '')
+        ));
+
         session()->flash('success', 'Pengajuan berhasil dikirim.');
         return response()->json(['success' => true, 'message' => 'Pengajuan berhasil dikirim.']);
     }

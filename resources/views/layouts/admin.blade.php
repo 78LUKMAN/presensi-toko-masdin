@@ -386,6 +386,125 @@
             });
         });
     </script>
+    <!-- Real-time Notification Toast Container -->
+    <div x-data="{
+        notifications: [],
+        add(notif) {
+            const id = Date.now();
+            this.notifications.push({
+                id: id,
+                title: notif.title,
+                message: notif.message,
+                type: notif.type || 'info',
+                time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+            });
+            // Play sound chime
+            playChime();
+            // Auto remove after 8 seconds
+            setTimeout(() => {
+                this.notifications = this.notifications.filter(n => n.id !== id);
+            }, 8000);
+        }
+    }"
+    x-init="
+        document.addEventListener('DOMContentLoaded', () => {
+            // Request native browser desktop notification permission on first user click (required by modern browser policies)
+            const requestNotificationPermission = () => {
+                if ('Notification' in window && Notification.permission === 'default') {
+                    Notification.requestPermission();
+                }
+            };
+            document.addEventListener('click', requestNotificationPermission, { once: true });
+
+            if (window.Echo) {
+                window.Echo.channel('admin-notifications')
+                    .listen('.permit.submitted', (e) => {
+                        const title = 'Pengajuan ' + e.permitType + ' Baru';
+                        const body = e.employeeName + ' mengajukan ' + e.permitType + ' (' + e.dateRange + ')';
+                        
+                        add({
+                            title: title,
+                            message: body,
+                            type: 'permit'
+                        });
+
+                        // Show OS native desktop notification
+                        if ('Notification' in window && Notification.permission === 'granted') {
+                            new Notification(title, {
+                                body: body,
+                                tag: 'permit-notification-' + Date.now()
+                            });
+                        }
+                    });
+            } else {
+                console.warn('Laravel Echo is not ready.');
+            }
+        });
+    "
+    class="fixed bottom-5 right-5 z-[9999] flex flex-col gap-3 w-full max-w-sm pointer-events-none">
+        
+        <template x-for="n in notifications" :key="n.id">
+            <div x-transition:enter="transition ease-out duration-300 transform"
+                 x-transition:enter-start="translate-y-2 opacity-0 scale-95"
+                 x-transition:enter-end="translate-y-0 opacity-100 scale-100"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="opacity-100 scale-100"
+                 x-transition:leave-end="opacity-0 scale-90"
+                 class="pointer-events-auto bg-slate-900/95 text-white rounded-2xl p-4 shadow-2xl border border-slate-700/80 backdrop-blur-md flex items-start gap-3 w-full">
+                
+                <div class="w-9 h-9 rounded-xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400 flex-shrink-0 mt-0.5">
+                    <i class="fa-solid fa-file-invoice text-lg"></i>
+                </div>
+                
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between gap-2">
+                        <p class="text-sm font-bold text-white" x-text="n.title"></p>
+                        <span class="text-[10px] text-slate-400 font-medium" x-text="n.time"></span>
+                    </div>
+                    <p class="text-xs text-slate-300 mt-1 leading-relaxed" x-text="n.message"></p>
+                </div>
+                
+                <button @click="notifications = notifications.filter(item => item.id !== n.id)" class="text-slate-400 hover:text-white transition-colors flex-shrink-0">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+        </template>
+    </div>
+
+    <script>
+        function playChime() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // First Note (D5)
+                const osc1 = audioCtx.createOscillator();
+                const gain1 = audioCtx.createGain();
+                osc1.connect(gain1);
+                gain1.connect(audioCtx.destination);
+                osc1.type = 'sine';
+                osc1.frequency.setValueAtTime(587.33, audioCtx.currentTime);
+                gain1.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                gain1.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.6);
+                osc1.start(audioCtx.currentTime);
+                osc1.stop(audioCtx.currentTime + 0.6);
+
+                // Second Note (A5)
+                const osc2 = audioCtx.createOscillator();
+                const gain2 = audioCtx.createGain();
+                osc2.connect(gain2);
+                gain2.connect(audioCtx.destination);
+                osc2.type = 'sine';
+                osc2.frequency.setValueAtTime(880.00, audioCtx.currentTime + 0.12);
+                gain2.gain.setValueAtTime(0.12, audioCtx.currentTime + 0.12);
+                gain2.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.0);
+                osc2.start(audioCtx.currentTime + 0.12);
+                osc2.stop(audioCtx.currentTime + 1.0);
+            } catch (e) {
+                console.warn('Audio chime failed to play: ', e);
+            }
+        }
+    </script>
+
     @include('partials.time-simulator')
     @stack('scripts')
 </body>
