@@ -175,10 +175,11 @@
         createdRow:row=>$(row).find('td').addClass('px-4 py-3 border-b border-slate-50 text-sm text-slate-600')
     });
 
-    // Edit existing salary
     window.editGaji = (row) => {
         const hours = row.total_hours || 0;
-        const defaultHonor = Math.round(hours * (50000 / 9));
+        const defaultHonor = hours > 9
+            ? Math.round(50000 + (hours - 9) * (50000 / 9 + 5000))
+            : Math.round(hours * (50000 / 9));
 
         document.getElementById('edit-id').value = row.salary_id;
         const rawVal = Math.round((row.gaji > 0 || !hours) ? row.gaji : defaultHonor);
@@ -191,10 +192,11 @@
         document.getElementById('modal-gaji').classList.remove('hidden');
     };
 
-    // Create new salary for entry without one
     window.createGaji = (row) => {
         const hours = row.total_hours || 0;
-        const defaultHonor = Math.round(hours * (50000 / 9));
+        const defaultHonor = hours > 9
+            ? Math.round(50000 + (hours - 9) * (50000 / 9 + 5000))
+            : Math.round(hours * (50000 / 9));
 
         document.getElementById('edit-id').value = '';
         const rawVal = defaultHonor > 0 ? Math.round(defaultHonor) : '';

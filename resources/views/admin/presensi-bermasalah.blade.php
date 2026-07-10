@@ -144,7 +144,13 @@
                 const diffMin = (end - start) / 60000;
                 if (diffMin > 0) {
                     const hours = diffMin / 60;
-                    document.getElementById('pb-gaji').value = Math.round(hours * (50000 / 9));
+                    let salary = 0;
+                    if (hours > 9) {
+                        salary = Math.round(50000 + (hours - 9) * (50000 / 9 + 5000));
+                    } else {
+                        salary = Math.round(hours * (50000 / 9));
+                    }
+                    document.getElementById('pb-gaji').value = salary;
                 } else {
                     document.getElementById('pb-gaji').value = 0;
                 }

@@ -7,6 +7,16 @@
     $presensiMapped = $histories->filter(fn($h) => !in_array($h->status, ['Izin', 'Sakit', 'Cuti']))->map(function($h) use ($salaries) {
         $dateStr = \Carbon\Carbon::parse($h->date)->format('Y-m-d');
         $salaryAmount = isset($salaries[$dateStr]) ? $salaries[$dateStr]->salary_amount : null;
+        
+        $hours = $h->total_hours ?? 0;
+        $bonus = 0;
+        if ($hours > 9) {
+            $bonus = round(($hours - 9) * (50000 / 9 + 5000));
+        }
+
+        $totalVal = $salaryAmount !== null ? (float)$salaryAmount : null;
+        $baseVal = $totalVal !== null ? max(0, $totalVal - $bonus) : null;
+
         return [
             'id' => $h->id,
             'date' => $dateStr,
@@ -16,7 +26,9 @@
             'duration' => $h->total_hours !== null && $h->total_hours >= 0 ? formatWorkingHours($h->total_hours) : '-',
             'status' => $h->status ?? 'Alpa',
             'lateMin' => 0,
-            'salary' => $salaryAmount !== null ? 'Rp ' . number_format($salaryAmount, 0, ',', '.') : '-'
+            'base' => $baseVal !== null ? 'Rp ' . number_format($baseVal, 0, ',', '.') : '-',
+            'bonus' => $bonus > 0 ? '+ Rp ' . number_format($bonus, 0, ',', '.') : null,
+            'salary' => $totalVal !== null ? 'Rp ' . number_format($totalVal, 0, ',', '.') : '-'
         ];
     })->values();
 
@@ -246,9 +258,24 @@
                     </div>
                 </div>
 
-                <div class="px-4 py-2.5 bg-slate-50 border-t border-slate-100 flex justify-between items-center">
-                    <p class="text-[11px] text-slate-500 font-semibold uppercase tracking-wider"><i class="fa-solid fa-money-bill-wave text-emerald-500 mr-1"></i>Gaji Harian</p>
-                    <p class="text-sm font-extrabold text-emerald-600" x-text="row.salary"></p>
+                <div class="px-4 py-3 bg-slate-50 border-t border-slate-100 space-y-1.5 text-xs">
+                    <!-- Gaji Pokok -->
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400 font-medium">Gaji Pokok</span>
+                        <span class="font-semibold text-slate-700" x-text="row.base"></span>
+                    </div>
+                    <!-- Bonus Lembur -->
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400 font-medium">Bonus Lembur</span>
+                        <span class="font-bold text-amber-500" x-text="row.bonus ?? 'Rp 0'"></span>
+                    </div>
+                    <!-- Divider -->
+                    <div class="border-t border-slate-200/50 my-1"></div>
+                    <!-- Total Gaji -->
+                    <div class="flex justify-between items-center text-sm font-bold">
+                        <span class="text-slate-700 uppercase tracking-wider">Total</span>
+                        <span class="font-extrabold text-emerald-600" x-text="row.salary"></span>
+                    </div>
                 </div>
 
             </div>

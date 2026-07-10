@@ -100,10 +100,14 @@ class AttendanceActionController extends Controller
                 $attendance->approval_status = 'Done'; // Normal clock-out doesn't need approval
                 $attendance->save();
 
-                // Issue 3 Fix: Calculate salary proportional to hours worked
+                // Issue 3 Fix: Calculate salary proportional to hours worked with overtime bonus
                 $salaryAmount = 0;
                 if ($attendance->total_hours > 0) {
-                    $salaryAmount = round($attendance->total_hours * (50000 / 9));
+                    if ($attendance->total_hours > 9) {
+                        $salaryAmount = round(50000 + ($attendance->total_hours - 9) * (50000 / 9 + 5000));
+                    } else {
+                        $salaryAmount = round($attendance->total_hours * (50000 / 9));
+                    }
                 }
 
                 \App\Models\DailySalary::updateOrCreate(
