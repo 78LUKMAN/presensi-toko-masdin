@@ -43,7 +43,7 @@ class DatabaseSeeder extends Seeder
 
         // 2. Seed Admin
         User::create([
-            'name' => 'Admin Masdin',
+            'name' => 'Mas Din',
             'email' => 'admin@masdin.com',
             'password' => Hash::make('password'),
             'role' => 'admin',
@@ -51,11 +51,13 @@ class DatabaseSeeder extends Seeder
 
         // 3. Seed 5 Employees
         $employeeData = [
-            ['name' => 'Budi Santoso', 'section' => 'Produksi'],
-            ['name' => 'Siti Aminah', 'section' => 'Gudang'],
-            ['name' => 'Ahmad Wijaya', 'section' => 'Administrasi'],
-            ['name' => 'Rina Permata', 'section' => 'Keamanan'],
-            ['name' => 'Eko Prasetyo', 'section' => 'Logistik'],
+            ['name' => 'Mudah', 'section' => 'Kasir'],
+            ['name' => 'Jannah', 'section' => 'Kasir'],
+            ['name' => 'Ais', 'section' => 'Kasir'],
+            ['name' => 'Santoso', 'section' => 'Juru Timbang'],
+            ['name' => 'Imam', 'section' => 'Juru Timbangan/Kurir'],
+            ['name' => 'Gunawan', 'section' => 'Kurir'],
+            ['name' => 'Noval', 'section' => 'Kurir'],
         ];
 
         $employees = [];
