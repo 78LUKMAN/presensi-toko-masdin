@@ -89,7 +89,7 @@
                 @php
                 $infos = [
                     ['label' => 'Nama Lengkap', 'value' => auth()->user()->name, 'icon' => 'fa-user'],
-                    ['label' => 'NIK / ID', 'value' => auth()->user()->noreg ?? 'KRY-001', 'icon' => 'fa-id-card'],
+                    ['label' => 'NIK / ID', 'value' => $employee->noreg ?? '-', 'icon' => 'fa-id-card'],
                     ['label' => 'Bagian', 'value' => $employee->section ?? '-', 'icon' => 'fa-building'],
                     ['label' => 'Email', 'value' => auth()->user()->email, 'icon' => 'fa-envelope'],
                     ['label' => 'Bergabung', 'value' => $employee->join_date ? \Carbon\Carbon::parse($employee->join_date)->format('d M Y') : '-', 'icon' => 'fa-calendar'],

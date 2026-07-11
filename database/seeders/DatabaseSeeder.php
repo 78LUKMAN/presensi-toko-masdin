@@ -63,9 +63,10 @@ class DatabaseSeeder extends Seeder
         $employees = [];
         foreach ($employeeData as $index => $data) {
             $num = $index + 1;
+            $email = strtolower(str_replace(' ', '', $data['name'])) . '@masdin.com';
             $user = User::create([
                 'name' => $data['name'],
-                'email' => "karyawan{$num}@masdin.com",
+                'email' => $email,
                 'password' => Hash::make('password'),
                 'role' => 'employee',
             ]);
