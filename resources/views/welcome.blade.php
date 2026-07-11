@@ -130,7 +130,7 @@
 
         <!-- Footer -->
         <div class="mt-20 text-center text-slate-500 text-sm font-medium">
-            <p>&copy; {{ date('Y') }} PT Makmur Dinamika. All rights reserved.</p>
+            <p>&copy; {{ date('Y') }} Toko Sembako MasDin. All rights reserved.</p>
         </div>
 
     </div>
