@@ -56,7 +56,7 @@
                     <svg class="absolute left-3 top-2.5 w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                     </svg>
-                    <input type="text" id="search-karyawan" placeholder="Cari ID atau nama karyawan..."
+                    <input type="text" id="search-pegawai" placeholder="Cari ID atau nama pegawai..."
                            class="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"/>
                 </div>
             </div>
@@ -82,13 +82,13 @@
                     <svg class="w-12 h-12 text-slate-200 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                     </svg>
-                    <p class="text-sm text-slate-400">Tidak ada karyawan ditemukan</p>
+                    <p class="text-sm text-slate-400">Tidak ada pegawai ditemukan</p>
                 </div>
             </div>
 
             {{-- Footer count --}}
             <div class="px-5 py-3 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between">
-                <p class="text-xs text-slate-500">Total: <span id="total-count" class="font-semibold text-slate-700">0</span> karyawan</p>
+                <p class="text-xs text-slate-500">Total: <span id="total-count" class="font-semibold text-slate-700">0</span> pegawai</p>
                 <p class="text-xs text-slate-400">Diperbarui otomatis setiap 30 detik</p>
             </div>
         </div>
@@ -160,7 +160,7 @@
 
             {{-- Attendance URL Info --}}
             <div class="bg-white rounded-2xl border border-slate-200 p-5">
-                <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">URL Presensi Karyawan</p>
+                <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">URL Presensi Pegawai</p>
                 <div class="flex items-center gap-2 p-3 bg-slate-50 rounded-xl border border-slate-200">
                     <svg class="w-4 h-4 text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
@@ -172,7 +172,7 @@
                         </svg>
                     </button>
                 </div>
-                <p class="mt-2 text-xs text-slate-400">QR Code mengarah ke URL ini. Karyawan scan untuk presensi masuk / pulang.</p>
+                <p class="mt-2 text-xs text-slate-400">QR Code mengarah ke URL ini. Pegawai scan untuk presensi masuk / pulang.</p>
             </div>
 
             {{-- Stats mini --}}
@@ -210,7 +210,7 @@
             .then(r => r.json())
             .then(data => {
                 employees = data;
-                renderTable(document.getElementById('search-karyawan').value);
+                renderTable(document.getElementById('search-pegawai').value);
             })
             .catch(e => console.error('Error fetching attendance data:', e));
     }
@@ -286,7 +286,7 @@
     loadData();
 
     // Search
-    document.getElementById('search-karyawan').addEventListener('input', function () {
+    document.getElementById('search-pegawai').addEventListener('input', function () {
         renderTable(this.value);
     });
 

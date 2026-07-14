@@ -14,11 +14,11 @@ use Yajra\DataTables\DataTables;
 class EmployeeController extends Controller
 {
     /**
-     * Display the Daftar Karyawan page.
+     * Display the Daftar Pegawai page.
      */
     public function index()
     {
-        return view('admin.karyawan');
+        return view('admin.pegawai');
     }
 
     /**
@@ -77,7 +77,7 @@ class EmployeeController extends Controller
             ]);
         });
 
-        return response()->json(['message' => 'Karyawan berhasil ditambahkan.']);
+        return response()->json(['message' => 'Pegawai berhasil ditambahkan.']);
     }
 
     /**
@@ -140,7 +140,7 @@ class EmployeeController extends Controller
             }
         });
 
-        return response()->json(['message' => 'Karyawan berhasil diperbarui.']);
+        return response()->json(['message' => 'Pegawai berhasil diperbarui.']);
     }
 
     /**
@@ -155,6 +155,6 @@ class EmployeeController extends Controller
             $employee->delete();
         });
 
-        return response()->json(['message' => 'Karyawan berhasil dihapus.']);
+        return response()->json(['message' => 'Pegawai berhasil dihapus.']);
     }
 }

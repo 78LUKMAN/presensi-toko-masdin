@@ -8,7 +8,7 @@
     <div class="flex items-center justify-between">
         <div>
             <h1 class="text-lg font-bold text-slate-800">Rekap Gaji Bulanan</h1>
-            <p class="text-sm text-slate-500">Rekap total penggajian bulanan seluruh karyawan.</p>
+            <p class="text-sm text-slate-500">Rekap total penggajian bulanan seluruh pegawai.</p>
         </div>
     </div>
 
@@ -31,7 +31,7 @@
                 <thead>
                     <tr class="border-b border-slate-100">
                         <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">#</th>
-                        <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Nama Karyawan</th>
+                        <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Nama Pegawai</th>
                         <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Bagian</th>
                         <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">Total Hari</th>
                         <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">Total Jam</th>

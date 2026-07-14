@@ -61,7 +61,7 @@
         </h4>
         <br />
         <h2 class="text-2xl font-bold text-[#035EA1]">
-            {{ auth()->user()->name ?? 'Nama Karyawan' }}
+            {{ auth()->user()->name ?? 'Nama Pegawai' }}
         </h2>
     </div>
 

@@ -9,7 +9,7 @@
     <div class="flex items-center justify-between">
         <div>
             <h1 class="text-lg font-bold text-slate-800">Rekap Presensi</h1>
-            <p class="text-sm text-slate-500">Data presensi harian seluruh karyawan.</p>
+            <p class="text-sm text-slate-500">Data presensi harian seluruh pegawai.</p>
         </div>
     </div>
 
@@ -21,8 +21,8 @@
                 <input type="date" id="filter-tanggal" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm"/>
             </div>
             <div class="flex-1 min-w-[200px]">
-                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Cari Nama Karyawan</label>
-                <input type="text" id="filter-nama" placeholder="Ketik nama karyawan..." class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm"/>
+                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Cari Nama Pegawai</label>
+                <input type="text" id="filter-nama" placeholder="Ketik nama pegawai..." class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm"/>
             </div>
             <div class="flex gap-2">
                 <button id="btn-filter" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors shadow-sm">Terapkan Filter</button>
@@ -39,7 +39,7 @@
                     <thead>
                         <tr class="border-b border-slate-100">
                             <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">#</th>
-                            <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">ID Karyawan</th>
+                            <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">ID Pegawai</th>
                             <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Nama</th>
                             <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Bagian</th>
                             <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Jam Masuk</th>
@@ -72,7 +72,7 @@
         language: { url: 'https://cdn.datatables.net/plug-ins/2.0.3/i18n/id.json' },
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-            { data: 'id_karyawan', name: 'id_karyawan', render: d => `<span class="font-mono text-xs font-medium text-blue-700 bg-blue-50 px-2 py-0.5 rounded-lg">${d}</span>` },
+            { data: 'id_pegawai', name: 'id_pegawai', render: d => `<span class="font-mono text-xs font-medium text-blue-700 bg-blue-50 px-2 py-0.5 rounded-lg">${d}</span>` },
             { data: 'nama', name: 'nama', render: d => `<span class="font-medium text-slate-800">${d}</span>` },
             { data: 'bagian', name: 'bagian', render: d => `<span class="text-slate-600">${d}</span>` },
             { data: 'masuk', render: d => `<span class="font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-lg text-xs">${d}</span>` },

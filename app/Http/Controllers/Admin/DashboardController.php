@@ -63,9 +63,9 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function karyawan()
+    public function pegawai()
     {
-        return view('admin.karyawan');
+        return view('admin.pegawai');
     }
 
     public function rekapPresensi()
@@ -177,7 +177,7 @@ class DashboardController extends Controller
             'labels' => $labels,
             'datasets' => [
                 [
-                    'label' => 'Jumlah Karyawan Hadir',
+                    'label' => 'Jumlah Pegawai Hadir',
                     'data' => $presentData,
                     'backgroundColor' => '#3b82f6', // Use a single clear color (e.g. blue)
                     'borderColor' => '#2563eb',

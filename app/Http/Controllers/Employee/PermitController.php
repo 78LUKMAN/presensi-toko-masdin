@@ -15,7 +15,7 @@ class PermitController extends Controller
     {
         $employee = Auth::user()->employee;
         if (!$employee) {
-            abort(403, 'Profil Karyawan tidak ditemukan.');
+            abort(403, 'Profil Pegawai tidak ditemukan.');
         }
         
         // Fetch history of permits (Izin, Sakit, Cuti)
@@ -44,7 +44,7 @@ class PermitController extends Controller
 
         $employee = Auth::user()->employee;
         if (!$employee) {
-            return response()->json(['success' => false, 'message' => 'Profil Karyawan tidak ditemukan.'], 403);
+            return response()->json(['success' => false, 'message' => 'Profil Pegawai tidak ditemukan.'], 403);
         }
         
         $attachmentPath = null;

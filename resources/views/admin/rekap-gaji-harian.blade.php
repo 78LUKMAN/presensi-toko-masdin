@@ -8,7 +8,7 @@
     <div class="flex items-center justify-between">
         <div>
             <h1 class="text-lg font-bold text-slate-800">Rekap Gaji Harian</h1>
-            <p class="text-sm text-slate-500">Rekap perhitungan gaji harian berdasarkan jam kerja karyawan.</p>
+            <p class="text-sm text-slate-500">Rekap perhitungan gaji harian berdasarkan jam kerja pegawai.</p>
         </div>
     </div>
 
@@ -42,7 +42,7 @@
                 <thead>
                     <tr class="border-b border-slate-100">
                         <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">#</th>
-                        <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">ID Karyawan</th>
+                        <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">ID Pegawai</th>
                         <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Nama</th>
                         <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Bagian</th>
                         <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Waktu</th>
@@ -135,7 +135,7 @@
         language:{url:'https://cdn.datatables.net/plug-ins/2.0.3/i18n/id.json'},
         columns:[
             {data:'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
-            {data:'id_karyawan', name: 'id_karyawan'},
+            {data:'id_pegawai', name: 'id_pegawai'},
             {data:'nama', name: 'nama'},
             {data:'bagian', name: 'bagian'},
             {data:'waktu'},
@@ -206,7 +206,7 @@
         document.getElementById('form-gaji').dataset.employeeId = row.employee_id;
         document.getElementById('form-gaji').dataset.date = row.attendance_date;
         document.getElementById('form-gaji').dataset.totalHours = hours;
-        document.getElementById('modal-gaji-title').textContent = 'Tambah Honor Karyawan';
+        document.getElementById('modal-gaji-title').textContent = 'Tambah Honor Pegawai';
         document.getElementById('modal-gaji').classList.remove('hidden');
     };
 

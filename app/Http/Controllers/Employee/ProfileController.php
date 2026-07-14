@@ -13,7 +13,7 @@ class ProfileController extends Controller
     {
         $employee = Auth::user()->employee;
         if (!$employee) {
-            abort(403, 'Profil Karyawan tidak ditemukan.');
+            abort(403, 'Profil Pegawai tidak ditemukan.');
         }
         return view('employee.profile', compact('employee'));
     }

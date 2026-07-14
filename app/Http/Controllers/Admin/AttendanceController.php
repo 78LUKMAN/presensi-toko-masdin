@@ -36,10 +36,10 @@ class AttendanceController extends Controller
 
         return DataTables::of($query)
             ->addIndexColumn()
-            ->addColumn('id_karyawan', fn($row) => $row->employee->noreg ?? '-')
+            ->addColumn('id_pegawai', fn($row) => $row->employee->noreg ?? '-')
             ->addColumn('nama', fn($row) => $row->employee->name ?? '-')
             ->addColumn('bagian', fn($row) => $row->employee->section ?? '-')
-            ->filterColumn('id_karyawan', function($query, $keyword) {
+            ->filterColumn('id_pegawai', function($query, $keyword) {
                 $query->whereHas('employee', function($q) use ($keyword) {
                     $q->where('noreg', 'like', "%{$keyword}%");
                 });

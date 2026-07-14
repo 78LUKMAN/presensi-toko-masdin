@@ -17,7 +17,7 @@ class EmployeeDashboardController extends Controller
         $employee = $user->employee;
 
         if (!$employee) {
-            abort(403, 'Profil Karyawan tidak ditemukan. Silakan hubungi Administrator.');
+            abort(403, 'Profil Pegawai tidak ditemukan. Silakan hubungi Administrator.');
         }
 
         $today = Carbon::today();

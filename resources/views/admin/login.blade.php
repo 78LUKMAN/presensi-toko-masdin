@@ -57,7 +57,7 @@
                 <div class="relative space-y-5">
                     <p class="text-white/50 text-xs font-bold uppercase tracking-widest mb-4">Fitur Admin Panel</p>
                     @foreach([
-                        ['fa-users-gear',      'Manajemen Karyawan', 'Kelola data & akses karyawan'],
+                        ['fa-users-gear',      'Manajemen Pegawai', 'Kelola data & akses pegawai'],
                         ['fa-calendar-check',  'Monitoring Absensi', 'Pantau kehadiran real-time'],
                         ['fa-circle-dollar-to-slot', 'Rekap Penggajian', 'Laporan gaji harian & bulanan'],
                         ['fa-chart-line',      'Laporan & Statistik', 'Analitik kehadiran mendalam'],
@@ -209,12 +209,12 @@
                 <a href="{{ route('employee.login') }}"
                    class="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl border border-slate-200 text-sm font-semibold text-slate-600 bg-slate-50 hover:bg-slate-100 hover:border-slate-300 transition-all active:scale-[0.98]">
                     <i class="fa-solid fa-mobile-screen text-slate-400"></i>
-                    Login sebagai Karyawan
+                    Login sebagai Pegawai
                     <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
                 </a>
 
                 <p class="text-center text-xs text-slate-300 mt-6">
-                    © {{ date('Y') }} MasDin · Sistem Absensi Karyawan
+                    © {{ date('Y') }} MasDin · Sistem Absensi Pegawai
                 </p>
             </div>
         </div>

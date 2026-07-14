@@ -24,7 +24,7 @@
             </div>
             <div class="flex-1 min-w-[200px]">
                 <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Cari Nama</label>
-                <input type="text" id="pb-nama" placeholder="Ketik nama karyawan..." class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm"/>
+                <input type="text" id="pb-nama" placeholder="Ketik nama pegawai..." class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm"/>
             </div>
             <div class="flex gap-2">
                 <button id="pb-filter" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors shadow-sm">Cari</button>

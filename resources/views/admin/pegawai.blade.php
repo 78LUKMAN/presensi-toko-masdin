@@ -1,6 +1,6 @@
 @extends('layouts.admin')
-@section('title', 'Daftar Karyawan')
-@section('page-title', 'Daftar Karyawan')
+@section('title', 'Daftar Pegawai')
+@section('page-title', 'Daftar Pegawai')
 
 @section('content')
 <div class="space-y-4">
@@ -8,15 +8,15 @@
     {{-- Page Header --}}
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-lg font-bold text-slate-800">Daftar Karyawan</h1>
-            <p class="text-sm text-slate-500">Kelola data seluruh karyawan perusahaan.</p>
+            <h1 class="text-lg font-bold text-slate-800">Daftar Pegawai</h1>
+            <p class="text-sm text-slate-500">Kelola data seluruh pegawai perusahaan.</p>
         </div>
-        <button id="btn-tambah-karyawan" type="button"
+        <button id="btn-tambah-pegawai" type="button"
                 class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors shadow-sm">
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
             </svg>
-            Tambah Karyawan
+            Tambah Pegawai
         </button>
     </div>
 
@@ -24,8 +24,8 @@
     <div class="bg-white rounded-2xl border border-slate-200 p-4">
         <div class="flex flex-wrap items-end gap-3">
             <div class="flex-1">
-                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Cari Nama Karyawan</label>
-                <input type="text" id="ky-nama" placeholder="Ketik nama karyawan..." class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm"/>
+                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Cari Nama Pegawai</label>
+                <input type="text" id="ky-nama" placeholder="Ketik nama pegawai..." class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm"/>
             </div>
             <div class="flex gap-2">
                 <button id="ky-filter" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors shadow-sm">Cari</button>
@@ -38,11 +38,11 @@
     <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
         <div class="p-5">
             <div class="overflow-x-auto">
-                <table id="table-karyawan" class="w-full text-sm text-left">
+                <table id="table-pegawai" class="w-full text-sm text-left">
                     <thead>
                         <tr class="border-b border-slate-100">
                             <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider w-12">#</th>
-                            <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">ID Karyawan</th>
+                            <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">ID Pegawai</th>
                             <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Nama</th>
                             <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Section</th>
                             <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">Aksi</th>
@@ -56,18 +56,18 @@
 </div>
 
 {{-- ======================== MODAL CREATE ======================== --}}
-<div id="modal-create-karyawan" class="hs-overlay hidden fixed inset-0 z-[80] overflow-x-hidden overflow-y-auto">
+<div id="modal-create-pegawai" class="hs-overlay hidden fixed inset-0 z-[80] overflow-x-hidden overflow-y-auto">
     <div class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto min-h-[calc(100%-3.5rem)] flex items-center">
         <div class="w-full flex flex-col bg-white border border-slate-200 shadow-2xl rounded-2xl overflow-hidden">
             <div class="flex justify-between items-center py-4 px-6 border-b border-slate-100 bg-slate-50">
-                <h3 class="font-semibold text-slate-800">Tambah Karyawan</h3>
-                <button type="button" data-hs-overlay="#modal-create-karyawan" class="text-slate-400 hover:text-slate-600">
+                <h3 class="font-semibold text-slate-800">Tambah Pegawai</h3>
+                <button type="button" data-hs-overlay="#modal-create-pegawai" class="text-slate-400 hover:text-slate-600">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
             <div class="p-6 overflow-y-auto max-h-[75vh]">
                 <div id="create-errors" class="hidden mb-4 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm"></div>
-                <form id="form-create-karyawan" class="space-y-4">
+                <form id="form-create-pegawai" class="space-y-4">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1.5">NOREG <span class="text-red-500">*</span></label>
@@ -102,8 +102,8 @@
                 </form>
             </div>
             <div class="flex justify-end gap-2 px-6 py-4 border-t border-slate-100 bg-slate-50">
-                <button type="button" data-hs-overlay="#modal-create-karyawan" class="px-4 py-2 text-sm font-medium text-slate-600 bg-white border border-slate-300 rounded-xl hover:bg-slate-50">Batal</button>
-                <button type="button" id="btn-save-karyawan" class="px-5 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-xl flex items-center gap-2">
+                <button type="button" data-hs-overlay="#modal-create-pegawai" class="px-4 py-2 text-sm font-medium text-slate-600 bg-white border border-slate-300 rounded-xl hover:bg-slate-50">Batal</button>
+                <button type="button" id="btn-save-pegawai" class="px-5 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-xl flex items-center gap-2">
                     <svg id="save-spinner" class="hidden animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>
                     Simpan
                 </button>
@@ -113,18 +113,18 @@
 </div>
 
 {{-- ======================== MODAL EDIT ======================== --}}
-<div id="modal-edit-karyawan" class="hs-overlay hidden fixed inset-0 z-[80] overflow-x-hidden overflow-y-auto">
+<div id="modal-edit-pegawai" class="hs-overlay hidden fixed inset-0 z-[80] overflow-x-hidden overflow-y-auto">
     <div class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto min-h-[calc(100%-3.5rem)] flex items-center">
         <div class="w-full flex flex-col bg-white border border-slate-200 shadow-2xl rounded-2xl overflow-hidden">
             <div class="flex justify-between items-center py-4 px-6 border-b border-slate-100 bg-slate-50">
-                <h3 class="font-semibold text-slate-800">Edit Karyawan</h3>
-                <button type="button" data-hs-overlay="#modal-edit-karyawan" class="text-slate-400 hover:text-slate-600">
+                <h3 class="font-semibold text-slate-800">Edit Pegawai</h3>
+                <button type="button" data-hs-overlay="#modal-edit-pegawai" class="text-slate-400 hover:text-slate-600">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
             <div class="p-6 overflow-y-auto max-h-[75vh]">
                 <div id="edit-errors" class="hidden mb-4 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm"></div>
-                <form id="form-edit-karyawan" class="space-y-4">
+                <form id="form-edit-pegawai" class="space-y-4">
                     <input type="hidden" id="edit-id"/>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
@@ -160,8 +160,8 @@
                 </form>
             </div>
             <div class="flex justify-end gap-2 px-6 py-4 border-t border-slate-100 bg-slate-50">
-                <button type="button" data-hs-overlay="#modal-edit-karyawan" class="px-4 py-2 text-sm font-medium text-slate-600 bg-white border border-slate-300 rounded-xl hover:bg-slate-50">Batal</button>
-                <button type="button" id="btn-update-karyawan" class="px-5 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-xl flex items-center gap-2">
+                <button type="button" data-hs-overlay="#modal-edit-pegawai" class="px-4 py-2 text-sm font-medium text-slate-600 bg-white border border-slate-300 rounded-xl hover:bg-slate-50">Batal</button>
+                <button type="button" id="btn-update-pegawai" class="px-5 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-xl flex items-center gap-2">
                     <svg id="update-spinner" class="hidden animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>
                     Perbarui
                 </button>
@@ -171,20 +171,20 @@
 </div>
 
 {{-- ======================== MODAL DELETE ======================== --}}
-<div id="modal-delete-karyawan" class="hs-overlay hidden fixed inset-0 z-[80] overflow-x-hidden overflow-y-auto">
+<div id="modal-delete-pegawai" class="hs-overlay hidden fixed inset-0 z-[80] overflow-x-hidden overflow-y-auto">
     <div class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 transition-all sm:max-w-md sm:w-full m-3 sm:mx-auto min-h-[calc(100%-3.5rem)] flex items-center">
         <div class="w-full flex flex-col bg-white border border-slate-200 shadow-2xl rounded-2xl overflow-hidden">
             <div class="p-6 text-center">
                 <div class="w-14 h-14 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
                     <svg class="w-7 h-7 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                 </div>
-                <h3 class="text-lg font-bold text-slate-800 mb-1">Hapus Karyawan?</h3>
-                <p class="text-sm text-slate-500 mb-1">Data karyawan <strong id="delete-karyawan-name" class="text-slate-700"></strong> akan dihapus permanen.</p>
+                <h3 class="text-lg font-bold text-slate-800 mb-1">Hapus Pegawai?</h3>
+                <p class="text-sm text-slate-500 mb-1">Data pegawai <strong id="delete-pegawai-name" class="text-slate-700"></strong> akan dihapus permanen.</p>
                 <p class="text-xs text-red-500">Akun login terkait juga akan ikut terhapus.</p>
             </div>
             <div class="flex justify-center gap-3 px-6 pb-6">
-                <button type="button" data-hs-overlay="#modal-delete-karyawan" class="px-5 py-2 text-sm font-medium text-slate-600 bg-white border border-slate-300 rounded-xl hover:bg-slate-50">Batal</button>
-                <button type="button" id="btn-confirm-delete-karyawan" class="px-5 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-xl">Ya, Hapus</button>
+                <button type="button" data-hs-overlay="#modal-delete-pegawai" class="px-5 py-2 text-sm font-medium text-slate-600 bg-white border border-slate-300 rounded-xl hover:bg-slate-50">Batal</button>
+                <button type="button" id="btn-confirm-delete-pegawai" class="px-5 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-xl">Ya, Hapus</button>
             </div>
         </div>
     </div>
@@ -196,7 +196,7 @@
 (function () {
     'use strict';
     const CSRF     = document.querySelector('meta[name="csrf-token"]').content;
-    const BASE_URL = '{{ url("admin/karyawan") }}';
+    const BASE_URL = '{{ url("admin/pegawai") }}';
 
     // Safe HSOverlay wrapper – Preline loads as ES module (deferred),
     // so we poll until it is ready before calling open/close.
@@ -214,10 +214,10 @@
     }
 
     // ── DataTable (client-side dummy data) ────────────────────────────────
-    const table = $('#table-karyawan').DataTable({
+    const table = $('#table-pegawai').DataTable({
         processing: true,
         serverSide: true,
-        ajax      : '{{ route("admin.karyawan.data") }}',
+        ajax      : '{{ route("admin.pegawai.data") }}',
         language  : { url: 'https://cdn.datatables.net/plug-ins/2.0.3/i18n/id.json' },
         columns   : [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
@@ -254,25 +254,25 @@
     const fmtErr   = e => Object.values(e).flat().map(m => `<p>• ${m}</p>`).join('');
 
     // ── Create ─────────────────────────────────────────────────────────────
-    document.getElementById('btn-tambah-karyawan').onclick = () => {
-        document.getElementById('form-create-karyawan').reset();
+    document.getElementById('btn-tambah-pegawai').onclick = () => {
+        document.getElementById('form-create-pegawai').reset();
         clearErr('create-errors');
-        overlay('open', '#modal-create-karyawan');
+        overlay('open', '#modal-create-pegawai');
     };
 
-    document.getElementById('btn-save-karyawan').onclick = () => {
+    document.getElementById('btn-save-pegawai').onclick = () => {
         clearErr('create-errors');
-        setLoad('save-spinner', 'btn-save-karyawan', true);
-        const body = new FormData(document.getElementById('form-create-karyawan'));
+        setLoad('save-spinner', 'btn-save-pegawai', true);
+        const body = new FormData(document.getElementById('form-create-pegawai'));
         fetch(BASE_URL, { method: 'POST', headers: { 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' }, body })
             .then(r => r.json().then(j => ({ ok: r.ok, j })))
             .then(({ ok, j }) => {
                 if (!ok) { setErr('create-errors', fmtErr(j.errors ?? { e: [j.message] })); return; }
-                overlay('close', '#modal-create-karyawan');
+                overlay('close', '#modal-create-pegawai');
                 table.ajax.reload(null, false);
             })
             .catch(() => setErr('create-errors', '<p>• Terjadi kesalahan jaringan.</p>'))
-            .finally(() => setLoad('save-spinner', 'btn-save-karyawan', false));
+            .finally(() => setLoad('save-spinner', 'btn-save-pegawai', false));
     };
 
     // ── Edit ───────────────────────────────────────────────────────────────
@@ -288,41 +288,41 @@
                 document.getElementById('edit-join-date').value  = d.join_date;
                 document.getElementById('edit-email').value      = d.email ?? '';
                 document.getElementById('edit-password').value   = '';
-                overlay('open', '#modal-edit-karyawan');
+                overlay('open', '#modal-edit-pegawai');
             });
     };
 
-    document.getElementById('btn-update-karyawan').onclick = () => {
+    document.getElementById('btn-update-pegawai').onclick = () => {
         const id   = document.getElementById('edit-id').value;
-        const body = new FormData(document.getElementById('form-edit-karyawan'));
+        const body = new FormData(document.getElementById('form-edit-pegawai'));
         body.append('_method', 'PUT');
         clearErr('edit-errors');
-        setLoad('update-spinner', 'btn-update-karyawan', true);
+        setLoad('update-spinner', 'btn-update-pegawai', true);
         fetch(`${BASE_URL}/${id}`, { method: 'POST', headers: { 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' }, body })
             .then(r => r.json().then(j => ({ ok: r.ok, j })))
             .then(({ ok, j }) => {
                 if (!ok) { setErr('edit-errors', fmtErr(j.errors ?? { e: [j.message] })); return; }
-                overlay('close', '#modal-edit-karyawan');
+                overlay('close', '#modal-edit-pegawai');
                 table.ajax.reload(null, false);
             })
             .catch(() => setErr('edit-errors', '<p>• Terjadi kesalahan jaringan.</p>'))
-            .finally(() => setLoad('update-spinner', 'btn-update-karyawan', false));
+            .finally(() => setLoad('update-spinner', 'btn-update-pegawai', false));
     };
 
     // ── Delete ─────────────────────────────────────────────────────────────
     let delId = null;
     window.openDelete = (id, name) => {
         delId = id;
-        document.getElementById('delete-karyawan-name').textContent = name;
-        overlay('open', '#modal-delete-karyawan');
+        document.getElementById('delete-pegawai-name').textContent = name;
+        overlay('open', '#modal-delete-pegawai');
     };
-    document.getElementById('btn-confirm-delete-karyawan').onclick = () => {
+    document.getElementById('btn-confirm-delete-pegawai').onclick = () => {
         if (!delId) return;
         fetch(`${BASE_URL}/${delId}`, {
             method: 'DELETE',
             headers: { 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json', 'Content-Type': 'application/json' },
         })
-        .then(() => { overlay('close', '#modal-delete-karyawan'); table.ajax.reload(null, false); delId = null; });
+        .then(() => { overlay('close', '#modal-delete-pegawai'); table.ajax.reload(null, false); delId = null; });
     };
 })();
 </script>

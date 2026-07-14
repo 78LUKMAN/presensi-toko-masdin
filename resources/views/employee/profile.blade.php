@@ -43,7 +43,7 @@
                 </button>
             </div>
             <h2 class="text-white text-xl font-extrabold">{{ auth()->user()->name ?? 'Budi Santoso' }}</h2>
-            <p class="text-blue-200 text-sm mt-0.5">{{ auth()->user()->email ?? 'karyawan@masdin.co.id' }}</p>
+            <p class="text-blue-200 text-sm mt-0.5">{{ auth()->user()->email ?? 'pegawai@masdin.co.id' }}</p>
             <div class="flex items-center justify-center gap-2 mt-2">
                 <span class="bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full">
                     {{ auth()->user()->noreg ?? 'KRY-001' }}

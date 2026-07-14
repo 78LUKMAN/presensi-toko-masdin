@@ -77,7 +77,7 @@
                 MasDin Portal System
             </h1>
             <p class="text-slate-300 text-lg md:text-xl max-w-2xl mx-auto font-medium">
-                Pilih portal akses Anda untuk masuk ke dalam sistem presensi dan manajemen karyawan.
+                Pilih portal akses Anda untuk masuk ke dalam sistem presensi dan manajemen pegawai.
             </p>
         </div>
 
@@ -93,14 +93,14 @@
                 </div>
                 
                 <div class="relative z-10 flex-1">
-                    <h2 class="text-2xl font-bold mb-3 text-white group-hover:text-blue-300 transition-colors">Portal Karyawan</h2>
+                    <h2 class="text-2xl font-bold mb-3 text-white group-hover:text-blue-300 transition-colors">Portal Pegawai</h2>
                     <p class="text-slate-400 text-sm leading-relaxed mb-8">
-                        Akses khusus karyawan untuk melakukan presensi harian dengan QR Code, mengecek riwayat, dan mengajukan perizinan secara mandiri.
+                        Akses khusus pegawai untuk melakukan presensi harian dengan QR Code, mengecek riwayat, dan mengajukan perizinan secara mandiri.
                     </p>
                 </div>
                 
                 <div class="relative z-10 flex items-center text-sm font-bold text-blue-400 group-hover:text-blue-300 mt-auto">
-                    Masuk sebagai Karyawan
+                    Masuk sebagai Pegawai
                     <i class="fa-solid fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
                 </div>
             </a>
@@ -116,7 +116,7 @@
                 <div class="relative z-10 flex-1">
                     <h2 class="text-2xl font-bold mb-3 text-white group-hover:text-emerald-300 transition-colors">Portal Admin</h2>
                     <p class="text-slate-400 text-sm leading-relaxed mb-8">
-                        Akses khusus manajemen untuk mengelola data master karyawan, persetujuan izin, dan memonitor rekapitulasi penggajian.
+                        Akses khusus manajemen untuk mengelola data master pegawai, persetujuan izin, dan memonitor rekapitulasi penggajian.
                     </p>
                 </div>
                 

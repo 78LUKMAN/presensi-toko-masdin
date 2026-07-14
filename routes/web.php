@@ -84,12 +84,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('/rekap-gaji-bulanan', [MonthlySalaryController::class, 'index'])->name('rekap-gaji-bulanan');
 
     // --- Employee List (CRUD + DataTables) ---
-    Route::get('/karyawan', [EmployeeController::class, 'index'])->name('karyawan');
-    Route::get('/karyawan/data', [EmployeeController::class, 'data'])->name('karyawan.data');
-    Route::post('/karyawan', [EmployeeController::class, 'store'])->name('karyawan.store');
-    Route::get('/karyawan/{id}', [EmployeeController::class, 'show'])->name('karyawan.show');
-    Route::put('/karyawan/{id}', [EmployeeController::class, 'update'])->name('karyawan.update');
-    Route::delete('/karyawan/{id}', [EmployeeController::class, 'destroy'])->name('karyawan.destroy');
+    Route::get('/pegawai', [EmployeeController::class, 'index'])->name('pegawai');
+    Route::get('/pegawai/data', [EmployeeController::class, 'data'])->name('pegawai.data');
+    Route::post('/pegawai', [EmployeeController::class, 'store'])->name('pegawai.store');
+    Route::get('/pegawai/{id}', [EmployeeController::class, 'show'])->name('pegawai.show');
+    Route::put('/pegawai/{id}', [EmployeeController::class, 'update'])->name('pegawai.update');
+    Route::delete('/pegawai/{id}', [EmployeeController::class, 'destroy'])->name('pegawai.destroy');
 
     // --- Admin List (CRUD + DataTables) ---
     Route::get('/daftar-admin', [AdminController::class, 'index'])->name('daftar-admin');
@@ -100,7 +100,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::delete('/daftar-admin/{id}', [AdminController::class, 'destroy'])->name('daftar-admin.destroy');
 });
 
-// ── Employee (Karyawan) Routes ──────────────────────────────────────────────
+// ── Employee (Pegawai) Routes ──────────────────────────────────────────────
 Route::prefix('employee')->name('employee.')->middleware(['auth', 'role:employee'])->group(function () {
     Route::get('/dashboard', [EmployeeDashboardController::class, 'dashboard'])->name('dashboard');
     

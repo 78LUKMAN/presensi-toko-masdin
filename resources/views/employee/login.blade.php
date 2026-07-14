@@ -35,7 +35,7 @@
             style="box-shadow: 0 -8px 32px rgba(30,42,94,0.15);">
 
             <h2 class="text-[#1E2A5E] text-xl font-bold mb-1">Selamat Datang</h2>
-            <p class="text-slate-400 text-sm mb-7">Masuk ke akun karyawan Anda</p>
+            <p class="text-slate-400 text-sm mb-7">Masuk ke akun pegawai Anda</p>
 
             @if(session('error'))
                 <div

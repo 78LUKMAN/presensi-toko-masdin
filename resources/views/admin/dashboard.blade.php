@@ -16,7 +16,7 @@
     {{-- ── Row 1: Stats Cards ── --}}
     <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
 
-        {{-- Jumlah Karyawan --}}
+        {{-- Jumlah Pegawai --}}
         <div class="bg-white rounded-2xl border border-slate-200 p-5 hover:shadow-md transition-shadow">
             <div class="flex items-center justify-between mb-4">
                 <div class="w-11 h-11 rounded-xl bg-blue-100 flex items-center justify-center">
@@ -24,7 +24,7 @@
                 </div>
             </div>
             <p class="text-3xl font-bold text-slate-800">{{ $totalEmployees }}</p>
-            <p class="text-xs text-slate-500 mt-1 font-medium">Jumlah Karyawan</p>
+            <p class="text-xs text-slate-500 mt-1 font-medium">Jumlah Pegawai</p>
         </div>
 
         {{-- Jumlah Admin --}}
@@ -88,7 +88,7 @@
     <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
         <div class="flex items-center justify-between mb-4">
             <div>
-                <h3 class="text-sm font-semibold text-slate-800">Diagram Keaktifan Kehadiran Karyawan</h3>
+                <h3 class="text-sm font-semibold text-slate-800">Diagram Keaktifan Kehadiran Pegawai</h3>
                 <p class="text-xs text-slate-500" id="chart-subtitle">Tren presensi dalam 7 hari terakhir</p>
             </div>
             <select id="chart-filter" class="text-sm border border-slate-200 rounded-xl focus:ring-blue-500 focus:border-blue-500 px-3 py-1.5 bg-slate-50 text-slate-700 outline-none">
@@ -119,7 +119,7 @@
                 <table id="tbl-dashboard" class="w-full text-sm text-left">
                     <thead>
                         <tr class="border-b border-slate-100">
-                            <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Karyawan</th>
+                            <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Pegawai</th>
                             <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Bagian</th>
                             <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Jam Masuk</th>
                             <th class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
@@ -135,11 +135,11 @@
             {{-- Shortcut links --}}
             <div class="bg-white rounded-2xl border border-slate-200 p-4 space-y-2">
                 <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Akses Cepat</p>
-                <a href="{{ route('admin.karyawan') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 transition-colors group">
+                <a href="{{ route('admin.pegawai') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 transition-colors group">
                     <div class="w-7 h-7 rounded-lg bg-blue-100 flex items-center justify-center group-hover:bg-blue-200 transition-colors">
                         <svg class="w-3.5 h-3.5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                     </div>
-                    <span class="text-sm text-slate-700 font-medium">Tambah Karyawan</span>
+                    <span class="text-sm text-slate-700 font-medium">Tambah Pegawai</span>
                 </a>
                 <a href="{{ route('admin.rekap-gaji-harian') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 transition-colors group">
                     <div class="w-7 h-7 rounded-lg bg-indigo-100 flex items-center justify-center group-hover:bg-indigo-200 transition-colors">
