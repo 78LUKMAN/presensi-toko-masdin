@@ -19,7 +19,7 @@
                 <i class="fa-solid fa-fingerprint text-white text-3xl"></i>
             </div>
 
-            <p class="text-white/70 text-sm font-medium tracking-widest uppercase mb-1">Sistem Absensi</p>
+            <p class="text-white/70 text-sm font-medium tracking-widest uppercase mb-1">Sistem Presensi</p>
             <h1 class="text-white text-3xl font-extrabold tracking-tight mb-2">MasDin</h1>
 
             {{-- Speech bubble --}}

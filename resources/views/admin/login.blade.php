@@ -58,7 +58,7 @@
                     <p class="text-white/50 text-xs font-bold uppercase tracking-widest mb-4">Fitur Admin Panel</p>
                     @foreach([
                         ['fa-users-gear',      'Manajemen Pegawai', 'Kelola data & akses pegawai'],
-                        ['fa-calendar-check',  'Monitoring Absensi', 'Pantau kehadiran real-time'],
+                        ['fa-calendar-check',  'Monitoring Presensi', 'Pantau kehadiran real-time'],
                         ['fa-circle-dollar-to-slot', 'Rekap Penggajian', 'Laporan gaji harian & bulanan'],
                         ['fa-chart-line',      'Laporan & Statistik', 'Analitik kehadiran mendalam'],
                     ] as [$icon, $title, $sub])
@@ -101,7 +101,7 @@
                         <i class="fa-solid fa-shield-halved text-blue-500"></i> Area Terproteksi
                     </span>
                     <h2 class="text-[#1E2A5E] text-2xl sm:text-3xl font-extrabold leading-tight">Selamat Datang<br>Kembali 👋</h2>
-                    <p class="text-slate-400 text-sm mt-2">Masuk ke panel admin untuk mengelola sistem absensi.</p>
+                    <p class="text-slate-400 text-sm mt-2">Masuk ke panel admin untuk mengelola sistem presensi.</p>
                 </div>
 
                 {{-- Alerts --}}
@@ -214,7 +214,7 @@
                 </a>
 
                 <p class="text-center text-xs text-slate-300 mt-6">
-                    © {{ date('Y') }} MasDin · Sistem Absensi Pegawai
+                    © {{ date('Y') }} MasDin · Sistem Presensi Pegawai
                 </p>
             </div>
         </div>

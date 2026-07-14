@@ -168,7 +168,7 @@
                         </button>
                     </div>`;
                 }
-                return `<span class="text-xs text-slate-400 italic">Belum Absen Pulang</span>`;
+                return `<span class="text-xs text-slate-400 italic">Belum Presensi Pulang</span>`;
              }
             },
         ],

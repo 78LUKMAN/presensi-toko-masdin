@@ -27,7 +27,7 @@ class DashboardController extends Controller
         // Use shared scope so dashboard count matches the Presensi Bermasalah page exactly
         $problematicCount = DailyAttendance::problematic()->count();
 
-        $absentToday = DailyAttendance::whereDate('date', $today)->where('status', 'Tidak Hadir')->count();
+        $presensitToday = DailyAttendance::whereDate('date', $today)->where('status', 'Tidak Hadir')->count();
 
         // Total salary this month
         $currentMonth = $today->month;
@@ -41,7 +41,7 @@ class DashboardController extends Controller
             'totalAdmins',
             'presentToday',
             'problematicCount',
-            'absentToday',
+            'presensitToday',
             'totalSalaryThisMonth'
         ));
     }

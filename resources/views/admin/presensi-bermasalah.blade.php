@@ -133,7 +133,7 @@
         document.getElementById('modal-ket').textContent = row.ket;
         document.getElementById('modal-jam-masuk').textContent = row.masuk;
         document.getElementById('pb-jam-pulang').value = row.pulang || '';
-        document.getElementById('pb-notes').value = (row.ket && row.ket !== 'Lupa absen pulang') ? row.ket : '';
+        document.getElementById('pb-notes').value = (row.ket && row.ket !== 'Lupa presensi pulang') ? row.ket : '';
         
         const updateSalary = () => {
             const masuk = document.getElementById('modal-jam-masuk').textContent;

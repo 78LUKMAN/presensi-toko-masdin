@@ -1,6 +1,6 @@
 {{-- resources/views/employee/scan.blade.php --}}
 @extends('layouts.employee')
-@section('title', 'Scan Absensi')
+@section('title', 'Scan Presensi')
 
 @section('content')
     <!-- Include HTML5-QRCode library -->
@@ -19,7 +19,7 @@
                 class="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center">
                 <i class="fa-solid fa-chevron-left text-white"></i>
             </a>
-            <h1 class="text-white font-bold text-base">Scan Absensi</h1>
+            <h1 class="text-white font-bold text-base">Scan Presensi</h1>
             <button class="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center">
                 <i class="fa-solid fa-lightbulb text-white"></i>
             </button>
@@ -27,7 +27,7 @@
 
         {{-- Instruction text --}}
         <div class="relative z-10 text-center px-6 pt-2 pb-5">
-            <p class="text-white/70 text-sm">Arahkan kamera ke QR Code absensi</p>
+            <p class="text-white/70 text-sm">Arahkan kamera ke QR Code presensi</p>
         </div>
 
         {{-- ── QR SCAN FRAME ── --}}

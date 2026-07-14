@@ -42,7 +42,7 @@
         <i class="fa-solid fa-circle-exclamation text-red-500 mt-0.5"></i>
         <div class="flex-1">
             <p class="text-sm text-red-700">
-                Perhatian: Anda belum absen pulang untuk hari sebelumnya. Segera lengkapi agar pembayaran honorarium Anda dapat diproses dengan lancar. Terima kasih.
+                Perhatian: Anda belum presensi pulang untuk hari sebelumnya. Segera lengkapi agar pembayaran honorarium Anda dapat diproses dengan lancar. Terima kasih.
             </p>
             <a href="{{ route('employee.presensi-bermasalah') }}" class="inline-block mt-3 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-lg transition-colors">
                 Selesaikan Sekarang
@@ -190,7 +190,7 @@
         </div>
 
         <p class="text-xs text-slate-400 mt-4 text-center italic">
-            "Upah dihitung otomatis setelah absen pulang"
+            "Upah dihitung otomatis setelah presensi pulang"
         </p>
     </div>
 

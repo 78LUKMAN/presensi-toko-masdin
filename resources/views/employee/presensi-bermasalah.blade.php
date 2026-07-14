@@ -38,7 +38,7 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-1.5">Alasan Lupa Absen <span class="text-red-500">*</span></label>
+                    <label class="block text-sm font-bold text-slate-700 mb-1.5">Alasan Lupa Presensi <span class="text-red-500">*</span></label>
                     <textarea name="notes" rows="3" required placeholder="Tuliskan alasan Anda..."
                               class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#1E2A5E]/30 focus:border-[#1E2A5E]/50 transition-all resize-none"></textarea>
                 </div>

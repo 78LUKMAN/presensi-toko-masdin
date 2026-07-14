@@ -97,7 +97,7 @@ class AttendanceController extends Controller
             ->addColumn('bagian', fn($row) => $row->employee->section ?? '-')
             ->addColumn('masuk', fn($row) => $row->check_in_time ? \Carbon\Carbon::parse($row->check_in_time)->format('H:i') : '-')
             ->addColumn('pulang', fn($row) => $row->check_out_time ? \Carbon\Carbon::parse($row->check_out_time)->format('H:i') : '')
-            ->addColumn('ket', fn($row) => $row->notes ?: 'Lupa absen pulang')
+            ->addColumn('ket', fn($row) => $row->notes ?: 'Lupa presensi pulang')
             ->addColumn('status', fn($row) => $row->approval_status)
             ->addColumn('aksi', function ($row) {
                 return $row; // Return full row for modal
