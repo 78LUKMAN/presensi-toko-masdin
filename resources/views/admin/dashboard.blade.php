@@ -14,51 +14,39 @@
     </div>
 
     {{-- ── Row 1: Stats Cards ── --}}
-    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
 
         {{-- Jumlah Pegawai --}}
-        <div class="bg-white rounded-2xl border border-slate-200 p-5 hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between mb-4">
-                <div class="w-11 h-11 rounded-xl bg-blue-100 flex items-center justify-center">
-                    <svg class="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                </div>
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 flex items-center gap-4 hover:shadow-md transition-shadow">
+            <div class="w-11 h-11 rounded-xl bg-blue-100 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
             </div>
-            <p class="text-3xl font-bold text-slate-800">{{ $totalEmployees }}</p>
-            <p class="text-xs text-slate-500 mt-1 font-medium">Jumlah Pegawai</p>
+            <div>
+                <p class="text-2xl font-bold text-slate-800">{{ $totalEmployees }}</p>
+                <p class="text-xs font-medium text-slate-600">Jumlah Pegawai</p>
+            </div>
         </div>
 
         {{-- Jumlah Admin --}}
-        <div class="bg-white rounded-2xl border border-slate-200 p-5 hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between mb-4">
-                <div class="w-11 h-11 rounded-xl bg-indigo-100 flex items-center justify-center">
-                    <svg class="w-5 h-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </div>
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 flex items-center gap-4 hover:shadow-md transition-shadow">
+            <div class="w-11 h-11 rounded-xl bg-indigo-100 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             </div>
-            <p class="text-3xl font-bold text-slate-800">{{ $totalAdmins }}</p>
-            <p class="text-xs text-slate-500 mt-1 font-medium">Jumlah Admin</p>
-        </div>
-
-        {{-- Hadir Hari Ini --}}
-        <div class="bg-white rounded-2xl border border-slate-200 p-5 hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between mb-4">
-                <div class="w-11 h-11 rounded-xl bg-emerald-100 flex items-center justify-center">
-                    <svg class="w-5 h-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </div>
+            <div>
+                <p class="text-2xl font-bold text-slate-800">{{ $totalAdmins }}</p>
+                <p class="text-xs font-medium text-slate-600">Jumlah Admin</p>
             </div>
-            <p class="text-3xl font-bold text-slate-800">{{ $presentToday }}<span class="text-lg text-slate-400 font-normal">/{{ $totalEmployees }}</span></p>
-            <p class="text-xs text-slate-500 mt-1 font-medium">Hadir Hari Ini</p>
         </div>
 
         {{-- Gaji Bulan Ini --}}
-        <div class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-5 text-white shadow-lg shadow-blue-200 hover:shadow-xl transition-shadow">
-            <div class="flex items-center justify-between mb-4">
-                <div class="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center">
-                    <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </div>
-                <span class="text-xs text-blue-200">{{ \Carbon\Carbon::now()->translatedFormat('F Y') }}</span>
+        <div class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-5 flex items-center gap-4 text-white shadow-lg shadow-blue-200 hover:shadow-xl transition-shadow">
+            <div class="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             </div>
-            <p class="text-2xl font-bold">Rp {{ number_format($totalSalaryThisMonth, 0, ',', '.') }}</p>
-            <p class="text-xs text-blue-200 mt-1 font-medium">Total Gaji Bulan Ini</p>
+            <div>
+                <p class="text-xl font-bold">Rp {{ number_format($totalSalaryThisMonth, 0, ',', '.') }}</p>
+                <p class="text-xs font-medium text-blue-200">Gaji Bulan Ini ({{ \Carbon\Carbon::now()->translatedFormat('F Y') }})</p>
+            </div>
         </div>
     </div>
 
@@ -73,13 +61,15 @@
                 <p class="text-xs font-medium text-slate-600">Presensi Bermasalah</p>
             </div>
         </div>
-        <div class="bg-white rounded-2xl border border-slate-200 p-5 flex items-center gap-4">
-            <div class="w-11 h-11 rounded-xl bg-red-100 flex items-center justify-center flex-shrink-0">
-                <svg class="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
+
+        {{-- Hadir Hari Ini --}}
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 flex items-center gap-4 hover:shadow-md transition-shadow">
+            <div class="w-11 h-11 rounded-xl bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             </div>
             <div>
-                <p class="text-2xl font-bold text-slate-800">{{ $presensitToday }}</p>
-                <p class="text-xs font-medium text-slate-600">Tidak Hadir Hari Ini</p>
+                <p class="text-2xl font-bold text-slate-800">{{ $presentToday }}<span class="text-base text-slate-400 font-normal">/{{ $totalEmployees }}</span></p>
+                <p class="text-xs font-medium text-slate-600">Hadir Hari Ini</p>
             </div>
         </div>
     </div>

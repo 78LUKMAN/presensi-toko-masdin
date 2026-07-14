@@ -16,9 +16,6 @@ class ProfileController extends Controller
             abort(403, 'Profil Pegawai tidak ditemukan.');
         }
         
-        // Ensure missing days are recorded as Alpha in the database
-        $employee->syncAlphas();
-        
         return view('employee.profile', compact('employee'));
     }
 

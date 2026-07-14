@@ -150,9 +150,6 @@ class AttendanceActionController extends Controller
             abort(403, 'Profil Pegawai tidak ditemukan.');
         }
         
-        // Ensure missing days are recorded as Alpha in the database
-        $employee->syncAlphas();
-        
         $histories = DailyAttendance::where('employee_id', $employee->id)
             ->orderBy('date', 'desc')
             ->get();

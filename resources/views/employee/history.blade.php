@@ -79,7 +79,6 @@
                 const map = {
                     'Hadir':        { bg:'bg-emerald-100', text:'text-emerald-700', icon:'fa-circle-check' },
                     'Pulang Cepat': { bg:'bg-orange-100',  text:'text-orange-700',  icon:'fa-circle-exclamation' },
-                    'Alpha':        { bg:'bg-red-100',     text:'text-red-700',     icon:'fa-circle-xmark' },
                     'Libur':        { bg:'bg-slate-100',   text:'text-slate-500',   icon:'fa-umbrella-beach' },
                     'Disetujui':    { bg:'bg-emerald-100', text:'text-emerald-700', icon:'fa-circle-check' },
                     'Menunggu':     { bg:'bg-amber-100',   text:'text-amber-700',   icon:'fa-clock' },
@@ -141,7 +140,7 @@
         <div x-show="tab === 'presensi'">
             <p class="text-xs text-slate-400 font-medium mb-2">Status Presensi</p>
             <div class="flex flex-wrap gap-2">
-                <template x-for="opt in [['all','Semua'],['hadir','Hadir'],['pulang cepat','Pulang Cepat'],['alpha','Alpha']]" :key="opt[0]">
+                <template x-for="opt in [['all','Semua'],['hadir','Hadir'],['pulang cepat','Pulang Cepat']]" :key="opt[0]">
                     <button @click="filterType = opt[0]"
                             :class="filterType === opt[0] ? 'bg-[#1E2A5E] text-white' : 'bg-slate-100 text-slate-600'"
                             class="px-3 py-1.5 rounded-full text-xs font-semibold transition-all"

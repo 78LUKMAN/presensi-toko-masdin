@@ -44,45 +44,4 @@ class Employee extends Model
     {
         return $this->hasMany(DailySalary::class);
     }
-
-    /**
-     * Automatically fill missing attendance records with 'Alpha' up to yesterday.
-     */
-    public function syncAlphas()
-    {
-        $earliest = \Carbon\Carbon::parse($this->join_date ?? \Carbon\Carbon::today()->subDays(30));
-        $latest = \Carbon\Carbon::yesterday();
-        
-        if ($earliest->isAfter($latest)) {
-            return;
-        }
-        
-        $existingDates = DailyAttendance::where('employee_id', $this->id)
-            ->whereBetween('date', [$earliest->format('Y-m-d'), $latest->format('Y-m-d')])
-            ->pluck('date')
-            ->map(fn($d) => \Carbon\Carbon::parse($d)->format('Y-m-d'))
-            ->toArray();
-            
-        $newRecords = [];
-        for ($date = $latest->copy(); $date->gte($earliest); $date->subDay()) {
-            if ($date->isSunday()) continue; // Skip Sundays
-            
-            $dateString = $date->format('Y-m-d');
-            if (!in_array($dateString, $existingDates)) {
-                $newRecords[] = [
-                    'employee_id' => $this->id,
-                    'date' => $dateString,
-                    'status' => 'Alpha',
-                    'notes' => 'Tidak hadir tanpa keterangan',
-                    'approval_status' => 'Approved',
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ];
-            }
-        }
-        
-        if (count($newRecords) > 0) {
-            DailyAttendance::insert($newRecords);
-        }
-    }
 }

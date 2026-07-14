@@ -59,9 +59,8 @@
             @php
                 $hadirCount = \App\Models\DailyAttendance::where('employee_id', $employee->id)->whereIn('status', ['Hadir', 'Hadir (Manual)', 'Pulang Cepat'])->count();
                 $izinCount = \App\Models\DailyAttendance::where('employee_id', $employee->id)->whereIn('status', ['Izin', 'Sakit', 'Cuti'])->where('approval_status', 'Done')->count();
-                $alpaCount = \App\Models\DailyAttendance::where('employee_id', $employee->id)->where('status', 'Alpha')->count();
             @endphp
-            <div class="bg-white rounded-2xl shadow-md p-4 grid grid-cols-3 divide-x divide-slate-100">
+            <div class="bg-white rounded-2xl shadow-md p-4 grid grid-cols-2 divide-x divide-slate-100">
                 <div class="text-center px-2">
                     <p class="text-2xl font-extrabold text-[#1E2A5E]">{{ $hadirCount }}</p>
                     <p class="text-xs text-slate-400 font-medium">Hadir</p>
@@ -69,10 +68,6 @@
                 <div class="text-center px-2">
                     <p class="text-2xl font-extrabold text-[#1E2A5E]">{{ $izinCount }}</p>
                     <p class="text-xs text-slate-400 font-medium">Izin</p>
-                </div>
-                <div class="text-center px-2">
-                    <p class="text-2xl font-extrabold text-[#1E2A5E]">{{ $alpaCount }}</p>
-                    <p class="text-xs text-slate-400 font-medium">Alpa</p>
                 </div>
             </div>
         </div>
