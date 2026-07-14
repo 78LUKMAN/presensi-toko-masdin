@@ -24,7 +24,7 @@
             'clockIn' => $h->check_in_time ? \Carbon\Carbon::parse($h->check_in_time)->format('H:i') : null,
             'clockOut' => $h->check_out_time ? \Carbon\Carbon::parse($h->check_out_time)->format('H:i') : null,
             'duration' => $h->total_hours !== null && $h->total_hours >= 0 ? formatWorkingHours($h->total_hours) : '-',
-            'status' => $h->status ?? 'Alpa',
+            'status' => $h->status ?? 'Alpha',
             'lateMin' => 0,
             'base' => $baseVal !== null ? 'Rp ' . number_format($baseVal, 0, ',', '.') : '-',
             'bonus' => $bonus > 0 ? '+ Rp ' . number_format($bonus, 0, ',', '.') : null,
@@ -79,7 +79,7 @@
                 const map = {
                     'Hadir':        { bg:'bg-emerald-100', text:'text-emerald-700', icon:'fa-circle-check' },
                     'Pulang Cepat': { bg:'bg-orange-100',  text:'text-orange-700',  icon:'fa-circle-exclamation' },
-                    'Alpa':         { bg:'bg-red-100',     text:'text-red-700',     icon:'fa-circle-xmark' },
+                    'Alpha':        { bg:'bg-red-100',     text:'text-red-700',     icon:'fa-circle-xmark' },
                     'Libur':        { bg:'bg-slate-100',   text:'text-slate-500',   icon:'fa-umbrella-beach' },
                     'Disetujui':    { bg:'bg-emerald-100', text:'text-emerald-700', icon:'fa-circle-check' },
                     'Menunggu':     { bg:'bg-amber-100',   text:'text-amber-700',   icon:'fa-clock' },
@@ -141,7 +141,7 @@
         <div x-show="tab === 'presensi'">
             <p class="text-xs text-slate-400 font-medium mb-2">Status Presensi</p>
             <div class="flex flex-wrap gap-2">
-                <template x-for="opt in [['all','Semua'],['hadir','Hadir'],['pulang cepat','Pulang Cepat'],['alpa','Alpa']]" :key="opt[0]">
+                <template x-for="opt in [['all','Semua'],['hadir','Hadir'],['pulang cepat','Pulang Cepat'],['alpha','Alpha']]" :key="opt[0]">
                     <button @click="filterType = opt[0]"
                             :class="filterType === opt[0] ? 'bg-[#1E2A5E] text-white' : 'bg-slate-100 text-slate-600'"
                             class="px-3 py-1.5 rounded-full text-xs font-semibold transition-all"

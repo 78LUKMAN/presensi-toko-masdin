@@ -101,7 +101,6 @@
     const statusBadge = (status) => {
         const map = {
             'auto': '<span class="inline-flex px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700">Otomatis</span>',
-            'pending_manual': '<span class="inline-flex px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-700 animate-pulse">Perlu Input Admin</span>',
             'manual': '<span class="inline-flex px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">Manual</span>',
         };
         return map[status] || '<span class="inline-flex px-2 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-500">-</span>';
@@ -140,9 +139,6 @@
             {data:'bagian', name: 'bagian'},
             {data:'waktu'},
             {data:'gaji', render: (data, type, row) => {
-                if (row.salary_status === 'pending_manual') {
-                    return `<span class="font-bold text-amber-600">${fmt(data)} <span class="text-xs">(belum final)</span></span>`;
-                }
                 return `<span class="font-bold text-slate-700">${fmt(data)}</span>`;
             }},
             {data:'salary_status', orderable: false, searchable: false, render: data => statusBadge(data)},
@@ -150,10 +146,8 @@
              render:(row)=>{
                 // If salary exists, show edit button
                 if (row.salary_id) {
-                    const btnClass = row.salary_status === 'pending_manual'
-                        ? 'p-1.5 rounded-lg text-amber-600 hover:bg-amber-50 ring-2 ring-amber-200'
-                        : 'p-1.5 rounded-lg text-blue-600 hover:bg-blue-50';
-                    const title = row.salary_status === 'pending_manual' ? 'Input Honor (Wajib)' : 'Edit Honor';
+                    const btnClass = 'p-1.5 rounded-lg text-blue-600 hover:bg-blue-50';
+                    const title = 'Edit Honor';
                     return `<div class="flex justify-center gap-1">
                         <button onclick='editGaji(${JSON.stringify(row)})' class="${btnClass}" title="${title}">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
@@ -186,9 +180,7 @@
         document.getElementById('edit-honor').value = formatNumberInput(rawVal);
         document.getElementById('edit-notes').value = '';
         document.getElementById('form-gaji').dataset.mode = 'edit';
-        document.getElementById('modal-gaji-title').textContent = row.salary_status === 'pending_manual'
-            ? 'Input Honor (Jam Kerja < 9 Jam)'
-            : 'Edit Honor Hari Ini';
+        document.getElementById('modal-gaji-title').textContent = 'Edit Honor Hari Ini';
         document.getElementById('modal-gaji').classList.remove('hidden');
     };
 

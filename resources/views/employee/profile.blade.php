@@ -59,7 +59,7 @@
             @php
                 $hadirCount = \App\Models\DailyAttendance::where('employee_id', $employee->id)->whereIn('status', ['Hadir', 'Hadir (Manual)', 'Pulang Cepat'])->count();
                 $izinCount = \App\Models\DailyAttendance::where('employee_id', $employee->id)->whereIn('status', ['Izin', 'Sakit', 'Cuti'])->where('approval_status', 'Done')->count();
-                $alpaCount = \App\Models\DailyAttendance::where('employee_id', $employee->id)->where('status', 'Tidak Hadir')->count();
+                $alpaCount = \App\Models\DailyAttendance::where('employee_id', $employee->id)->where('status', 'Alpha')->count();
             @endphp
             <div class="bg-white rounded-2xl shadow-md p-4 grid grid-cols-3 divide-x divide-slate-100">
                 <div class="text-center px-2">

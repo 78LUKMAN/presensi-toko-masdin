@@ -149,6 +149,10 @@ class AttendanceActionController extends Controller
         if (!$employee) {
             abort(403, 'Profil Pegawai tidak ditemukan.');
         }
+        
+        // Ensure missing days are recorded as Alpha in the database
+        $employee->syncAlphas();
+        
         $histories = DailyAttendance::where('employee_id', $employee->id)
             ->orderBy('date', 'desc')
             ->get();
@@ -156,7 +160,7 @@ class AttendanceActionController extends Controller
         $salaries = \App\Models\DailySalary::where('employee_id', $employee->id)
             ->get()
             ->keyBy(function($item) {
-                return $item->date->format('Y-m-d');
+                return \Carbon\Carbon::parse($item->date)->format('Y-m-d');
             });
 
         return view('employee.history', compact('histories', 'salaries'));
