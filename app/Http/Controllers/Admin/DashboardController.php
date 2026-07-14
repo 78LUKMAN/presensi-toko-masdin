@@ -177,7 +177,7 @@ class DashboardController extends Controller
             'labels' => $labels,
             'datasets' => [
                 [
-                    'label' => 'Jumlah Pegawai Hadir',
+                    'label' => '  Jumlah Pegawai Hadir',
                     'data' => $presentData,
                     'backgroundColor' => '#3b82f6', // Use a single clear color (e.g. blue)
                     'borderColor' => '#2563eb',
