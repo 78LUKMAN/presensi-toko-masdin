@@ -14,9 +14,12 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->validateCsrfTokens(except: [
             'simulate-time',
+            'logout',
         ]);
         $middleware->web(prepend: [
             \App\Http\Middleware\SimulateTimeMiddleware::class,
+        ], append: [
+            \App\Http\Middleware\PreventBackHistory::class,
         ]);
         $middleware->alias([
             'role' => \App\Http\Middleware\RoleMiddleware::class,
@@ -38,5 +41,19 @@ return Application::configure(basePath: dirname(__DIR__))
         });
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\HttpException $e, \Illuminate\Http\Request $request) {
+            if ($e->getStatusCode() === 401 || $e->getStatusCode() === 403) {
+                if ($request->is('employee*')) {
+                    return redirect()->guest(route('employee.login'));
+                }
+                return redirect()->guest(route('admin.login'));
+            }
+        });
+        
+        $exceptions->render(function (\Illuminate\Auth\AuthenticationException $e, \Illuminate\Http\Request $request) {
+            if ($request->is('employee*')) {
+                return redirect()->guest(route('employee.login'));
+            }
+            return redirect()->guest(route('admin.login'));
+        });
     })->create();

@@ -40,7 +40,7 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/employee/forgot-password', fn() => redirect()->back()->with('error', 'Fitur belum tersedia'))->name('employee.forgot-password');
 });
 
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::any('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/attachment/{path}', [\App\Http\Controllers\AttachmentController::class, 'download'])
